@@ -27,9 +27,14 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex items-center flex-col`}
       >
-        <Navbar />
+        <header className="my-20">
+          <Navbar />
+          <h1 className="text-4xl font-bold tracking-tighter text-center">
+            JeremDevX - Blog
+          </h1>
+        </header>
         {children}
       </body>
     </html>

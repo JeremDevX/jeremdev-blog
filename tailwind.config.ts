@@ -9,6 +9,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      flex: {
+        "2": "2",
+      },
+      maxWidth: {
+        "1440": "1440px",
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

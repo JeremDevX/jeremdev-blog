@@ -44,24 +44,24 @@ export default async function IndexPage() {
   const posts = await client.fetch(POSTS_QUERY, {}, options);
 
   return (
-    <main className="flex bg-black-100 min-h-screen flex-col p-24 gap-12">
-      <h1 className="text-4xl font-bold tracking-tighter">Posts</h1>
-      <Input
-        type="search"
-        placeholder="Search articles..."
-        className="pl-10 bg-gray-800 border-gray-700 text-gray-100 placeholder-gray-500 focus:ring-2 focus:ring-blue-500"
-      />
-      <ul className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+    <main className="flex min-h-screen gap-12 w-full max-w-screen-xl p-4">
+      <section className="grid grid-cols-* gap-12 flex-2">
+        <h2 className="col-span-2 text-center text-3xl font-bold">
+          Latest articles
+        </h2>
         {posts.map((post: Post) => (
-          <Card className="bg-card overflow-hidden group" key={post._id}>
+          <Card
+            className="bg-card overflow-hidden group col-span-2 sm:col-span-1"
+            key={post._id}
+          >
             <CardHeader className="bg-gradient p-4">
               <CardTitle className="text-xl font-bold">{post?.title}</CardTitle>
-              <CardDescription className="text-gray-200">
-                {new Date(post.date).toLocaleDateString()}
+              <CardDescription className="flex justify-between text-card-foreground">
+                <span>{new Date(post.date).toLocaleDateString()}</span>
+                <span className="">Category: {post?.category} </span>
               </CardDescription>
             </CardHeader>
             <CardContent className="p-4">
-              <p className="">Category: {post?.category} </p>
               <Image
                 src={urlFor(post.coverImage.asset._ref)?.url() || ""}
                 width={100}
@@ -69,14 +69,24 @@ export default async function IndexPage() {
                 alt=""
               />
             </CardContent>
-            <CardFooter className="p-4 bg-accent">
-              <button className="w-1/2 bg-secondary hover:text-primary-foreground hover:bg-primary transition-colors">
+            <CardFooter className="flex justify-center p-4">
+              <button className="min-fit w-full px-4 py-2 bg-secondary hover:text-primary-foreground hover:bg-primary transition-colors rounded-lg">
                 <Link href={`/posts/${post?.slug?.current}`}>Read More</Link>
               </button>
             </CardFooter>
           </Card>
         ))}
-      </ul>
+      </section>
+      <section className="flex-1 lg:block hidden">
+        Test section
+        <ul className="flex flex-col gap-10 text-center">
+          <li>Sample text sample text sample text</li>
+          <li>Sample text sample text sample text</li>
+          <li>Sample text sample text sample text</li>
+          <li>Sample text sample text sample text</li>
+          <li>Sample text sample text sample text</li>
+        </ul>
+      </section>
     </main>
   );
 }

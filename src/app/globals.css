@@ -129,7 +129,7 @@ pre[class*="language-"] {
 
 @layer base {
   :root {
-    --gradient: linear-gradient(to top left, #091e3a, #2f80ed, #2d9ee0);
+    --gradient: linear-gradient(to top left, #276bc3, #2d9ee0);
     --background: 228 98.65% 98.26%;
     --foreground: 228 7.3% 0.52%;
     --muted: 228 7.3% 91.3%;
