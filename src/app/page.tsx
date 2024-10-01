@@ -32,55 +32,54 @@ const options = { next: { revalidate: 60 } };
 const POSTS_QUERY = defineQuery(`*[
   _type == "post"
   && defined(slug.current)
-]{_id, title, slug, date, coverImage, category}|order(date desc)`);
-
-const { projectId, dataset } = client.config();
-const urlFor = (source: SanityImageSource) =>
-  projectId && dataset
-    ? imageUrlBuilder({ projectId, dataset }).image(source)
-    : null;
+]{_id, title, slug, date, resume, category}|order(date desc)`);
 
 export default async function IndexPage() {
   const posts = await client.fetch(POSTS_QUERY, {}, options);
 
   return (
     <main className="flex min-h-screen gap-12 w-full max-w-screen-xl p-4">
-      <section className="grid grid-cols-* gap-12 flex-2">
+      <section className="grid grid-cols-2 gap-12 flex-3">
         <h2 className="col-span-2 text-center text-3xl font-bold">
           Latest articles
         </h2>
         {posts.map((post: Post) => (
           <Card
-            className="bg-card overflow-hidden group col-span-2 sm:col-span-1"
+            className="bg-card overflow-hidden col-span-2 sm:col-span-1 flex flex-col justify-between"
             key={post._id}
           >
-            <CardHeader className="bg-gradient p-4">
-              <CardTitle className="text-xl font-bold">{post?.title}</CardTitle>
-              <CardDescription className="flex justify-between text-card-foreground">
+            <CardHeader className="bg-secondary p-4">
+              <CardTitle className="text-xl font-bold h-14 line-clamp-2">
+                {post?.title}
+              </CardTitle>
+              <CardDescription className="flex justify-between items-end text-card-foreground">
                 <span>{new Date(post.date).toLocaleDateString()}</span>
-                <span className="">Category: {post?.category} </span>
+                <span
+                  className={`font-bold p-2 rounded-lg bg-${post.category.toLowerCase()}`}
+                >
+                  {post?.category}
+                </span>
               </CardDescription>
             </CardHeader>
-            <CardContent className="p-4">
-              <Image
-                src={urlFor(post.coverImage.asset._ref)?.url() || ""}
-                width={100}
-                height={100}
-                alt=""
-              />
+            <CardContent className="p-4 h-28 overflow-hidden text-ellipsis line-clamp-4">
+              <span>{post.resume}</span>
             </CardContent>
             <CardFooter className="flex justify-center p-4">
-              <button className="min-fit w-full px-4 py-2 bg-secondary hover:text-primary-foreground hover:bg-primary transition-colors rounded-lg">
-                <Link href={`/posts/${post?.slug?.current}`}>Read More</Link>
-              </button>
+              <Link href={`/posts/${post?.slug?.current}`} className="w-full">
+                <button className="min-fit w-full px-4 py-2 bg-secondary hover:text-primary-foreground hover:bg-primary transition-colors rounded-lg">
+                  Read More
+                </button>
+              </Link>
             </CardFooter>
           </Card>
         ))}
       </section>
       <section className="flex-1 lg:block hidden">
-        Test section
+        <h2 className="text-center font-semibold text-2xl mb-12">
+          Test section
+        </h2>
         <ul className="flex flex-col gap-10 text-center">
-          <li>Sample text sample text sample text</li>
+          <li className="line-clamp-1">Sample text sample text sample text</li>
           <li>Sample text sample text sample text</li>
           <li>Sample text sample text sample text</li>
           <li>Sample text sample text sample text</li>

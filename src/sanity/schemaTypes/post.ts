@@ -24,6 +24,11 @@ export const postType = defineType({
       },
     }),
     defineField({
+      type: "text",
+      name: "resume",
+      title: "Resume",
+    }),
+    defineField({
       type: "string",
       name: "category",
       title: "Category",

@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       flex: {
-        "2": "2",
+        "3": "3",
       },
       maxWidth: {
         "1440": "1440px",
@@ -56,6 +56,7 @@ const config: Config = {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        react: "hsl(0, 100%, 50%)",
       },
       borderRadius: {
         lg: "var(--radius)",
