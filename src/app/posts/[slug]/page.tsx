@@ -3,12 +3,10 @@ import { PortableText } from "@portabletext/react";
 import imageUrlBuilder from "@sanity/image-url";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/lib/client";
-import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Refractor, registerLanguage } from "react-refractor";
 import tsx from "refractor/lang/tsx";
-import urlBuilder from "@sanity/image-url";
 
 registerLanguage(tsx);
 
@@ -50,26 +48,30 @@ export default async function EventPage({
   if (!post) {
     notFound();
   }
-  const { name, date, content, coverImage } = post;
-  const eventImageUrl = coverImage
+  const { title, date, content, coverImage } = post;
+  const ImageUrl = coverImage
     ? urlFor(coverImage)?.width(550).height(310).url()
     : null;
 
   return (
-    <main className="mx-auto p-12 flex flex-col max-w-3xl">
-      <div className="mb-4">
-        <Link href="/">← Back to home</Link>
-      </div>
+    <section className="w-full px-8">
+      <div className="mb-4"></div>
       <div className="">
         <Image
-          src={eventImageUrl || "https://via.placeholder.com/550x310"}
-          alt={name || "Event"}
-          className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
-          height="310"
-          width="550"
+          src={ImageUrl || "https://via.placeholder.com/550x310"}
+          alt=""
+          className="mx-auto overflow-hidden rounded-xl object-cover object-center"
+          height="810"
+          width="810"
         />
+        <div className="flex flex-col justify-between py-8">
+          <h1 className="text-2xl font-semibold underline-offset-2 underline">
+            {title}
+          </h1>
+          <span>Date : {date}</span>
+        </div>
         <PortableText value={content} components={customComponents} />
       </div>
-    </main>
+    </section>
   );
 }

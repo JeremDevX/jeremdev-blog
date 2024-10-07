@@ -10,11 +10,16 @@ const config: Config = {
   theme: {
     extend: {
       flex: {
+        "1": "1",
+        "2": "2",
         "3": "3",
+        "4": "4",
       },
       maxWidth: {
         "1440": "1440px",
+        "1000": "1000px",
       },
+      width: { logo: "calc(var(--sidebar-size) - 64px)" },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -41,6 +46,7 @@ const config: Config = {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          darker: "hsl(var(--accent-darker))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { categoryType } from "./category";
 
 export const postType = defineType({
   type: "document",
@@ -29,9 +30,10 @@ export const postType = defineType({
       title: "Resume",
     }),
     defineField({
-      type: "string",
-      name: "category",
+      type: "reference",
+      name: "Category",
       title: "Category",
+      to: categoryType,
     }),
     defineField({ type: "image", name: "coverImage", title: "Cover Image" }),
     defineField({

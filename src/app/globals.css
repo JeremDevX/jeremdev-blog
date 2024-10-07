@@ -150,6 +150,10 @@ pre[class*="language-"] {
     --destructive-foreground: 0 0% 98%;
     --ring: 228 73% 13%;
     --radius: 0.5rem;
+
+    --max-layout-width: 1440px;
+    --sidebar-size: 272px;
+    --border: 1px;
   }
   .dark {
     --gradient: linear-gradient(to top left, #72c6ef, #004e8f);
@@ -168,6 +172,7 @@ pre[class*="language-"] {
     --secondary: 212 80% 32.43%;
     --secondary-foreground: 212 8% 98.45%;
     --accent: 212 40% 20.7%;
+    --accent-darker: 212 40% 10%;
     --accent-foreground: 212 8% 98.45%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 212 8% 98.45%;
@@ -240,19 +245,54 @@ pre[class*="language-"] {
   }
 }
 
-/* @layer base {
-  :root {
-    --text: 210 40% 6%;
-    --background: 210 50% 96%;
-    --primary: 213 61% 27%;
-    --secondary: 213 73% 68%;
-    --accent: 213 100% 50%;
-  }
-  .dark {
-    --text: 210 40% 94%;
-    --background: 210 50% 4%;
-    --primary: 213 61% 73%;
-    --secondary: 213 73% 32%;
-    --accent: 213 100% 50%;
-  }
+/* .sidebar {
+  padding: 32px 32px 96px;
+  padding-left: max(32px, calc((100% - var(--max-layout-width) + 64px) / 2));
+  width: calc(
+    (100% - (var(--max-layout-width) - 64px)) / 2 + var(--sidebar-size) - 32px
+  );
 } */
+
+/* .article-padding {
+  padding-left: calc(
+    (100vw - var(--max-layout-width)) / 2 + var(--sidebar-size)
+  );
+}
+
+.side {
+  min-width: var(--sidebar-size);
+} */
+
+@media screen and (max-width: 768px) {
+  .article-padding {
+    padding: 0px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .article-padding {
+    padding: 32px 32px 32px;
+    padding-left: var(--sidebar-size);
+  }
+  .sidebar {
+    padding: 8px 32px 96px;
+    margin-top: 64px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .sidebar {
+    padding: 8px 32px 96px;
+    padding-left: max(32px, calc((100% - var(--max-layout-width) + 64px) / 2));
+    width: calc(
+      (100% - (var(--max-layout-width) - 64px)) / 2 + var(--sidebar-size) - 32px
+    );
+  }
+
+  .article-padding {
+    padding-left: calc(
+      (100vw - var(--max-layout-width)) / 2 + var(--sidebar-size)
+    );
+    padding-right: calc((100vw - var(--max-layout-width)) / 2);
+  }
+}

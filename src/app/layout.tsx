@@ -29,11 +29,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex items-center flex-col`}
       >
-        <header className="my-20">
+        <header className="mb-20">
           <Navbar />
-          <h1 className="text-4xl font-bold tracking-tighter text-center">
-            JeremDevX - Blog
-          </h1>
         </header>
         {children}
       </body>
