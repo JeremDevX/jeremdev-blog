@@ -10,78 +10,94 @@ import { Post } from "@/app/page";
 import Link from "next/link";
 
 export default function SearchInput() {
-  const [toggleInput, setToggleInput] = useState(false);
-  const searchRef = useRef(null);
-  const [searchValue, setSearchValue] = useState("");
-  const [posts, setPosts] = useState([]);
-  const [debounceValue, setDebounceValue] = useDebounceValue(searchValue, 1000);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const searchContainerRef = useRef(null);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [statusMessage, setStatusMessage] = useState(
+    "No results for your search..."
+  );
+  const [debouncedQuery, setDebouncedQuery] = useDebounceValue(query, 1000);
 
-  const handleOpenSearch = () => {
-    setToggleInput(true);
-    setSearchValue("");
-    setPosts([]);
+  const resetSearch = (shouldOpenSearch: boolean) => {
+    setQuery("");
+    setResults([]);
+    setIsSearchOpen(shouldOpenSearch);
   };
 
-  const handleClickOutside = () => {
-    setSearchValue("");
-    setPosts([]);
-    setToggleInput(false);
-  };
+  const handleSearchOpen = () => resetSearch(true);
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleSearchClose = () => resetSearch(false);
+
+  const handleEscapeKeyPress = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (event.key === "Escape") {
-      setSearchValue("");
-      setPosts([]);
-      setToggleInput(false);
+      resetSearch(false);
     }
   };
 
-  useCloseOnClickAway(searchRef, handleClickOutside);
+  useCloseOnClickAway(searchContainerRef, handleSearchClose);
 
   useEffect(() => {
-    if (searchValue.length > 2) {
-      const fetchArticles = async () => {
-        const POSTS_QUERY = `*[
-                _type == "post" && defined(slug.current) && title match "${debounceValue}*"
-                ]
-                {_id, title, slug,}`;
+    const fetchPosts = async () => {
+      if (debouncedQuery.length > 2) {
+        try {
+          const POSTS_QUERY = `*[
+            _type == "post" && defined(slug.current) && title match "${debouncedQuery}*"
+          ]{_id, title, slug}[0...10]`;
 
-        const fetchedPosts = await client.fetch(POSTS_QUERY);
-        setPosts(fetchedPosts);
-      };
-      fetchArticles();
-    }
-  }, [debounceValue]);
+          const fetchedResults = await client.fetch(POSTS_QUERY);
+
+          if (fetchedResults.length > 0) {
+            setResults(fetchedResults);
+          } else {
+            setStatusMessage("No results for your search.");
+          }
+        } catch (error) {
+          setStatusMessage("Error fetching posts.");
+        }
+      }
+    };
+
+    fetchPosts();
+  }, [debouncedQuery]);
 
   useEffect(() => {
-    if (searchValue === "") {
-      setPosts([]);
+    if (query.length === 0) {
+      setStatusMessage("No results for your search...");
+      setResults([]);
+    } else if (query.length <= 2) {
+      setStatusMessage("No results for your search...");
+    } else {
+      setStatusMessage("Loading...");
+      setResults([]);
     }
-  }, [searchValue]);
+  }, [query]);
 
   return (
     <div className="relative">
-      <Search className={`cursor-pointer`} onClick={handleOpenSearch} />
-      {toggleInput && (
+      <Search className="cursor-pointer" onClick={handleSearchOpen} />
+      {isSearchOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50">
           <div
-            className="fixed p-4 h-96 w-11/12  md:w-3/4 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center bg-background ring-muted ring-2 rounded-lg max-w-1000 overflow-y-auto"
-            ref={searchRef}
+            className="fixed p-4 h-96 w-11/12 md:w-3/4 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center bg-background ring-muted ring-2 rounded-lg max-w-1000 overflow-y-auto"
+            ref={searchContainerRef}
           >
             <Input
               type="search"
               placeholder="Search articles..."
               className="text-center bg-background focus:ring-2 focus:ring-primary w-full h-12 mb-2"
               autoFocus
-              onChange={(e) => setSearchValue(e.target.value)}
-              onKeyDown={(event) => handleKeyDown(event)}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleEscapeKeyPress}
             />
-            {posts.length > 0 ? (
-              posts.map((post: Post) => {
+            {results.length > 0 ? (
+              results.map((post: Post) => {
                 return (
                   <Link
                     href={`/posts/${post?.slug?.current}`}
-                    onClick={() => setToggleInput(false)}
+                    onClick={() => setIsSearchOpen(false)}
                     key={post._id}
                     className="p-2 bg-accent mt-2 mb-2 w-full h-auto text-left md:text-center rounded-lg hover:bg-primary hover:text-primary-foreground"
                   >
@@ -90,7 +106,7 @@ export default function SearchInput() {
                 );
               })
             ) : (
-              <span>No result for you research...</span>
+              <span className="h-full flex items-center">{statusMessage}</span>
             )}
           </div>
         </div>
