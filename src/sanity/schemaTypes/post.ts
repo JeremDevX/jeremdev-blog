@@ -25,6 +25,13 @@ export const postType = defineType({
       },
     }),
     defineField({
+      name: "view",
+      title: "Views",
+      type: "number",
+      initialValue: 0,
+      readOnly: true,
+    }),
+    defineField({
       type: "text",
       name: "resume",
       title: "Resume",

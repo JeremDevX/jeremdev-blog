@@ -19,6 +19,7 @@ export interface Post extends SanityDocument {
   category: {
     title: string;
   };
+  view: number;
 }
 
 const options = { next: { revalidate: 60 } };

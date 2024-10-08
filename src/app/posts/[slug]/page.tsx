@@ -7,6 +7,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Refractor, registerLanguage } from "react-refractor";
 import tsx from "refractor/lang/tsx";
+import { incrementViews } from "@/utils/incrementViews";
 
 registerLanguage(tsx);
 
@@ -31,7 +32,7 @@ const options = { next: { revalidate: 60 } };
 const POST_QUERY = defineQuery(`*[
     _type == "post" &&
     slug.current == $slug
-  ][0]{title, slug, date, coverImage, content}`);
+  ][0]{_id, title, slug, date, coverImage, content, view}`);
 
 const { projectId, dataset } = client.config();
 const urlFor = (source: SanityImageSource) =>
@@ -39,7 +40,7 @@ const urlFor = (source: SanityImageSource) =>
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
-export default async function EventPage({
+export default async function ArticlePage({
   params,
 }: {
   params: { slug: string };
@@ -48,10 +49,18 @@ export default async function EventPage({
   if (!post) {
     notFound();
   }
-  const { title, date, content, coverImage } = post;
+  const { title, date, content, coverImage, _id, view } = post;
   const ImageUrl = coverImage
     ? urlFor(coverImage)?.width(550).height(310).url()
     : null;
+
+  if (typeof window === "undefined") {
+    try {
+      await incrementViews(_id);
+    } catch (error) {
+      console.error("failed to increment", error);
+    }
+  }
 
   return (
     <section className="w-full px-8">
