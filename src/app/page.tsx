@@ -26,7 +26,7 @@ const options = { next: { revalidate: 60 } };
 const POSTS_QUERY = defineQuery(`*[
   _type == "post"
   && defined(slug.current)
-]{_id, title, slug, date, resume, coverImage, "category" : Category->{title}}|order(date desc)[0...6]`);
+]{_id, title, slug, date, resume, coverImage, "category" : Category->{title}}|order(date desc)[0...10]`);
 
 const { projectId, dataset } = client.config();
 const urlFor = (source: SanityImageSource) =>
