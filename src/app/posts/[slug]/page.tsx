@@ -74,10 +74,10 @@ export default async function ArticlePage({
           width="810"
         />
         <div className="flex flex-col justify-between py-8">
-          <h1 className="text-2xl font-semibold underline-offset-2 underline">
+          <h1 className="text-2xl font-semibold underline-offset-2 underline mb-2">
             {title}
           </h1>
-          <span>Date : {date}</span>
+          <span className="text-end">Date : {date}</span>
         </div>
         <PortableText value={content} components={customComponents} />
       </div>
