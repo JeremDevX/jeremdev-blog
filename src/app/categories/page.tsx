@@ -14,8 +14,9 @@ import {
 import { useState, useEffect } from "react";
 import { Post } from "../page";
 
-interface Category {
+export interface Category {
   title: string;
+  _id: string;
 }
 
 const options = { next: { revalidate: 60 } };

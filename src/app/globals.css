@@ -251,6 +251,9 @@ pre[class*="language-"] {
 .cat-html {
   background-color: darksalmon;
 }
+.sidebar {
+  width: calc(var(--sidebar-size) - 16px);
+}
 
 @media screen and (max-width: 768px) {
   .article-padding {
