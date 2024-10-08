@@ -46,10 +46,10 @@ export default async function IndexPage() {
         <h2 className="text-center text-3xl font-bold mb-12">
           Latest articles
         </h2>
-        <div className="grid grid-cols-2 grid-rows-3 gap-12">
+        <div className="grid grid-cols-2 grid-rows-3 gap-8">
           {posts.map((post: Post) => (
             <Card
-              className="bg-card overflow-hidden col-span-2 sm:col-span-1 flex flex-col justify-between"
+              className="bg-card overflow-hidden col-span-2 sm:col-span-2 flex flex-col justify-between"
               key={post._id}
             >
               <CardHeader className="bg-secondary p-4">
@@ -59,7 +59,7 @@ export default async function IndexPage() {
                 <CardDescription className="flex justify-between items-end text-card-foreground">
                   <span>{new Date(post.date).toLocaleDateString()}</span>
                   <span
-                    className={`font-bold p-2 rounded-lg bg-${post.category.title.toLowerCase()}`}
+                    className={`font-bold p-2 rounded-lg cat-${post.category.title.toLowerCase()}`}
                   >
                     {post?.category.title}
                   </span>
@@ -70,8 +70,8 @@ export default async function IndexPage() {
               </CardContent>
               <CardFooter className="flex justify-center p-4">
                 <Link href={`/posts/${post?.slug?.current}`} className="w-full">
-                  <button className="min-fit w-full px-4 py-2 bg-secondary hover:text-primary-foreground hover:bg-primary transition-colors rounded-lg">
-                    Read More
+                  <button className="min-fit w-full px-4 py-2 bg-secondary font-semibold hover:text-primary-foreground hover:bg-primary transition-colors rounded-lg">
+                    Read full post...
                   </button>
                 </Link>
               </CardFooter>

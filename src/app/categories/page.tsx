@@ -1,8 +1,7 @@
 "use client";
 import Link from "next/link";
-import { defineQuery, SanityDocument } from "next-sanity";
+import { defineQuery } from "next-sanity";
 import { client } from "@/sanity/lib/client";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   Card,
@@ -68,8 +67,8 @@ export default function IndexPage() {
 
   return (
     <main className="flex flex-col min-h-screen gap-12 w-full max-w-screen-xl p-4 mt-20">
-      <h1 className="text-4xl font-bold tracking-tighter text-center absolute top-24 left-1/2 transform -translate-x-1/2">
-        Categories
+      <h1 className="text-4xl font-bold tracking-tighter text-center absolute top-24 left-1/2 transform -translate-x-1/2 capitalize">
+        Category : {selectedCategory}
       </h1>
       <div className="flex justify-end w-full">
         <select
@@ -97,7 +96,7 @@ export default function IndexPage() {
               <CardDescription className="flex justify-between items-end text-card-foreground">
                 <span>{new Date(post.date).toLocaleDateString()}</span>
                 <span
-                  className={`font-bold p-2 rounded-lg bg-${post.category.title.toLowerCase()}`}
+                  className={`font-bold p-2 rounded-lg cat-${post.category.title.toLowerCase()}`}
                 >
                   {post?.category.title}
                 </span>
@@ -108,8 +107,8 @@ export default function IndexPage() {
             </CardContent>
             <CardFooter className="flex justify-center p-4">
               <Link href={`/posts/${post?.slug?.current}`} className="w-full">
-                <button className="min-fit w-full px-4 py-2 bg-secondary hover:text-primary-foreground hover:bg-primary transition-colors rounded-lg">
-                  Read More
+                <button className="min-fit w-full px-4 py-2 bg-secondary font-semibold hover:text-primary-foreground hover:bg-primary transition-colors rounded-lg">
+                  Read full post...
                 </button>
               </Link>
             </CardFooter>

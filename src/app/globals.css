@@ -245,23 +245,12 @@ pre[class*="language-"] {
   }
 }
 
-/* .sidebar {
-  padding: 32px 32px 96px;
-  padding-left: max(32px, calc((100% - var(--max-layout-width) + 64px) / 2));
-  width: calc(
-    (100% - (var(--max-layout-width) - 64px)) / 2 + var(--sidebar-size) - 32px
-  );
-} */
-
-/* .article-padding {
-  padding-left: calc(
-    (100vw - var(--max-layout-width)) / 2 + var(--sidebar-size)
-  );
+.cat-react {
+  background-color: darkblue;
 }
-
-.side {
-  min-width: var(--sidebar-size);
-} */
+.cat-html {
+  background-color: darksalmon;
+}
 
 @media screen and (max-width: 768px) {
   .article-padding {
