@@ -49,7 +49,7 @@ export default async function ArticlePage({
   if (!post) {
     notFound();
   }
-  const { title, date, content, coverImage, _id, view } = post;
+  const { title, date, content, coverImage, _id } = post;
   const ImageUrl = coverImage
     ? urlFor(coverImage)?.width(550).height(310).url()
     : null;

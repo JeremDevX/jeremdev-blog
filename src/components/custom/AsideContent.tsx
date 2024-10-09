@@ -28,7 +28,11 @@ _type == "post" && Category -> title == "${category}"
 {_id, title, slug}|order(lower(title) asc)`;
 
   const fetchCategoryArticles = async () => {
-    displayed === "hidden" ? setDisplayed("visible") : setDisplayed("hidden");
+    if (displayed === "hidden") {
+      setDisplayed("visible");
+    } else {
+      setDisplayed("hidden");
+    }
 
     if (articles.length === 0) {
       const fetchedArticles = await client.fetch(CATEGORY_QUERY, {}, options);

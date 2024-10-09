@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { defineQuery } from "next-sanity";
 import { client } from "@/sanity/lib/client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -11,12 +11,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Post } from "../page";
 
 export interface Category {
-  title: string;
   _id: string;
+  title: string;
+  slug: {
+    current: string;
+  };
 }
 
 const options = { next: { revalidate: 60 } };
@@ -24,24 +27,22 @@ const options = { next: { revalidate: 60 } };
 const CATEGORIES_QUERY = defineQuery(`
   *[_type == "category"]`);
 
-export default function IndexPage() {
+function CategoriesContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [posts, setPosts] = useState<Post[]>([]);
-  const [categories, setCategories] = useState([]);
-
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    searchParams.get("category") || "all"
-  );
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [categoryTitle, setCategoryTitle] = useState<string>("All");
 
   const fetchCategories = async () => {
     const fetchedCategories = await client.fetch(CATEGORIES_QUERY, {}, options);
     setCategories(fetchedCategories);
+    return fetchedCategories;
   };
 
   const fetchPosts = async (category: string) => {
     const categoryFilter =
-      category !== "all" ? `&& Category->title == "${category}"` : "";
+      category !== "all" ? `&& Category->slug.current == "${category}"` : "";
     const POSTS_QUERY = defineQuery(`*[
       _type == "post" && defined(slug.current) ${categoryFilter}
     ]{_id, title, slug, date, resume, "category" : Category->{title}}|order(date desc)`);
@@ -53,23 +54,44 @@ export default function IndexPage() {
   const handleCategoryChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
+    console.log(event);
     const newCategory = event.target.value;
+    const newCategoryTitle = event.target.selectedOptions[0].text;
     setSelectedCategory(newCategory);
+    setCategoryTitle(newCategoryTitle);
     router.replace(`/categories?category=${newCategory}`);
   };
 
   useEffect(() => {
-    fetchCategories();
-  }, []);
+    const initializeCategories = async () => {
+      const fetchedCategories = await fetchCategories();
+      const searchParams = new URLSearchParams(window.location.search);
+      const categoryParam = searchParams.get("category");
+
+      if (categoryParam) {
+        const categoryExists = fetchedCategories.some(
+          (cat: Category) =>
+            cat.title.toLowerCase() === categoryParam.toLowerCase()
+        );
+        if (categoryExists) {
+          setSelectedCategory(categoryParam.toLowerCase());
+        } else {
+          router.replace("/categories?category=all");
+        }
+      }
+    };
+
+    initializeCategories();
+  }, [router]);
 
   useEffect(() => {
     fetchPosts(selectedCategory);
   }, [selectedCategory]);
 
   return (
-    <main className="flex flex-col min-h-screen gap-12 w-full max-w-screen-xl p-4 mt-20">
-      <h1 className="text-4xl font-bold tracking-tighter text-center absolute top-24 left-1/2 transform -translate-x-1/2 capitalize">
-        Category : {selectedCategory}
+    <>
+      <h1 className="text-4xl font-bold tracking-tighter text-center absolute top-24 left-1/2 transform -translate-x-1/2">
+        Category : {categoryTitle}
       </h1>
       <div className="flex justify-end w-full">
         <select
@@ -79,7 +101,9 @@ export default function IndexPage() {
         >
           <option value="all">All</option>
           {categories.map((category: Category) => (
-            <option value={category.title}>{category.title}</option>
+            <option value={category.slug.current} key={category._id}>
+              {category.title}
+            </option>
           ))}
         </select>
       </div>
@@ -116,6 +140,16 @@ export default function IndexPage() {
           </Card>
         ))}
       </section>
-    </main>
+    </>
+  );
+}
+
+export default function CategoriesPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <main className="flex flex-col min-h-screen gap-12 w-full max-w-screen-xl p-4 mt-20">
+        <CategoriesContent />
+      </main>
+    </Suspense>
   );
 }

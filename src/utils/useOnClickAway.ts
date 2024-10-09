@@ -1,10 +1,13 @@
-import { useEffect } from "react";
+import { MutableRefObject, useEffect } from "react";
 
 // Custom hook to close an dynamic element(modal, input) when clic outside the element
-export function useCloseOnClickAway(ref: any, callback: () => void) {
+export function useCloseOnClickAway(
+  ref: MutableRefObject<null | HTMLElement>,
+  callback: () => void
+) {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (ref.current && !ref.current.contains(event.target)) {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
         callback();
       }
     }

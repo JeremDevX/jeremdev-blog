@@ -17,7 +17,7 @@ export default function SearchInput() {
   const [statusMessage, setStatusMessage] = useState(
     "No results for your search..."
   );
-  const [debouncedQuery, setDebouncedQuery] = useDebounceValue(query, 1000);
+  const [debouncedQuery] = useDebounceValue(query, 1000);
 
   const resetSearch = (shouldOpenSearch: boolean) => {
     setQuery("");
@@ -56,6 +56,7 @@ export default function SearchInput() {
           }
         } catch (error) {
           setStatusMessage("Error fetching posts.");
+          console.error(error);
         }
       }
     };
