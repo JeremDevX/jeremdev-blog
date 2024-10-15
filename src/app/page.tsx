@@ -44,7 +44,7 @@ export default async function IndexPage() {
       <h1 className="text-4xl font-bold tracking-tighter text-center absolute top-24 left-1/2 transform -translate-x-1/2">
         JeremDevX - Blog
       </h1>
-      <section className="flex-3">
+      <section className="flex-3 sm:px-6">
         <h2 className="text-center text-3xl font-bold mb-12">
           Latest articles
         </h2>

@@ -14,12 +14,12 @@ const options = { next: { revalidate: 3600 } };
 
 export default function AsideContent(props: AsideContentProps) {
   const [articles, setArticles] = useState([]);
-  const [displayed, setDisplayed] = useState("hidden");
+  const [displayed, setDisplayed] = useState(false);
   const { category } = props;
 
   const chevronStyle = {
-    transform: displayed === "visible" ? "rotate(-180deg)" : "rotate(0deg)",
-    transition: "transform 0.2s ease",
+    transform: !displayed ? "rotate(-180deg)" : "rotate(0deg)",
+    transition: "transform 1s ease",
   };
 
   const CATEGORY_QUERY = `*[
@@ -28,11 +28,7 @@ _type == "post" && Category -> title == "${category}"
 {_id, title, slug}|order(lower(title) asc)`;
 
   const fetchCategoryArticles = async () => {
-    if (displayed === "hidden") {
-      setDisplayed("visible");
-    } else {
-      setDisplayed("hidden");
-    }
+    setDisplayed(!displayed);
 
     if (articles.length === 0) {
       const fetchedArticles = await client.fetch(CATEGORY_QUERY, {}, options);
@@ -52,7 +48,9 @@ _type == "post" && Category -> title == "${category}"
           />
         </span>
       </div>
-      <div className={`flex flex-col gap-4 text-sm ${displayed}`}>
+      <div
+        className={`flex flex-col gap-4 text-sm delay-200 ${displayed ? "block animate-fade-down" : "animate-fade-up hidden"}`}
+      >
         {articles.map((article: Post) => (
           <Link
             href={`/posts/${article.slug.current}`}
@@ -64,7 +62,7 @@ _type == "post" && Category -> title == "${category}"
         ))}
       </div>
       <span
-        className={`w-full border-b-2 ${displayed === "hidden" ? "-mt-2" : "mt-2"}`}
+        className={`w-full border-b-2 ${!displayed ? "-mt-2" : "mt-2"}`}
       ></span>
     </div>
   );

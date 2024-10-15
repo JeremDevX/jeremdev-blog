@@ -74,6 +74,6 @@ const config: Config = {
       gradient: "var(--gradient)",
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("tailwindcss-animated")],
 };
 export default config;

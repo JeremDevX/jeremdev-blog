@@ -65,11 +65,9 @@ export default function SearchInput() {
   }, [debouncedQuery]);
 
   useEffect(() => {
-    if (query.length === 0) {
+    if (query.length === 0 || query.length <= 2) {
       setStatusMessage("No results for your search...");
       setResults([]);
-    } else if (query.length <= 2) {
-      setStatusMessage("No results for your search...");
     } else {
       setStatusMessage("Loading...");
       setResults([]);
@@ -80,19 +78,20 @@ export default function SearchInput() {
     <div className="relative">
       <Search className="cursor-pointer" onClick={handleSearchOpen} />
       {isSearchOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-10">
           <div
-            className="fixed p-4 h-96 w-11/12 md:w-3/4 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center bg-background ring-muted ring-2 rounded-lg max-w-1000 overflow-y-auto"
+            className={`fixed p-4 h-96 w-11/12 md:w-4/12 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center bg-background ring-muted ring-2 rounded-lg max-w-1000 overflow-y-auto`}
             ref={searchContainerRef}
           >
             <Input
               type="search"
               placeholder="Search articles..."
-              className="text-center bg-background focus:ring-2 focus:ring-primary w-full h-12 mb-2"
+              className="text-left indent-6 text-lg bg-background focus:ring-2 focus:ring-primary w-full h-12 mb-2 placeholder:opacity-40 relative"
               autoFocus
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleEscapeKeyPress}
             />
+            <Search className="absolute left-6 top-6" />
             {results.length > 0 ? (
               results.map((post: Post) => {
                 return (
