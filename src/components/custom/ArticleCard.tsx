@@ -21,7 +21,7 @@ export default function ArticleCard(props: ArticleCardProps) {
         <div className="h-2/5 bg-secondary md:p-4 p-3 flex flex-col justify-between">
           <div className="h-14 line-clamp-2">
             <Link
-              href={`/posts/${slug}`}
+              href={`/blog/posts/${slug}`}
               className="hover:underline-offset-4 hover:underline font-semibold"
             >
               <h3 className="md:text-xl text-lg font-bold">{title}</h3>
@@ -42,7 +42,7 @@ export default function ArticleCard(props: ArticleCardProps) {
           <div className="md:line-clamp-4 line-clamp-5">{resume}</div>
           <div className="flex justify-end">
             <Link
-              href={`/posts/${slug}`}
+              href={`/blog/posts/${slug}`}
               className="hover:underline-offset-4 hover:underline font-semibold"
             >
               Read full article...

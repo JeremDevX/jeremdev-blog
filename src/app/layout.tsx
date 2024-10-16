@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/custom/Navbar";
+import Footer from "@/components/custom/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,6 +25,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const childProps = children as any;
+  const shouldHideFooter = childProps?.type?.noFooter;
   return (
     <html lang="en" className="dark">
       <body
@@ -33,6 +36,7 @@ export default function RootLayout({
           <Navbar />
         </header>
         {children}
+        <Footer />
       </body>
     </html>
   );

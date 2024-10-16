@@ -64,8 +64,7 @@ export default async function ArticlePage({
 
   return (
     <section className="w-full px-8">
-      <div className="mb-4"></div>
-      <div className="">
+      <div className="mt-4 pb-10">
         <Image
           src={ImageUrl || "https://via.placeholder.com/550x310"}
           alt=""

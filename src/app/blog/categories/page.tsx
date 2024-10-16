@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useState, useEffect, Suspense } from "react";
-import { Post } from "../page";
+import { Post } from "../../page";
 
 export interface Category {
   _id: string;
@@ -59,7 +59,7 @@ function CategoriesContent() {
     const newCategoryTitle = event.target.selectedOptions[0].text;
     setSelectedCategory(newCategory);
     setCategoryTitle(newCategoryTitle);
-    router.replace(`/categories?category=${newCategory}`);
+    router.replace(`/blog/categories?category=${newCategory}`);
   };
 
   useEffect(() => {
@@ -76,7 +76,7 @@ function CategoriesContent() {
         if (categoryExists) {
           setSelectedCategory(categoryParam.toLowerCase());
         } else {
-          router.replace("/categories?category=all");
+          router.replace("/blog/categories?category=all");
         }
       }
     };
@@ -131,7 +131,10 @@ function CategoriesContent() {
               <span>{post.resume}</span>
             </CardContent>
             <CardFooter className="flex justify-center p-4">
-              <Link href={`/posts/${post?.slug?.current}`} className="w-full">
+              <Link
+                href={`/blog/posts/${post?.slug?.current}`}
+                className="w-full"
+              >
                 <button className="min-fit w-full px-4 py-2 bg-secondary font-semibold hover:text-primary-foreground hover:bg-primary transition-colors rounded-lg">
                   Read full post...
                 </button>

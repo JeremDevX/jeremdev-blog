@@ -28,7 +28,7 @@ const options = { next: { revalidate: 60 } };
 const POSTS_QUERY = defineQuery(`*[
   _type == "post"
   && defined(slug.current)
-]{_id, title, slug, date, resume, coverImage, "category" : Category->{title}}|order(date desc)[0...5]`);
+]{_id, title, slug, date, resume, coverImage, "category" : Category->{title}}|order(date desc)[0...10]`);
 
 const { projectId, dataset } = client.config();
 const urlFor = (source: SanityImageSource) =>
@@ -42,7 +42,7 @@ export default async function IndexPage() {
   return (
     <main className="flex gap-12 w-full max-w-screen-xl p-4 mt-24">
       <h1 className="text-4xl font-bold tracking-tighter text-center absolute top-28 left-1/2 transform -translate-x-1/2">
-        Home
+        Blog
       </h1>
       <section className="flex-3 sm:px-6">
         <h2 className="text-center text-3xl font-bold mb-12">

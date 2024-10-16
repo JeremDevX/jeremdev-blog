@@ -3,6 +3,7 @@
 import Link from "next/link";
 import SearchInput from "./Search";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function Navbar() {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -13,25 +14,52 @@ export default function Navbar() {
     setToggleMenu(!toggleMenu);
   };
 
+  const closeMenu = () => {
+    setToggleMenu(false);
+  };
+
   return (
-    <nav className="flex justify-center items-center bg-accent fixed top-0 left-0 right-0 h-16 z-10 border-b border-accent-darker">
-      <div className="flex justify-end items-center max-w-1440 w-full px-8 relative gap-8 h-16">
+    <nav className="flex justify-center items-center bg-accent fixed top-0 left-0 right-0 h-20 z-10 border-b border-accent-darker">
+      <div className="flex justify-end items-center max-w-1440 w-full px-8 relative gap-8 h-20">
         <Link
           href="/"
-          className="absolute left-8 h-16 flex items-center w-logo"
+          className="absolute -left-8 sm:left-0 xxs:-left-2 h-16 flex items-center w-44 rounded-2xl"
+          onClick={closeMenu}
         >
-          JeremDevLogo
+          <Image
+            src="/wolf-logo.svg"
+            width={500}
+            height={500}
+            alt="Logo"
+            className="max-w-1000 max-h-screen h-28 hidden xs:block"
+          />
+          <Image
+            src="/wolf-logo-small.svg"
+            width={500}
+            height={500}
+            alt="Logo"
+            className="max-w-1000 max-h-screen h-28 hidden xs:hidden xxs:block"
+          />
+          <Image
+            src="/wolf-only.svg"
+            width={500}
+            height={500}
+            alt="Logo"
+            className="max-w-1000 max-h-screen h-16 block xxs:hidden"
+          />
         </Link>
-        <div className="hidden sm:flex flex-row gap-8">
-          <Link href="/categories">Categories</Link>
-          <Link href="/">About</Link>
+        <div className="hidden md:flex flex-row gap-8">
+          <Link href="/tools">Tools</Link>
+          <Link href="/blog">Blog</Link>
+          <Link href="/blog/categories">Categories</Link>
+          <Link href="/about">About</Link>
           <SearchInput />
         </div>
-        <div className="block sm:hidden -mr-4">
+        <div className="block md:hidden -mr-4" onClick={closeMenu}>
           <SearchInput />
         </div>
         <div
-          className={`flex sm:hidden flex-col justify-center items-end cursor-pointer h-16`}
+          className={`flex md:hidden flex-col justify-center items-end cursor-pointer h-16`}
           onClick={handleToggleMenu}
         >
           <span
@@ -51,19 +79,33 @@ export default function Navbar() {
       </div>
 
       {toggleMenu && (
-        <div className="fixed top-16 left-0 right-0 bottom-0 bg-background animate-fade animate-duration-300">
+        <div className="fixed top-20 left-0 right-0 bottom-0 bg-background animate-fade animate-duration-300">
           <div
             className={`flex flex-col w-full p-4 justify-center items-center gap-4 ${toggleMenu && "animate-fade-down"}`}
           >
             <Link
-              href="/categories"
+              href="/tools"
+              className="border-b w-1/2 text-left pb-2"
+              onClick={handleToggleMenu}
+            >
+              Tools
+            </Link>
+            <Link
+              href="/blog"
+              className="border-b w-1/2 text-left pb-2"
+              onClick={handleToggleMenu}
+            >
+              Blog
+            </Link>
+            <Link
+              href="/blog/categories"
               className="border-b w-1/2 text-left pb-2"
               onClick={handleToggleMenu}
             >
               Categories
             </Link>
             <Link
-              href="/"
+              href="/about"
               className="border-b w-1/2 text-left  pb-2"
               onClick={handleToggleMenu}
             >
