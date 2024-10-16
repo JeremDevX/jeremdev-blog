@@ -25,8 +25,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const childProps = children as any;
-  const shouldHideFooter = childProps?.type?.noFooter;
   return (
     <html lang="en" className="dark">
       <body
