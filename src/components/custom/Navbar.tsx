@@ -19,7 +19,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="flex justify-center items-center bg-accent fixed top-0 left-0 right-0 h-20 z-10 border-b border-accent-darker">
+    <nav className="flex justify-center items-center bg-accent fixed top-0 left-0 right-0 h-20 z-30 border-b border-accent-darker">
       <div className="flex justify-end items-center max-w-1440 w-full px-8 relative gap-8 h-20">
         <Link
           href="/"

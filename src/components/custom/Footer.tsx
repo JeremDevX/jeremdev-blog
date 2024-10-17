@@ -8,7 +8,7 @@ export default function Footer() {
 
   return (
     <footer
-      className={`h-20 bg-accent w-full mt-8 flex justify-center items-center ${isPostPage && "hidden"}`}
+      className={`h-20 bg-accent w-full flex justify-center items-center mt-auto ${isPostPage && "hidden"}`}
     >
       <div className="max-w-1440">Footer</div>
     </footer>

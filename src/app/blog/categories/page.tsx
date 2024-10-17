@@ -13,6 +13,9 @@ import {
 } from "@/components/ui/card";
 import { useState, useEffect, Suspense } from "react";
 import { Post } from "../../page";
+import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import imageUrlBuilder from "@sanity/image-url";
+import Image from "next/image";
 
 export interface Category {
   _id: string;
@@ -21,7 +24,11 @@ export interface Category {
     current: string;
   };
 }
-
+const { projectId, dataset } = client.config();
+const urlFor = (source: SanityImageSource) =>
+  projectId && dataset
+    ? imageUrlBuilder({ projectId, dataset }).image(source)
+    : null;
 const options = { next: { revalidate: 60 } };
 
 const CATEGORIES_QUERY = defineQuery(`
@@ -45,7 +52,7 @@ function CategoriesContent() {
       category !== "all" ? `&& Category->slug.current == "${category}"` : "";
     const POSTS_QUERY = defineQuery(`*[
       _type == "post" && defined(slug.current) ${categoryFilter}
-    ]{_id, title, slug, date, resume, "category" : Category->{title}}|order(date desc)`);
+    ]{_id, title, slug, date, resume, coverImage, "category" : Category->{title}}|order(date desc)`);
 
     const fetchedPosts = await client.fetch(POSTS_QUERY, {}, options);
     setPosts(fetchedPosts);
@@ -69,12 +76,13 @@ function CategoriesContent() {
       const categoryParam = searchParams.get("category");
 
       if (categoryParam) {
-        const categoryExists = fetchedCategories.some(
+        const categoryExists = fetchedCategories.find(
           (cat: Category) =>
             cat.title.toLowerCase() === categoryParam.toLowerCase()
         );
         if (categoryExists) {
           setSelectedCategory(categoryParam.toLowerCase());
+          setCategoryTitle(categoryExists.title);
         } else {
           router.replace("/blog/categories?category=all");
         }
@@ -108,29 +116,41 @@ function CategoriesContent() {
         </select>
       </div>
 
-      <section className="grid grid-cols-2 grid-rows-4 gap-12 w-full mt-12">
+      <section className="grid grid-cols-2 grid-rows-4 gap-12 w-full mt-12 mb-8">
         {posts.map((post: Post) => (
           <Card
             className="bg-card overflow-hidden col-span-2 sm:col-span-1 flex flex-col justify-between"
             key={post._id}
           >
-            <CardHeader className="bg-secondary p-4">
-              <CardTitle className="text-xl font-bold h-14 line-clamp-2">
-                {post?.title}
+            <CardHeader className={`p-4 relative`}>
+              <div className="absolute inset-0 bg-gray-900 opacity-85 z-10"></div>
+              <Image
+                src={urlFor(post.coverImage)?.url() || ""}
+                fill
+                alt=""
+                className="object-cover"
+              />
+              <CardTitle className="text-xl font-bold h-14 line-clamp-2 z-10">
+                <Link
+                  href={`/blog/posts/${post?.slug?.current}`}
+                  className="hover:underline-offset-4 hover:underline"
+                >
+                  {post?.title}
+                </Link>
               </CardTitle>
-              <CardDescription className="flex justify-between items-end text-card-foreground">
+              <CardDescription className="flex justify-between items-end text-base text-card-foreground z-10">
                 <span>{new Date(post.date).toLocaleDateString()}</span>
                 <span
-                  className={`font-bold p-2 rounded-lg cat-${post.category.title.toLowerCase()}`}
+                  className={`font-bold px-2 py-1 mt-2 rounded-lg text-xl cat-${post.category.title.toLowerCase()}`}
                 >
                   {post?.category.title}
                 </span>
               </CardDescription>
             </CardHeader>
-            <CardContent className="p-4 h-28 overflow-hidden text-ellipsis line-clamp-4">
+            <CardContent className="px-4 my-4 h-28 overflow-hidden text-ellipsis line-clamp-4">
               <span>{post.resume}</span>
             </CardContent>
-            <CardFooter className="flex justify-center p-4">
+            <CardFooter className="flex justify-center p-4 -mt-2">
               <Link
                 href={`/blog/posts/${post?.slug?.current}`}
                 className="w-full"

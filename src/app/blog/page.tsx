@@ -36,16 +36,16 @@ const urlFor = (source: SanityImageSource) =>
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
-export default async function IndexPage() {
+export default async function BlogPage() {
   const posts = await client.fetch(POSTS_QUERY, {}, options);
 
   return (
-    <main className="flex gap-12 w-full max-w-screen-xl p-4 mt-24">
+    <main className="flex gap-12 w-full max-w-screen-xl p-4 mt-24 mb-8">
       <h1 className="text-4xl font-bold tracking-tighter text-center absolute top-28 left-1/2 transform -translate-x-1/2">
         Blog
       </h1>
       <section className="flex-3 sm:px-6">
-        <h2 className="text-center text-3xl font-bold mb-12">
+        <h2 className="text-center text-3xl font-bold mb-12 border-b pb-2">
           Latest articles
         </h2>
         <div className="grid grid-cols-2 grid-rows-3 gap-8">

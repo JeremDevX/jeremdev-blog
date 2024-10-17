@@ -246,11 +246,15 @@ pre[class*="language-"] {
 }
 
 .cat-react {
-  background-color: darkblue;
+  background-color: #0a00bf;
 }
 .cat-html {
-  background-color: darksalmon;
+  background-color: #c25700;
 }
+.cat-security {
+  background-color: #ad0000;
+}
+
 .sidebar {
   width: calc(var(--sidebar-size) - 16px);
 }

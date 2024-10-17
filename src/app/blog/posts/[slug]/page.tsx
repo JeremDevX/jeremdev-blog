@@ -30,9 +30,25 @@ const customComponents = {
 const options = { next: { revalidate: 60 } };
 
 const POST_QUERY = defineQuery(`*[
-    _type == "post" &&
-    slug.current == $slug
+  _type == "post" &&
+  slug.current == $slug
   ][0]{_id, title, slug, date, coverImage, content, view}`);
+
+async function getPosts(params: { slug: string }) {
+  const posts = await client.fetch(POST_QUERY, params, options);
+  return posts;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const post = await getPosts(params);
+  return {
+    title: `TechHowlerX - ${post.title}`,
+  };
+}
 
 const { projectId, dataset } = client.config();
 const urlFor = (source: SanityImageSource) =>
@@ -45,7 +61,8 @@ export default async function ArticlePage({
 }: {
   params: { slug: string };
 }) {
-  const post = await client.fetch(POST_QUERY, params, options);
+  const post = await getPosts(params);
+
   if (!post) {
     notFound();
   }

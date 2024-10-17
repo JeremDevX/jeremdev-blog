@@ -14,7 +14,7 @@ export default async function MostViewedPosts() {
   const posts = await client.fetch(POSTS_QUERY, {}, options);
   return (
     <>
-      <h2 className="text-center font-semibold text-2xl mb-12">
+      <h2 className="text-center font-semibold text-2xl mb-10 border-b pb-3">
         Most viewed articles
       </h2>
       <div className="flex flex-col gap-4">

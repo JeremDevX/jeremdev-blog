@@ -8,12 +8,15 @@ interface ArticleCardProps {
   category: string;
   resume: string;
   slug: string;
+  className?: string;
 }
 
 export default function ArticleCard(props: ArticleCardProps) {
-  const { imgSrc, title, date, category, resume, slug } = props;
+  const { imgSrc, title, date, category, resume, slug, className } = props;
   return (
-    <article className="flex col-span-2 bg-accent h-80 rounded-xl overflow-hidden ring-2">
+    <article
+      className={`flex col-span-2 bg-accent h-80 rounded-xl overflow-hidden ring-2 ${className}`}
+    >
       <div className="md:w-1/3 relative md:block hidden">
         <Image src={imgSrc} fill alt="" className="object-cover" />
       </div>
@@ -32,7 +35,7 @@ export default function ArticleCard(props: ArticleCardProps) {
               {new Date(date).toLocaleDateString()}
             </span>
             <span
-              className={`font-bold py-1 px-2 rounded-lg cat-${category.toLowerCase()}`}
+              className={`font-bold py-1 px-2 text-xl rounded-lg cat-${category.toLowerCase()}`}
             >
               {category}
             </span>
