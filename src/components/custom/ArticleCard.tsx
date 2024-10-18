@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import CategoryButton from "./CategoryButton";
 
 interface ArticleCardProps {
   imgSrc: string;
@@ -41,11 +42,12 @@ export default function ArticleCard(props: ArticleCardProps) {
             <span className="flex items-end -mb-1 font-semibold">
               {new Date(date).toLocaleDateString()}
             </span>
-            <span
-              className={`font-bold py-1 px-2 text-xl rounded-lg cat-${category.toLowerCase()}`}
+            <CategoryButton
+              catClass={category.toLowerCase()}
+              href={category.toLowerCase()}
             >
               {category}
-            </span>
+            </CategoryButton>
           </div>
         </div>
         <div className="flex flex-col h-3/5 justify-between md:py-5 md:px-4 p-3">

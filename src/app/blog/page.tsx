@@ -4,6 +4,7 @@ import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 import ArticleCard from "@/components/custom/ArticleCard";
 import MostViewedPosts from "@/components/custom/MostViewedPosts";
+import CategoryList from "@/components/custom/CategoryList";
 
 export interface Post extends SanityDocument {
   title: string;
@@ -62,8 +63,9 @@ export default async function BlogPage() {
           ))}
         </div>
       </section>
-      <section className="flex-1 lg:block hidden">
+      <section className="flex-col flex-1 lg:flex hidden gap-8">
         <MostViewedPosts />
+        <CategoryList />
       </section>
     </main>
   );
