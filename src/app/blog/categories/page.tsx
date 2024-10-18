@@ -98,7 +98,7 @@ function CategoriesContent() {
 
   return (
     <>
-      <h1 className="text-4xl font-bold tracking-tighter text-center absolute top-24 left-1/2 transform -translate-x-1/2">
+      <h1 className="text-4xl font-bold tracking-tighter text-center absolute top-28 left-1/2 transform -translate-x-1/2">
         Category : {categoryTitle}
       </h1>
       <div className="flex justify-end w-full">

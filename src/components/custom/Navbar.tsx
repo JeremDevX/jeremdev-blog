@@ -49,10 +49,24 @@ export default function Navbar() {
           />
         </Link>
         <div className="hidden md:flex flex-row gap-8">
-          <Link href="/tools">Tools</Link>
-          <Link href="/blog">Blog</Link>
-          <Link href="/blog/categories">Categories</Link>
-          <Link href="/about">About</Link>
+          <Link
+            href="/blog"
+            className="font-semibold hover:text-primary hover:underline underline-offset-4"
+          >
+            Blog
+          </Link>
+          <Link
+            href="/blog/categories"
+            className="font-semibold hover:text-primary hover:underline underline-offset-4"
+          >
+            Categories
+          </Link>
+          <Link
+            href="/tools"
+            className="font-semibold hover:text-primary hover:underline underline-offset-4"
+          >
+            Tools
+          </Link>
           <SearchInput />
         </div>
         <div className="block md:hidden -mr-4" onClick={closeMenu}>
@@ -81,15 +95,8 @@ export default function Navbar() {
       {toggleMenu && (
         <div className="fixed top-20 left-0 right-0 bottom-0 bg-background animate-fade animate-duration-300">
           <div
-            className={`flex flex-col w-full p-4 justify-center items-center gap-4 ${toggleMenu && "animate-fade-down"}`}
+            className={`flex flex-col w-full mt-8 p-4 justify-center items-center gap-4 ${toggleMenu && "animate-fade-down"}`}
           >
-            <Link
-              href="/tools"
-              className="border-b w-1/2 text-left pb-2"
-              onClick={handleToggleMenu}
-            >
-              Tools
-            </Link>
             <Link
               href="/blog"
               className="border-b w-1/2 text-left pb-2"
@@ -105,11 +112,11 @@ export default function Navbar() {
               Categories
             </Link>
             <Link
-              href="/about"
-              className="border-b w-1/2 text-left  pb-2"
+              href="/tools"
+              className="border-b w-1/2 text-left pb-2"
               onClick={handleToggleMenu}
             >
-              About
+              Tools
             </Link>
           </div>
         </div>
