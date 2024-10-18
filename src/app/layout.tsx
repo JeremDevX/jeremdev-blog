@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${leagueSpartan.className} antialiased flex items-center flex-col min-h-screen text-lg tracking-tight`}
+        className={`${leagueSpartan.className} antialiased flex items-center flex-col min-h-screen text-xl tracking-tight`}
       >
         <header className="mb-20">
           <Navbar />

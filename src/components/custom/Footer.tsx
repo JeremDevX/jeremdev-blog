@@ -12,26 +12,26 @@ export default function Footer() {
     <footer
       className={`h-auto md:h-20 bg-accent w-full flex justify-center items-center text-base mt-auto ${isPostPage && "hidden"}`}
     >
-      <div className="max-w-1440 w-full flex gap-4 py-4 md:py-0 md:gap-10 justify-between items-center  flex-col md:flex-row px-8">
+      <div className="max-w-1440 w-full flex gap-4 py-4 md:py-0 md:gap-10 justify-between items-center  flex-col md:flex-row sm:px-8">
         <div className="flex items-center">
           <Image src={"/wolf-only.svg"} height={50} width={50} alt="" />
           <span className="mt-6 font-bold text-xl">TechHowlerX</span>
         </div>
         <div className="flex gap-6">
           <Link
-            href={"/"}
+            href={"/about"}
             className="hover:text-primary hover:underline underline-offset-4"
           >
             About
           </Link>
           <Link
-            href={"/"}
+            href={"/termsofuse"}
             className="hover:text-primary hover:underline underline-offset-4"
           >
             Terms of Use
           </Link>
           <Link
-            href={"/"}
+            href={"https://github.com/JeremDevX"}
             className="hover:text-primary hover:underline underline-offset-4"
           >
             GitHub
@@ -43,8 +43,9 @@ export default function Footer() {
             Support me
           </Link>
         </div>
-        <div>
-          <span>© 2024 JeremDevX</span>
+        <div className="flex flex-col">
+          <span>© 2024 TechHowlerX</span>
+          <span className="text-center">All rights reserved</span>
         </div>
       </div>
     </footer>
