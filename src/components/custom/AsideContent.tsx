@@ -28,7 +28,9 @@ _type == "post" && Category -> title == "${category}"
 {_id, title, slug}|order(lower(title) asc)`;
 
   const fetchCategoryArticles = async () => {
-    setDisplayed(!displayed);
+    setTimeout(() => {
+      setDisplayed(!displayed);
+    }, 100);
 
     if (articles.length === 0) {
       const fetchedArticles = await client.fetch(CATEGORY_QUERY, {}, options);
@@ -49,7 +51,7 @@ _type == "post" && Category -> title == "${category}"
         </span>
       </div>
       <div
-        className={`flex flex-col gap-4 text-sm delay-200 ${displayed ? "block animate-fade-down" : "animate-fade-up hidden"}`}
+        className={`flex flex-col gap-4 text-sm  ${displayed ? "block animate-fade-down" : " hidden"}`}
       >
         {articles.map((article: Post) => (
           <Link
