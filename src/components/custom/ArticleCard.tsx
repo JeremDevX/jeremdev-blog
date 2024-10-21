@@ -45,6 +45,7 @@ export default function ArticleCard(props: ArticleCardProps) {
             <CategoryButton
               catClass={category.toLowerCase()}
               href={category.toLowerCase()}
+              growOnHover={false}
             >
               {category}
             </CategoryButton>

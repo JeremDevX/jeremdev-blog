@@ -21,6 +21,7 @@ export default async function CategoryList() {
             key={category._id}
             catClass={category.slug.current}
             href={category.slug.current}
+            growOnHover
           >
             {category.title}
           </CategoryButton>

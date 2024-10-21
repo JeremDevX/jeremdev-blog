@@ -21,19 +21,6 @@ export interface Post extends SanityDocument {
   view: number;
 }
 
-// const options = { next: { revalidate: 60 } };
-
-// const POSTS_QUERY = defineQuery(`*[
-//   _type == "post"
-//   && defined(slug.current)
-// ]{_id, title, slug, date, resume, coverImage, "category" : Category->{title}}|order(date desc)[0...5]`);
-
-// const { projectId, dataset } = client.config();
-// // const urlFor = (source: SanityImageSource) =>
-// //   projectId && dataset
-// //     ? imageUrlBuilder({ projectId, dataset }).image(source)
-// //     : null;
-
 export default async function IndexPage() {
   return (
     <main className="flex gap-12 w-full mb-12">

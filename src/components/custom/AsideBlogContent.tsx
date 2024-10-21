@@ -12,7 +12,7 @@ interface AsideContentProps {
 
 const options = { next: { revalidate: 3600 } };
 
-export default function AsideContent(props: AsideContentProps) {
+export default function AsideBlogContent(props: AsideContentProps) {
   const [articles, setArticles] = useState([]);
   const [displayed, setDisplayed] = useState(false);
   const { category } = props;
@@ -23,9 +23,9 @@ export default function AsideContent(props: AsideContentProps) {
   };
 
   const CATEGORY_QUERY = `*[
-_type == "post" && Category -> title == "${category}"
-]
-{_id, title, slug}|order(lower(title) asc)`;
+    _type == "post" && Category -> title == "${category}"
+  ]
+  {_id, title, slug}|order(lower(title) asc)`;
 
   const fetchCategoryArticles = async () => {
     setTimeout(() => {
@@ -39,8 +39,8 @@ _type == "post" && Category -> title == "${category}"
   };
 
   return (
-    <div className="flex flex-col">
-      <div className=" flex justify-between font-semibold my-4">
+    <div className="flex flex-col mt-2">
+      <div className="flex justify-between font-semibold my-4">
         <span>{category}</span>
         <span>
           <ChevronDown
@@ -51,17 +51,22 @@ _type == "post" && Category -> title == "${category}"
         </span>
       </div>
       <div
-        className={`flex flex-col gap-4 text-sm  ${displayed ? "block animate-fade-down" : " hidden"}`}
+        className={`
+          overflow-hidden transition-[max-height] duration-700 ease-in-out
+          ${displayed ? "max-h-96" : "max-h-0"}
+        `}
       >
-        {articles.map((article: Post) => (
-          <Link
-            href={`/posts/${article.slug.current}`}
-            key={article._id}
-            className="hover:underline underline-offset-4 hover:text-primary"
-          >
-            {article.title}
-          </Link>
-        ))}
+        <div className="flex flex-col gap-4 text-sm">
+          {articles.map((article: Post) => (
+            <Link
+              href={`/posts/${article.slug.current}`}
+              key={article._id}
+              className="hover:underline underline-offset-4 hover:text-primary"
+            >
+              {article.title}
+            </Link>
+          ))}
+        </div>
       </div>
       <span
         className={`w-full border-b-2 ${!displayed ? "-mt-2" : "mt-2"}`}

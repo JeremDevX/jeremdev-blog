@@ -1,0 +1,21 @@
+{
+  "categories": [
+    {
+      "name": "Accessibility",
+      "tools": [
+        {
+          "name": "Contrast Checker",
+          "url": "/tools/accessibility/contrast-checker"
+        }
+      ]
+    },
+    {
+      "name": "CSS",
+      "tools": []
+    },
+    {
+      "name": "Code",
+      "tools": []
+    }
+  ]
+}
