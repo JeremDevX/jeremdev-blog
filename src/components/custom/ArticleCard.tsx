@@ -16,7 +16,7 @@ export default function ArticleCard(props: ArticleCardProps) {
   const { imgSrc, title, date, category, resume, slug, className } = props;
   return (
     <article
-      className={`flex col-span-2 bg-accent h-80 rounded-xl overflow-hidden ring-2 ${className}`}
+      className={`flex col-span-2 bg-muted h-80 rounded-xl border hover:drop-shadow-lighter hover:scale-101 overflow-hidden ${className}`}
     >
       <div className="md:w-1/3 relative md:block hidden">
         <Image src={imgSrc} fill alt="" className="object-cover" />

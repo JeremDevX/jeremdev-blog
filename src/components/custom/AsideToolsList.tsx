@@ -68,7 +68,7 @@ export default function AsideToolsList({ category }: AsideToolsListProps) {
         </div>
       </div>
       <span
-        className={`w-full border-b-2 ${!displayed ? "-mt-2" : "mt-2"}`}
+        className={`w-full border-b-2 border-secondary ${!displayed ? "-mt-2" : "mt-2"}`}
       ></span>
     </div>
   );

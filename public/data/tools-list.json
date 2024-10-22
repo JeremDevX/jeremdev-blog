@@ -5,7 +5,39 @@
       "tools": [
         {
           "name": "Contrast Checker",
-          "url": "/tools/accessibility/contrast-checker"
+          "url": "/tools/accessibility/contrast-checker",
+          "desc": "Check the contrast between two colors to ensure readability.",
+          "icon": "Contrast"
+        },
+        {
+          "name": "Color Blindness Simulator",
+          "url": "/tools/accessibility/color-blindness-simulator",
+          "desc": "Simulate color blindness to see how your design looks to those with color vision deficiencies.",
+          "icon": "Palette"
+        },
+        {
+          "name": "Screen Reader",
+          "url": "/tools/accessibility/screen-reader",
+          "desc": "Test your website with a screen reader to ensure it's accessible to all users.",
+          "icon": "Book"
+        },
+        {
+          "name": "Keyboard Navigation",
+          "url": "/tools/accessibility/keyboard-navigation",
+          "desc": "Navigate your website using only a keyboard to ensure it's accessible to all users.",
+          "icon": "Keyboard"
+        },
+        {
+          "name": "Focus Indicator",
+          "url": "/tools/accessibility/focus-indicator",
+          "desc": "Check the focus indicator on your website to ensure it's visible and accessible.",
+          "icon": "Focus"
+        },
+        {
+          "name": "Skip Links",
+          "url": "/tools/accessibility/skip-links",
+          "desc": "Add skip links to your website to help users navigate more easily.",
+          "icon": "ArrowBigRight"
         }
       ]
     },

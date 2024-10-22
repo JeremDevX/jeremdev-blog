@@ -3,8 +3,8 @@ import Link from "next/link";
 
 export default function About() {
   return (
-    <main className="flex flex-col max-w-1000 mt-10 px-4">
-      <h1 className="text-center text-3xl font-bold mb-12">About</h1>
+    <main className="flex flex-col max-w-1000 mt-10 px-4 mb-8">
+      <h1 className="text-center text-3xl font-bold mb-8">About</h1>
       <h2 className="text-2xl font-bold underline underline-offset-4 mb-2 mt-6 text-center">
         Why This Website ?
       </h2>
@@ -29,12 +29,12 @@ export default function About() {
         Encountered an Issue?
       </h2>
       <p className="text-xl">
-        f you come across any problems—whether it’s a bug, outdated information,
-        or even a typo—I’d love to hear from you. Your feedback is invaluable in
-        helping me improve the content and tools available here. You can contact
-        me via email or reach out on X (Twitter). I’m always open to
-        suggestions, corrections, or any thoughts that can make this platform
-        even better for everyone.
+        If you come across any problems—whether it’s a bug, outdated
+        information, or even a typo—I’d love to hear from you. Your feedback is
+        invaluable in helping me improve the content and tools available here.
+        You can contact me via email or reach out on X (Twitter). I’m always
+        open to suggestions, corrections, or any thoughts that can make this
+        platform even better for everyone.
       </p>
       <div className="flex justify-center gap-12 mt-20">
         <Link

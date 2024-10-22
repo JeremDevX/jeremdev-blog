@@ -33,7 +33,7 @@ export default async function Aside(props: AsideProps) {
   const fetchedToolsCategories = JSON.parse(toolsData).categories;
 
   return (
-    <aside className="h-screen fixed left-0 top-0 bottom-0  bg-accent-darker sidebar overflow-y-auto overflow-x-hidden hidden lg:block">
+    <aside className="h-screen fixed left-0 top-0 bottom-0  bg-accent-darker border-r sidebar overflow-y-auto overflow-x-hidden hidden lg:block">
       {props.asideFor === "tools" && (
         <div className="w-full">
           {fetchedToolsCategories.map((toolName: ToolsCategory) => (

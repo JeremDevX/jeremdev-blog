@@ -46,7 +46,7 @@ export default async function BlogPage() {
         Blog
       </h1>
       <section className="flex-3 sm:px-6">
-        <h2 className="text-center text-3xl font-bold mb-12 border-b pb-2">
+        <h2 className="text-center text-3xl font-bold mb-12 border-b border-secondary pb-2">
           Latest articles
         </h2>
         <div className="grid grid-cols-2 grid-rows-3 gap-8">

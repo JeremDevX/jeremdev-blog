@@ -15,11 +15,11 @@ export default async function MostViewedPosts() {
   return (
     <>
       <div className="flex flex-col gap-4">
-        <h2 className="text-center font-semibold text-2xl mb-6 border-b pb-3">
+        <h2 className="text-center font-semibold text-2xl mb-6 border-b border-secondary pb-3">
           Most viewed articles
         </h2>
         {posts.map((post: Post) => (
-          <Link href={`/posts/${post?.slug?.current}`} key={post._id}>
+          <Link href={`/blog/posts/${post?.slug?.current}`} key={post._id}>
             <h3 className="font-semibold hover:underline underline-offset-4 hover:text-primary line-clamp-2">
               {post.title}
             </h3>

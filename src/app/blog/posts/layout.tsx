@@ -15,7 +15,7 @@ export default function PostLayout({
   return (
     <div className="h-screen w-full">
       <Aside asideFor="blog" />
-      <main className="flex h-screen justify-end article-padding">
+      <main className="flex min-h-screen justify-end article-padding">
         {children}
       </main>
     </div>

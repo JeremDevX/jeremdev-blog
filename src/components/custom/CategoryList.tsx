@@ -12,7 +12,7 @@ export default async function CategoryList() {
   const fetchedCategories = await client.fetch(CATEGORIES_QUERY, {}, options);
   return (
     <div>
-      <h2 className="text-center font-semibold text-2xl mb-6 border-b pb-3">
+      <h2 className="text-center font-semibold text-2xl mb-6 border-b border-secondary pb-3">
         Browse by category
       </h2>
       <div className="flex gap-4 flex-wrap">

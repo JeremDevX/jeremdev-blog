@@ -157,7 +157,8 @@ pre[class*="language-"] {
   }
   .dark {
     --gradient: linear-gradient(to top left, #72c6ef, #004e8f);
-    --background: 212 52% 5.52%;
+    /* --background: 212 52% 5.52%; */
+    --background: 210, 56%, 5%;
     --foreground: 212 8% 98.45%;
     --muted: 212 40% 20.7%;
     --muted-foreground: 212 8% 56.9%;
@@ -171,8 +172,10 @@ pre[class*="language-"] {
     --primary-foreground: 212 8% 6.8999999999999995%;
     --secondary: 212 80% 32.43%;
     --secondary-foreground: 212 8% 98.45%;
-    --accent: 212 40% 20.7%;
-    --accent-darker: 212 40% 10%;
+    /* --accent: 212 40% 20.7%; */
+    --accent: 200 58% 54%;
+    /* --accent-darker: 218 46% 8%; */
+    --accent-darker: 200 20% 5%;
     --accent-foreground: 212 8% 98.45%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 212 8% 98.45%;
@@ -246,13 +249,13 @@ pre[class*="language-"] {
 }
 
 .cat-react {
-  background-color: #0a00bf;
+  background-color: #0050c7;
 }
 .cat-html {
-  background-color: #c25700;
+  background-color: #d04924;
 }
 .cat-security {
-  background-color: #ad0000;
+  background-color: #990015;
 }
 
 .sidebar {

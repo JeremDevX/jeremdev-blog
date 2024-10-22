@@ -11,7 +11,7 @@ export default function CategoryButton(props: CategoryButtonProps) {
   return (
     <Link
       href={`/blog/categories?category=${href}`}
-      className={`font-bold py-1 px-2 text-xl rounded-lg cat-${catClass} ${growOnHover && "hover:scale-105"}`}
+      className={`font-bold py-1 px-2 text-xl rounded-lg cat-${catClass} ${growOnHover && "hover:scale-105 hover:drop-shadow-light"}`}
     >
       {children}
     </Link>

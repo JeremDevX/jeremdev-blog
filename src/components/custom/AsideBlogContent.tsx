@@ -56,7 +56,7 @@ export default function AsideBlogContent(props: AsideContentProps) {
           ${displayed ? "max-h-96" : "max-h-0"}
         `}
       >
-        <div className="flex flex-col gap-4 text-sm">
+        <div className="flex flex-col gap-4 text-sm font-semibold">
           {articles.map((article: Post) => (
             <Link
               href={`/posts/${article.slug.current}`}
@@ -69,7 +69,7 @@ export default function AsideBlogContent(props: AsideContentProps) {
         </div>
       </div>
       <span
-        className={`w-full border-b-2 ${!displayed ? "-mt-2" : "mt-2"}`}
+        className={`w-full border-b-2 border-secondary ${!displayed ? "-mt-2" : "mt-2"}`}
       ></span>
     </div>
   );

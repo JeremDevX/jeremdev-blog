@@ -24,11 +24,18 @@ const config: Config = {
         "3": "3",
         "4": "4",
       },
+      scale: {
+        "101": "1.01",
+      },
+      dropShadow: {
+        light: "0 0px 15px rgba(62, 112, 138,0.15)",
+        lighter: "0 0px 15px rgba(62, 112, 138,0.5)",
+      },
       maxWidth: {
         "1440": "1440px",
         "1000": "1000px",
       },
-      width: { logo: "calc(var(--sidebar-size) - 64px)" },
+      width: { logo: "calc(var(--sidebar-size) - 64px)", "66": "16.5rem" },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

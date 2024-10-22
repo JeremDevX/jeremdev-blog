@@ -14,7 +14,11 @@ registerLanguage(tsx);
 const customComponents = {
   types: {
     code: ({ value }: { value: SanityDocument }) => (
-      <Refractor language={value.language} value={value.code} />
+      <Refractor
+        language={value.language}
+        value={value.code}
+        className="text-base"
+      />
     ),
     image: ({ value }: { value: SanityImageSource }) => (
       <Image
@@ -80,23 +84,21 @@ export default async function ArticlePage({
   }
 
   return (
-    <section className="w-full px-8">
-      <div className="mt-4 pb-10">
-        <Image
-          src={ImageUrl || "https://via.placeholder.com/550x310"}
-          alt=""
-          className="mx-auto overflow-hidden rounded-xl object-cover object-center"
-          height="810"
-          width="810"
-        />
-        <div className="flex flex-col justify-between py-8">
-          <h1 className="text-2xl font-semibold underline-offset-2 underline mb-2">
-            {title}
-          </h1>
-          <span className="text-end">Date : {date}</span>
-        </div>
-        <PortableText value={content} components={customComponents} />
+    <section className="w-full min-h-min px-8 pb-4 mt-4">
+      <Image
+        src={ImageUrl || "https://via.placeholder.com/550x310"}
+        alt=""
+        className="mx-auto overflow-hidden rounded-xl object-cover object-center"
+        height="810"
+        width="810"
+      />
+      <div className="flex flex-col justify-between py-8">
+        <h1 className="text-2xl font-semibold underline-offset-2 underline mb-2">
+          {title}
+        </h1>
+        <span className="text-end">Date : {date}</span>
       </div>
+      <PortableText value={content} components={customComponents} />
     </section>
   );
 }

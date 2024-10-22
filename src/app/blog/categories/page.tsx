@@ -119,7 +119,7 @@ function CategoriesContent() {
       <section className="grid grid-cols-2 grid-rows-4 gap-12 w-full mt-12 mb-8">
         {posts.map((post: Post) => (
           <Card
-            className="bg-card overflow-hidden col-span-2 sm:col-span-1 flex flex-col justify-between"
+            className="bg-card overflow-hidden col-span-2 sm:col-span-1 flex flex-col justify-between hover:drop-shadow-light"
             key={post._id}
           >
             <CardHeader className={`p-4 relative`}>

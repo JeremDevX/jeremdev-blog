@@ -99,7 +99,7 @@ export default function SearchInput() {
                     href={`/posts/${post?.slug?.current}`}
                     onClick={() => setIsSearchOpen(false)}
                     key={post._id}
-                    className="p-2 bg-accent mt-2 mb-2 w-full h-auto text-left md:text-center rounded-lg hover:bg-primary hover:text-primary-foreground"
+                    className="p-2 bg-secondary mt-2 mb-2 w-full h-auto text-left md:text-center rounded-lg hover:bg-primary hover:text-primary-foreground"
                   >
                     {post.title}
                   </Link>
