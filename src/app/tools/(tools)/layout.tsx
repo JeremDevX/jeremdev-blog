@@ -13,9 +13,9 @@ export default function PostLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen w-full">
+    <div className="w-full">
       <Aside asideFor="tools" />
-      <main className="flex min-h-screen justify-center article-padding mb-8">
+      <main className="flex justify-center article-padding mb-8">
         {children}
       </main>
     </div>

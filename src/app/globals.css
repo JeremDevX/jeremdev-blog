@@ -156,7 +156,7 @@ pre[class*="language-"] {
     --border: 1px;
   }
   .dark {
-    --gradient: linear-gradient(to top left, #72c6ef, #004e8f);
+    --gradient: linear-gradient(to top left, #56a5cd, #0068bd);
     /* --background: 212 52% 5.52%; */
     --background: 210, 56%, 5%;
     --foreground: 212 8% 98.45%;
