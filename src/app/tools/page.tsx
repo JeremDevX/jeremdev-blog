@@ -41,6 +41,7 @@ function ToolList({ category }: { category: ToolsCategory }) {
             </Link>
           );
         })}
+        {category.tools.length === 0 && <div>Work in progress</div>}
       </div>
     </div>
   );
