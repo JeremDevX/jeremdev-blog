@@ -11,5 +11,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className="block absolute top-0 left-0 right-0">{children}</div>;
+  return <div className="w-screen h-full z-50">{children}</div>;
 }

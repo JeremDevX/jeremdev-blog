@@ -6,6 +6,7 @@ import { Mail } from "lucide-react";
 import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 import imageUrlBuilder from "@sanity/image-url";
+import HomeNews from "@/components/custom/HomeNews";
 
 export interface Post extends SanityDocument {
   title: string;
@@ -26,10 +27,20 @@ export interface Post extends SanityDocument {
 }
 const options = { next: { revalidate: 60 } };
 
-const POSTS_QUERY = defineQuery(`*[
-  _type == "post"
-  && defined(slug.current)
-]{_id, title, slug, coverImage, resume, view}|order(view desc)[0...1]`);
+const HOME_QUERY = defineQuery(`{
+  "posts": *[
+    _type == "post"
+    && defined(slug.current)
+  ]{
+    _id, title, slug, coverImage, resume, view
+  }|order(view desc)[0...1],
+
+  "news": *[
+    _type == "news"
+  ]{
+    _id, title, date, content
+  }|order(date desc)[0...3]
+}`);
 
 const { projectId, dataset } = client.config();
 const urlFor = (source: SanityImageSource) =>
@@ -38,7 +49,7 @@ const urlFor = (source: SanityImageSource) =>
     : null;
 
 export default async function IndexPage() {
-  const posts = await client.fetch(POSTS_QUERY, {}, options);
+  const homeContent = await client.fetch(HOME_QUERY, {}, options);
   return (
     <main className="flex flex-col w-full">
       <section className="flex justify-center text-accent-foreground pb-8 border-b border-card">
@@ -86,8 +97,8 @@ export default async function IndexPage() {
       </section>
       <section className="flex flex-col justify-center items-center gap-4 pb-8 border-b border-card">
         <div className="max-w-1440 flex flex-col p-4 justify-center items-center">
-          <h2 className="text-3xl font-bold mt-8 mb-4">Most Viewed Article</h2>
-          {posts.map((post: Post) => (
+          <h2 className="text-3xl font-bold mt-8 mb-8">Most Viewed Article</h2>
+          {homeContent.posts.map((post: Post) => (
             <article
               key={post._id}
               className="max-w-1000 min-h-96 h-fit md:h-96 p-3 rounded-lg md:bg-muted text-secondary-foreground relative md:flex hover:scale-101 drop-shadow-light hover:drop-shadow-lighter"
@@ -125,6 +136,10 @@ export default async function IndexPage() {
             </article>
           ))}
         </div>
+      </section>
+      <section className="flex flex-col text-accent-foreground justify-center items-center gap-4 pb-8 border-b border-card">
+        <h2 className="text-3xl font-bold mt-8 mb-4">Latest News</h2>
+        <HomeNews news={homeContent.news} />
       </section>
       <section className="flex flex-col text-accent-foreground justify-center items-center gap-4 pb-8">
         <div className="max-w-1440 flex flex-col p-4 justify-center items-center gap-4">
