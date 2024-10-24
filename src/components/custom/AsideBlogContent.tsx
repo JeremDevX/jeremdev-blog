@@ -2,6 +2,7 @@
 
 import { Post } from "@/app/page";
 import { client } from "@/sanity/lib/client";
+import { handleEnterKeyDown } from "@/utils/handleKeyDown";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -44,24 +45,27 @@ export default function AsideBlogContent(props: AsideContentProps) {
         <span>{category}</span>
         <span>
           <ChevronDown
-            className="cursor-pointer"
+            className="cursor-pointer outline-none focus:rounded focus-visible:ring-2 focus-visible:ring-primary"
             onClick={fetchCategoryArticles}
             style={chevronStyle}
+            onKeyDown={(e) => handleEnterKeyDown(e, fetchCategoryArticles)}
+            tabIndex={0}
           />
         </span>
       </div>
       <div
         className={`
-          overflow-hidden transition-[max-height] duration-700 ease-in-out
+          overflow-hidden transition-[max-height] duration-700 ease-in-out p-0.5
           ${displayed ? "max-h-96" : "max-h-0"}
         `}
       >
         <div className="flex flex-col gap-4 text-sm font-semibold">
           {articles.map((article: Post) => (
             <Link
-              href={`/posts/${article.slug.current}`}
+              href={`/blog/posts/${article.slug.current}`}
               key={article._id}
-              className="hover:underline underline-offset-4 hover:text-primary"
+              className="w-fit hover:underline underline-offset-4 hover:text-primary focus:text-primary active:border-0 focus:border-primary"
+              tabIndex={displayed ? 0 : -1}
             >
               {article.title}
             </Link>

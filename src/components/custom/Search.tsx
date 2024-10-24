@@ -8,6 +8,7 @@ import { client } from "@/sanity/lib/client";
 import { useDebounceValue } from "usehooks-ts";
 import { Post } from "@/app/page";
 import Link from "next/link";
+import { handleEnterKeyDown } from "@/utils/handleKeyDown";
 
 export default function SearchInput() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -76,7 +77,12 @@ export default function SearchInput() {
 
   return (
     <div className="relative">
-      <Search className="cursor-pointer" onClick={handleSearchOpen} />
+      <Search
+        className="cursor-pointer outline-none"
+        onClick={handleSearchOpen}
+        onKeyDown={(e) => handleEnterKeyDown(e, handleSearchOpen)}
+        tabIndex={0}
+      />
       {isSearchOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-10">
           <div

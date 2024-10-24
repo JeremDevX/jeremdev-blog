@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import Link from "next/link";
+import { handleEnterKeyDown } from "@/utils/handleKeyDown";
 
 interface Tool {
   name: string;
@@ -43,27 +45,30 @@ export default function AsideToolsList({ category }: AsideToolsListProps) {
         <span>{category}</span>
         <span>
           <ChevronDown
-            className="cursor-pointer"
+            className="cursor-pointer outline-none focus:rounded focus-visible:ring-2 focus-visible:ring-primary"
             onClick={fetchToolsByCategory}
             style={chevronStyle}
+            onKeyDown={(e) => handleEnterKeyDown(e, fetchToolsByCategory)}
+            tabIndex={0}
           />
         </span>
       </div>
       <div
         className={`
-          overflow-hidden transition-[max-height] duration-700 ease-in-out
+          overflow-hidden transition-[max-height] duration-700 ease-in-out p-0.5
           ${displayed ? "max-h-96" : "max-h-0"}
         `}
       >
         <div className="flex flex-col gap-4 text-sm font-semibold">
           {tools.map((tool) => (
-            <a
+            <Link
               href={tool.url}
               key={tool.name}
-              className="hover:underline underline-offset-4 hover:text-primary"
+              className="hover:underline underline-offset-4 hover:text-primary focus:text-primary "
+              tabIndex={displayed ? 0 : -1}
             >
               {tool.name}
-            </a>
+            </Link>
           ))}
         </div>
       </div>

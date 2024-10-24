@@ -23,26 +23,26 @@ export default function Navbar() {
       <div className="flex justify-end items-center max-w-1440 w-full px-8 relative gap-8 h-20">
         <Link
           href="/"
-          className="absolute -left-8 sm:left-0 xxs:-left-2 h-16 flex items-center w-44 rounded-2xl"
+          className="absolute -left-8 sm:left-0 xxs:-left-2 h-16 flex items-center w-fit rounded-2xl"
           onClick={closeMenu}
         >
           <Image
             src="/wolf-logo.svg"
-            width={500}
+            width={308}
             height={500}
             alt="Logo"
             className="max-w-1000 max-h-screen h-28 hidden xs:block"
           />
           <Image
             src="/wolf-logo-small.svg"
-            width={500}
+            width={247}
             height={500}
             alt="Logo"
             className="max-w-1000 max-h-screen h-28 hidden xs:hidden xxs:block"
           />
           <Image
             src="/wolf-only.svg"
-            width={500}
+            width={176}
             height={500}
             alt="Logo"
             className="max-w-1000 max-h-screen h-16 block xxs:hidden"
@@ -51,19 +51,19 @@ export default function Navbar() {
         <div className="hidden md:flex flex-row gap-8">
           <Link
             href="/blog"
-            className="font-semibold hover:text-primary hover:underline underline-offset-4"
+            className="font-semibold hover:text-primary hover:underline underline-offset-4 focus:text-primary"
           >
             Blog
           </Link>
           <Link
             href="/blog/categories"
-            className="font-semibold hover:text-primary hover:underline underline-offset-4"
+            className="font-semibold hover:text-primary hover:underline underline-offset-4 focus:text-primary"
           >
             Categories
           </Link>
           <Link
             href="/tools"
-            className="font-semibold hover:text-primary hover:underline underline-offset-4"
+            className="font-semibold hover:text-primary hover:underline underline-offset-4 focus:text-primary"
           >
             Tools
           </Link>

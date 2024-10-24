@@ -102,7 +102,10 @@ export default async function IndexPage() {
                 />
               </div>
               <div className="w-full md:w-7/12 relative z-10 flex flex-col items-center justify-between min-h-96 md:min-h-max">
-                <Link href={`/blog/posts/${post?.slug?.current}`}>
+                <Link
+                  href={`/blog/posts/${post?.slug?.current}`}
+                  className="focus:text-accent hover:text-accent"
+                >
                   <h3 className="font-semibold underline underline-offset-4 line-clamp-2 text-2xl px-4 mt-4 md:mt-0">
                     {post.title}
                   </h3>
@@ -110,12 +113,14 @@ export default async function IndexPage() {
                 <p className="mt-4 md:-mt-6 pt-4 px-4 pb-2 md:pb-0">
                   {post.resume}
                 </p>
-                <Link
-                  href={`/blog/posts/${post?.slug?.current}`}
-                  className="w-full text-right mt-2 font-semibold hover:underline underline-offset-4"
-                >
-                  Read full article...
-                </Link>
+                <div className="w-full text-right">
+                  <Link
+                    href={`/blog/posts/${post?.slug?.current}`}
+                    className="mt-2 font-semibold hover:underline underline-offset-4 focus:text-accent hover:text-accent"
+                  >
+                    Read full article...
+                  </Link>
+                </div>
               </div>
             </article>
           ))}
@@ -128,14 +133,14 @@ export default async function IndexPage() {
           <div className="flex gap-12">
             <Link
               href="mailto:jeremdev.contactpro@gmail.com"
-              className="flex flex-col items-center justify-center hover:scale-110 hover:bg-secondary px-4 pt-2 pb-1 rounded"
+              className="flex flex-col items-center justify-center hover:scale-110 hover:bg-secondary focus:bg-secondary px-4 pt-2 pb-1 rounded"
             >
               <Mail height={25} width={25} />
               <span>Mail</span>
             </Link>
             <Link
               href="https://x.com"
-              className="flex flex-col items-center justify-center hover:scale-110 hover:bg-secondary px-2 pt-2 pb-1 rounded"
+              className="flex flex-col items-center justify-center hover:scale-110 hover:bg-secondary focus:bg-secondary px-2 pt-2 pb-1 rounded"
               target="_blank"
             >
               <svg

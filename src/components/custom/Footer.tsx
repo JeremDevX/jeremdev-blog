@@ -21,25 +21,25 @@ export default function Footer() {
         <div className="flex gap-6">
           <Link
             href={"/about"}
-            className="hover:text-primary hover:underline underline-offset-4"
+            className="hover:text-primary hover:underline underline-offset-4 focus:text-primary"
           >
             About
           </Link>
           <Link
             href={"/termsofuse"}
-            className="hover:text-primary hover:underline underline-offset-4"
+            className="hover:text-primary hover:underline underline-offset-4 focus:text-primary"
           >
             Terms of Use
           </Link>
           <Link
             href={"https://github.com/JeremDevX"}
-            className="hover:text-primary hover:underline underline-offset-4"
+            className="hover:text-primary hover:underline underline-offset-4 focus:text-primary"
           >
             GitHub
           </Link>
           <Link
             href={"/"}
-            className="hover:text-primary hover:underline underline-offset-4"
+            className="hover:text-primary hover:underline underline-offset-4 focus:text-primary"
           >
             Support me
           </Link>
