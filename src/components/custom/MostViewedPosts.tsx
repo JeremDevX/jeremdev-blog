@@ -19,7 +19,11 @@ export default async function MostViewedPosts() {
           Most viewed articles
         </h2>
         {posts.map((post: Post) => (
-          <Link href={`/blog/posts/${post?.slug?.current}`} key={post._id}>
+          <Link
+            href={`/blog/posts/${post?.slug?.current}`}
+            key={post._id}
+            className="focus:text-primary"
+          >
             <h3 className="font-semibold hover:underline underline-offset-4 hover:text-primary line-clamp-2">
               {post.title}
             </h3>

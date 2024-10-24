@@ -30,14 +30,14 @@ export default function ArticleCard(props: ArticleCardProps) {
             alt=""
             className="object-cover block md:hidden"
           />
-          <div className="h-14 line-clamp-2 z-10">
-            <Link
-              href={`/blog/posts/${slug}`}
-              className="hover:underline-offset-4 hover:underline font-semibold"
-            >
-              <h3 className="md:text-xl text-lg font-bold">{title}</h3>
-            </Link>
-          </div>
+          <Link
+            href={`/blog/posts/${slug}`}
+            className="hover:underline-offset-4 hover:underline font-semibold z-10 focus:underline h-14 line-clamp-2"
+          >
+            <h3 className="w-full h-fit md:text-xl text-lg font-bold pl-1 ">
+              {title}
+            </h3>
+          </Link>
           <div className="flex justify-between z-10">
             <span className="flex items-end -mb-1 font-semibold">
               {new Date(date).toLocaleDateString()}
@@ -56,7 +56,7 @@ export default function ArticleCard(props: ArticleCardProps) {
           <div className="flex justify-end">
             <Link
               href={`/blog/posts/${slug}`}
-              className="hover:underline-offset-4 hover:underline font-semibold"
+              className="hover:underline-offset-4 hover:underline font-semibold focus:text-primary"
             >
               Read full article...
             </Link>

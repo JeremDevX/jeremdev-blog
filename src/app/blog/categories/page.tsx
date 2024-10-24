@@ -98,7 +98,7 @@ function CategoriesContent() {
 
   return (
     <>
-      <h1 className="text-4xl font-bold tracking-tighter text-center absolute top-28 left-1/2 transform -translate-x-1/2">
+      <h1 className="w-full text-3xl xs:text-4xl font-bold tracking-tighter text-center absolute top-28 left-1/2 transform -translate-x-1/2">
         Category : {categoryTitle}
       </h1>
       <div className="flex justify-end w-full">
@@ -130,14 +130,14 @@ function CategoriesContent() {
                 alt=""
                 className="object-cover"
               />
-              <CardTitle className="text-xl font-bold h-14 line-clamp-2 z-10">
-                <Link
-                  href={`/blog/posts/${post?.slug?.current}`}
-                  className="hover:underline-offset-4 hover:underline"
-                >
+              <Link
+                href={`/blog/posts/${post?.slug?.current}`}
+                className="hover:underline-offset-4 hover:underline z-10"
+              >
+                <CardTitle className="text-xl font-bold h-14 line-clamp-2 z-10">
                   {post?.title}
-                </Link>
-              </CardTitle>
+                </CardTitle>
+              </Link>
               <CardDescription className="flex justify-between items-end text-base text-card-foreground z-10">
                 <span>{new Date(post.date).toLocaleDateString()}</span>
                 <span
@@ -153,11 +153,9 @@ function CategoriesContent() {
             <CardFooter className="flex justify-center p-4 -mt-2">
               <Link
                 href={`/blog/posts/${post?.slug?.current}`}
-                className="w-full"
+                className="min-fit w-full px-4 py-2 bg-secondary font-semibold hover:text-primary-foreground hover:bg-primary transition-colors rounded-lg text-center"
               >
-                <button className="min-fit w-full px-4 py-2 bg-secondary font-semibold hover:text-primary-foreground hover:bg-primary transition-colors rounded-lg">
-                  Read full post...
-                </button>
+                Read full post...
               </Link>
             </CardFooter>
           </Card>
