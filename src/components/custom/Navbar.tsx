@@ -4,9 +4,13 @@ import Link from "next/link";
 import SearchInput from "./Search";
 import { useState } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [toggleMenu, setToggleMenu] = useState(false);
+  const pathname = usePathname();
+  const isBlogPage = pathname.startsWith("/blog");
+  const isToolPage = pathname.startsWith("/tools");
 
   const hamburgerLine = `h-0.5 w-6 my-1 bg-foreground transition ease transform duration-300`;
 
@@ -49,24 +53,49 @@ export default function Navbar() {
           />
         </Link>
         <div className="hidden md:flex flex-row gap-8">
-          <Link
-            href="/blog"
-            className="font-semibold hover:text-primary hover:underline underline-offset-4 focus:text-primary"
-          >
-            Blog
-          </Link>
-          <Link
-            href="/blog/categories"
-            className="font-semibold hover:text-primary hover:underline underline-offset-4 focus:text-primary"
-          >
-            Categories
-          </Link>
-          <Link
-            href="/tools"
-            className="font-semibold hover:text-primary hover:underline underline-offset-4 focus:text-primary"
-          >
-            Tools
-          </Link>
+          {!isBlogPage && !isToolPage && (
+            <>
+              <Link
+                href="/blog"
+                className="font-semibold hover:text-primary hover:underline underline-offset-4 focus:text-primary"
+              >
+                Blog
+              </Link>
+              <Link
+                href="/tools"
+                className="font-semibold hover:text-primary hover:underline underline-offset-4 focus:text-primary"
+              >
+                Tools
+              </Link>
+            </>
+          )}
+          {isBlogPage && (
+            <>
+              <Link
+                href="/blog"
+                className="font-semibold hover:text-primary hover:underline underline-offset-4 focus:text-primary"
+              >
+                Blog
+              </Link>
+              <Link
+                href="/blog/categories"
+                className="font-semibold hover:text-primary hover:underline underline-offset-4 focus:text-primary"
+              >
+                Categories
+              </Link>
+            </>
+          )}
+
+          {isToolPage && (
+            <>
+              <Link
+                href="/tools"
+                className="font-semibold hover:text-primary hover:underline underline-offset-4 focus:text-primary"
+              >
+                Tools
+              </Link>
+            </>
+          )}
           <SearchInput />
         </div>
         <div className="block md:hidden -mr-4" onClick={closeMenu}>
@@ -97,26 +126,50 @@ export default function Navbar() {
           <div
             className={`flex flex-col w-full mt-8 p-4 justify-center items-center gap-4 ${toggleMenu && "animate-fade-down"}`}
           >
+            <p className="underline underline-offset-4">Blog</p>
             <Link
               href="/blog"
-              className="border-b w-1/2 text-left pb-2"
+              className="border-b w-1/2 text-left pb-2 hover:text-primary"
               onClick={handleToggleMenu}
             >
               Blog
             </Link>
             <Link
               href="/blog/categories"
-              className="border-b w-1/2 text-left pb-2"
+              className="border-b w-1/2 text-left pb-2 hover:text-primary"
               onClick={handleToggleMenu}
             >
               Categories
             </Link>
+            <p className="underline underline-offset-4">Dev tools</p>
             <Link
               href="/tools"
-              className="border-b w-1/2 text-left pb-2"
+              className="border-b w-1/2 text-left pb-2 hover:text-primary"
               onClick={handleToggleMenu}
             >
               Tools
+            </Link>
+            <p className="underline underline-offset-4">Other</p>
+            <Link
+              href="/"
+              className="border-b w-1/2 text-left pb-2 hover:text-primary"
+              onClick={handleToggleMenu}
+            >
+              Support me
+            </Link>
+            <Link
+              href="/about"
+              className="border-b w-1/2 text-left pb-2 hover:text-primary"
+              onClick={handleToggleMenu}
+            >
+              About
+            </Link>
+            <Link
+              href="/termsofuse"
+              className="border-b w-1/2 text-left pb-2 hover:text-primary"
+              onClick={handleToggleMenu}
+            >
+              Terms of Use
             </Link>
           </div>
         </div>
