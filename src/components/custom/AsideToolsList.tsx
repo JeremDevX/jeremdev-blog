@@ -5,9 +5,15 @@ import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { handleEnterKeyDown } from "@/utils/handleKeyDown";
 
-interface Tool {
+export interface Category {
+  tools: Tool[];
+}
+
+export interface Tool {
   name: string;
   url: string;
+  desc: string;
+  icon: string;
 }
 
 interface AsideToolsListProps {
