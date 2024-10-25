@@ -7,6 +7,7 @@ import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 import imageUrlBuilder from "@sanity/image-url";
 import HomeNews from "@/components/custom/HomeNews";
+import HomeArticles from "@/components/custom/HomeArticles";
 
 export interface Post extends SanityDocument {
   title: string;
@@ -34,6 +35,11 @@ const HOME_QUERY = defineQuery(`{
   ]{
     _id, title, slug, coverImage, resume, view
   }|order(view desc)[0...1],
+
+  "latestPost": *[
+    _type == "post"
+    && defined(slug.current)
+]{_id, title,date, slug, coverImage, resume, view}|order(date desc)[0...1],
 
   "news": *[
     _type == "news"
@@ -78,7 +84,11 @@ export default async function IndexPage() {
                     topics, from software to hardware and everything on between.
                   </span>
                 </p>
-                <Button text="Explore blog" link="/blog" />
+                <Button
+                  text="Explore blog"
+                  link="/blog"
+                  ariaLabel="Explore Blog"
+                />
               </div>
               <div className="flex flex-col gap-4">
                 <p className="text-2xl font-bold">
@@ -89,53 +99,27 @@ export default async function IndexPage() {
                     utilities, and more
                   </span>
                 </p>
-                <Button text="Explore tools" link="/tools" />
+                <Button
+                  text="Explore tools"
+                  link="/tools"
+                  ariaLabel="Explore tools"
+                />
               </div>
             </div>
           </div>
         </div>
       </section>
       <section className="flex flex-col justify-center items-center gap-4 pb-8 border-b border-card">
-        <div className="max-w-1440 flex flex-col p-4 justify-center items-center">
-          <h2 className="text-3xl font-bold mt-8 mb-8">Most Viewed Article</h2>
-          {homeContent.posts.map((post: Post) => (
-            <article
-              key={post._id}
-              className="max-w-1000 min-h-96 h-fit md:h-96 p-3 rounded-lg md:bg-muted text-secondary-foreground relative md:flex hover:scale-101 drop-shadow-light hover:drop-shadow-lighter"
-            >
-              <div className="bg-gray-950 rounded-lg z-0 absolute inset-0 opacity-85 md:hidden"></div>
-              <div className="w-5/12 md:relative">
-                <Image
-                  src={urlFor(post.coverImage)?.url() || ""}
-                  fill
-                  alt=""
-                  className="object-cover rounded-lg -z-10 md:z-0"
-                />
-              </div>
-              <div className="w-full md:w-7/12 relative z-10 flex flex-col items-center justify-between min-h-96 md:min-h-max">
-                <Link
-                  href={`/blog/posts/${post?.slug?.current}`}
-                  className="focus:text-accent hover:text-accent"
-                >
-                  <h3 className="font-semibold underline underline-offset-4 line-clamp-2 text-2xl px-4 mt-4 md:mt-0">
-                    {post.title}
-                  </h3>
-                </Link>
-                <p className="mt-4 md:-mt-6 pt-4 px-4 pb-2 md:pb-0">
-                  {post.resume}
-                </p>
-                <div className="w-full text-right">
-                  <Link
-                    href={`/blog/posts/${post?.slug?.current}`}
-                    className="mt-2 font-semibold hover:underline underline-offset-4 focus:text-accent hover:text-accent"
-                  >
-                    Read full article...
-                  </Link>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
+        <HomeArticles
+          latestPost={homeContent.latestPost}
+          mostViewedPost={homeContent.posts}
+          imgUrlLatest={
+            urlFor(homeContent.latestPost[0].coverImage)?.url() || ""
+          }
+          imgUrlMostViewed={
+            urlFor(homeContent.posts[0].coverImage)?.url() || ""
+          }
+        />
       </section>
       <section className="flex flex-col text-accent-foreground justify-center items-center gap-4 pb-8 border-b border-card">
         <h2 className="text-3xl font-bold mt-8 mb-4">Latest News</h2>
@@ -148,14 +132,14 @@ export default async function IndexPage() {
           <div className="flex gap-12">
             <Link
               href="mailto:jeremdev.contactpro@gmail.com"
-              className="flex flex-col items-center justify-center hover:scale-110 hover:bg-secondary focus:bg-secondary px-4 pt-2 pb-1 rounded"
+              className="flex flex-col items-center justify-center hover:scale-110 hover:bg-secondary focus:bg-secondary px-4 pt-2 pb-1 rounded hover:drop-shadow-light"
             >
               <Mail height={25} width={25} />
               <span>Mail</span>
             </Link>
             <Link
               href="https://x.com"
-              className="flex flex-col items-center justify-center hover:scale-110 hover:bg-secondary focus:bg-secondary px-2 pt-2 pb-1 rounded"
+              className="flex flex-col items-center justify-center hover:scale-110 hover:bg-secondary focus:bg-secondary px-2 pt-2 pb-1 rounded hover:drop-shadow-light"
               target="_blank"
             >
               <svg

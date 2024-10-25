@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Button from "./Button";
 
 interface NewsItem {
   title: string;
@@ -13,14 +14,24 @@ interface HomeNewsProps {
 
 export default function HomeNews({ news }: HomeNewsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isSlidingRight, setIsSlidingRight] = useState(false);
+  const [isSlidingLeft, setIsSlidingLeft] = useState(false);
 
   const handleNext = () => {
+    setIsSlidingRight(true);
+    setTimeout(() => {
+      setIsSlidingRight(false);
+    }, 500);
     setCurrentIndex((prevIndex) =>
       prevIndex === news.length - 1 ? 0 : prevIndex + 1
     );
   };
 
   const handlePrev = () => {
+    setIsSlidingLeft(true);
+    setTimeout(() => {
+      setIsSlidingLeft(false);
+    }, 500);
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? news.length - 1 : prevIndex - 1
     );
@@ -29,9 +40,11 @@ export default function HomeNews({ news }: HomeNewsProps) {
   const currentNews = news[currentIndex];
 
   return (
-    <div className="flex flex-col items-center px-4">
-      <article className="max-w-1000 flex flex-col p-4 justify-center items-center gap-4 md:flex-row bg-muted rounded-lg relative">
-        <div className="flex-1 flex flex-col items-center justify-center gap-4">
+    <div className={`flex flex-col items-center px-4`}>
+      <article
+        className={`max-w-1000 flex flex-col p-4 justify-center items-center gap-4 md:flex-row bg-muted rounded-lg relative h-auto lg:h-52 xs:h-auto sm:h-72 drop-shadow-light animate-duration-1000 ${isSlidingRight && "animate-fade-right"} ${isSlidingLeft && "animate-fade-left"}`}
+      >
+        <div className="flex-1 flex flex-col items-center justify-start gap-4 h-full">
           <h3 className="text-2xl font-semibold text-center">
             {currentNews.title} -{" "}
             <span className="font-normal text-xl">
@@ -50,20 +63,16 @@ export default function HomeNews({ news }: HomeNewsProps) {
 
       {news.length > 1 && (
         <div className="flex mt-4 gap-4">
-          <button
+          <Button
+            text="&larr; Previous"
             onClick={handlePrev}
-            className="p-2 bg-secondary rounded hover:bg-secondary-hover"
-            aria-label="Previous news"
-          >
-            &larr; Previous
-          </button>
-          <button
+            ariaLabel="Previous news"
+          />
+          <Button
+            text="Next &rarr;"
             onClick={handleNext}
-            className="p-2 bg-secondary rounded hover:bg-secondary-hover"
-            aria-label="Next news"
-          >
-            Next &rarr;
-          </button>
+            ariaLabel="Next news"
+          />
         </div>
       )}
     </div>
