@@ -1,5 +1,6 @@
 "use client";
 import { Post } from "@/app/page";
+import { handleEnterKeyDown } from "@/utils/handleKeyDown";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -42,6 +43,8 @@ export default function HomeArticles(props: HomeArticlesProps) {
         <span
           onClick={toggleMostViewed}
           className={`${!showLatest && "underline  bg-secondary hover:bg-primary hover:text-primary-foreground p-2 rounded-lg"} hover:drop-shadow-lighter cursor-pointer hover:underline p-2`}
+          tabIndex={0}
+          onKeyDown={(e) => handleEnterKeyDown(e, toggleMostViewed)}
         >
           Most Viewed Article
         </span>
@@ -49,6 +52,8 @@ export default function HomeArticles(props: HomeArticlesProps) {
         <span
           onClick={toggleLatest}
           className={`${showLatest && "underline  bg-secondary hover:bg-primary hover:text-primary-foreground p-2 rounded-lg"} hover:drop-shadow-lighter cursor-pointer hover:underline p-2`}
+          tabIndex={0}
+          onKeyDown={(e) => handleEnterKeyDown(e, toggleLatest)}
         >
           Latest Article
         </span>
