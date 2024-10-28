@@ -155,7 +155,7 @@ export default async function IndexPage() {
               <span>Mail</span>
             </Link>
             <Link
-              href="https://x.com"
+              href="https://x.com/JeremDevX"
               className="flex flex-col items-center justify-center hover:scale-110 hover:bg-secondary focus:bg-secondary px-2 pt-2 pb-1 rounded hover:drop-shadow-light"
               target="_blank"
             >

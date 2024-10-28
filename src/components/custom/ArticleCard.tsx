@@ -25,10 +25,10 @@ export default function ArticleCard(props: ArticleCardProps) {
           <Image src={imgSrc} fill alt="" className="object-cover" />
           <Link
             href={`/blog/posts/${slug}`}
-            className="hover:underline-offset-4 hover:underline font-semibold z-10 focus:underline h-14 line-clamp-2"
+            className="flex md:items-center hover:underline-offset-4 hover:underline font-semibold z-10 focus:underline h-14 line-clamp-2"
             tabIndex={-1}
           >
-            <h3 className="w-full h-fit md:text-center md:text-xl text-lg font-bold pl-1 ">
+            <h3 className="w-full h-fit md:text-center md:text-xl text-lg font-bold pl-1">
               {title}
             </h3>
           </Link>
