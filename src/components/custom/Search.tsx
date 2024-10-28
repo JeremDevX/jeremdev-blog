@@ -153,7 +153,7 @@ export default function SearchInput() {
                   results.map((post: Post) => {
                     return (
                       <Link
-                        href={`/posts/${post?.slug?.current}`}
+                        href={`/blog/posts/${post?.slug?.current}`}
                         onClick={() => setIsSearchOpen(false)}
                         key={post._id}
                         className="p-2 bg-secondary mt-2 mb-2 w-full h-auto text-left md:text-center rounded-lg hover:bg-primary hover:text-primary-foreground"
