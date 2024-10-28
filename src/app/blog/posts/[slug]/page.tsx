@@ -99,7 +99,9 @@ export default async function ArticlePage({
         </h1>
         <span className="text-end">Date : {date}</span>
       </div>
-      <PortableText value={content} components={customComponents} />
+      <div className="article-content">
+        <PortableText value={content} components={customComponents} />
+      </div>
     </section>
   );
 }

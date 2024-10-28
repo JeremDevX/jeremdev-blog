@@ -82,8 +82,8 @@ export default async function IndexPage() {
                 className="rounded-lg drop-shadow-light hidden md:block"
               />
             </div>
-            <div className="flex flex-col flex-1 justify-center h-full gap-8 relative w-full md:absolute inset-0 p-8 bg-gray-950 rounded-lg bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-80 ring-1 xl:relative xl:p-0 xl:pr-8 xl:bg-transparent xl:ring-0">
-              <div className="flex flex-col gap-4 border-b border-secondary pb-8">
+            <div className="flex flex-col flex-1 justify-center text-center xl:text-left h-full gap-8 relative w-full md:absolute inset-0 p-8 bg-gray-950 rounded-lg bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-80 ring-1 xl:relative xl:p-0 xl:pr-8 xl:bg-transparent xl:ring-0">
+              <div className="flex flex-col gap-4 sm:gap-12 xl:gap-4 border-b border-secondary pb-8">
                 <p className="text-2xl font-semibold">
                   Weekly posts about tech, programming and more.
                   <br />
@@ -92,13 +92,20 @@ export default async function IndexPage() {
                     topics, from software to hardware and everything on between.
                   </span>
                 </p>
-                <Button
-                  text="Explore blog"
-                  link="/blog"
-                  ariaLabel="Explore Blog"
-                />
+                <div className="flex flex-col gap-4 xs:flex-row xs:gap-8 justify-center items-center xl:items-start xl:justify-normal">
+                  <Button
+                    text="Explore blog"
+                    link="/blog"
+                    ariaLabel="Explore Blog"
+                  />
+                  <Button
+                    text="Blog Categories"
+                    link="/blog/categories"
+                    ariaLabel="Blog Categories"
+                  />
+                </div>
               </div>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 sm:gap-12 xl:gap-4">
                 <p className="text-2xl font-bold">
                   Free and interactive dev tools.
                   <br />
@@ -107,11 +114,13 @@ export default async function IndexPage() {
                     utilities, and more
                   </span>
                 </p>
-                <Button
-                  text="Explore tools"
-                  link="/tools"
-                  ariaLabel="Explore tools"
-                />
+                <div className="flex justify-center xl:justify-normal">
+                  <Button
+                    text="Explore tools"
+                    link="/tools"
+                    ariaLabel="Explore tools"
+                  />
+                </div>
               </div>
             </div>
           </div>

@@ -62,7 +62,7 @@ export default function HomeNews({ news }: HomeNewsProps) {
       </article>
 
       {news.length > 1 && (
-        <div className="flex mt-4 gap-4">
+        <div className="flex mt-8 gap-4">
           <Button
             text="&larr; Previous"
             onClick={handlePrev}

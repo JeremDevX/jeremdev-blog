@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import CategoryButton from "./CategoryButton";
+import Button from "./Button";
 
 interface ArticleCardProps {
   imgSrc: string;
@@ -18,24 +19,16 @@ export default function ArticleCard(props: ArticleCardProps) {
     <article
       className={`flex col-span-2 bg-muted h-80 rounded-xl border hover:drop-shadow-lighter hover:scale-101 overflow-hidden ${className}`}
     >
-      <div className="md:w-1/3 relative md:block hidden">
-        <Image src={imgSrc} fill alt="" className="object-cover" />
-      </div>
-      <div className="md:w-2/3 w-full flex flex-col">
-        <div className="h-2/5 bg-secondary md:p-4 p-3 flex flex-col justify-between relative">
-          <div className="absolute inset-0 bg-gray-900 opacity-85 z-10 block md:hidden"></div>
-          <Image
-            src={imgSrc}
-            fill
-            alt=""
-            className="object-cover block md:hidden"
-          />
+      <div className="w-full flex flex-col">
+        <div className="h-2/5 bg-secondary p-3 flex flex-col justify-between relative">
+          <div className="absolute inset-0 bg-gray-900 opacity-85 z-10"></div>
+          <Image src={imgSrc} fill alt="" className="object-cover" />
           <Link
             href={`/blog/posts/${slug}`}
             className="hover:underline-offset-4 hover:underline font-semibold z-10 focus:underline h-14 line-clamp-2"
             tabIndex={-1}
           >
-            <h3 className="w-full h-fit md:text-xl text-lg font-bold pl-1 ">
+            <h3 className="w-full h-fit md:text-center md:text-xl text-lg font-bold pl-1 ">
               {title}
             </h3>
           </Link>
@@ -53,15 +46,14 @@ export default function ArticleCard(props: ArticleCardProps) {
             </CategoryButton>
           </div>
         </div>
-        <div className="flex flex-col h-3/5 justify-between md:py-5 md:px-4 p-3">
-          <div className="md:line-clamp-4 line-clamp-5">{resume}</div>
-          <div className="flex justify-end">
-            <Link
-              href={`/blog/posts/${slug}`}
-              className="hover:underline-offset-4 hover:underline font-semibold focus:text-primary"
-            >
-              Read full article...
-            </Link>
+        <div className="flex flex-col h-3/5 justify-between p-3">
+          <div className="line-clamp-4 text-lg md:text-xl">{resume}</div>
+          <div className="flex justify-center md:w-5/12 m-auto">
+            <Button
+              link={`/blog/posts/${slug}`}
+              className="w-full text-center"
+              text="Read full article..."
+            />
           </div>
         </div>
       </div>

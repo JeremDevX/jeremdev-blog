@@ -126,47 +126,53 @@ export default function Navbar() {
           <div
             className={`flex flex-col w-full mt-8 p-4 justify-center items-center gap-4 ${toggleMenu && "animate-fade-down"}`}
           >
-            <p className="underline underline-offset-4">Blog</p>
+            <p className="py-1 text-center rounded-lg bg-secondary mt-2 w-1/3 font-semibold max-w-40">
+              Blog
+            </p>
             <Link
               href="/blog"
-              className="border-b w-1/2 text-left pb-2 hover:text-primary"
+              className="border-b w-8/12 xs:w-1/2 text-left pb-2 hover:text-primary"
               onClick={handleToggleMenu}
             >
               Blog
             </Link>
             <Link
               href="/blog/categories"
-              className="border-b w-1/2 text-left pb-2 hover:text-primary"
+              className="border-b w-8/12 xs:w-1/2 text-left pb-2 hover:text-primary"
               onClick={handleToggleMenu}
             >
               Categories
             </Link>
-            <p className="underline underline-offset-4">Dev tools</p>
+            <p className="py-1 text-center rounded-lg bg-secondary mt-2 w-1/3 font-semibold max-w-40">
+              Dev tools
+            </p>
             <Link
               href="/tools"
-              className="border-b w-1/2 text-left pb-2 hover:text-primary"
+              className="border-b w-8/12 xs:w-1/2 text-left pb-2 hover:text-primary"
               onClick={handleToggleMenu}
             >
               Tools
             </Link>
-            <p className="underline underline-offset-4">Other</p>
+            <p className="py-1 text-center rounded-lg bg-secondary mt-2 w-1/3 font-semibold max-w-40">
+              Other
+            </p>
             <Link
               href="/"
-              className="border-b w-1/2 text-left pb-2 hover:text-primary"
+              className="border-b w-8/12 xs:w-1/2 text-left pb-2 hover:text-primary"
               onClick={handleToggleMenu}
             >
               Support me
             </Link>
             <Link
               href="/about"
-              className="border-b w-1/2 text-left pb-2 hover:text-primary"
+              className="border-b w-8/12 xs:w-1/2 text-left pb-2 hover:text-primary"
               onClick={handleToggleMenu}
             >
               About
             </Link>
             <Link
               href="/termsofuse"
-              className="border-b w-1/2 text-left pb-2 hover:text-primary"
+              className="border-b w-8/12 xs:w-1/2 text-left pb-2 hover:text-primary"
               onClick={handleToggleMenu}
             >
               Terms of Use

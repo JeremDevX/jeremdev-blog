@@ -37,7 +37,7 @@ const options = { next: { revalidate: 60 } };
 const CATEGORIES_QUERY = defineQuery(`
   *[_type == "category"]`);
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 10;
 
 export default function Categories() {
   const router = useRouter();
@@ -179,20 +179,19 @@ export default function Categories() {
             <CardContent className="px-4 my-4 h-28 overflow-hidden text-ellipsis line-clamp-4">
               <span>{post.resume}</span>
             </CardContent>
-            <CardFooter className="flex justify-center p-4 -mt-2">
-              <Link
-                href={`/blog/posts/${post?.slug?.current}`}
-                className="min-fit w-full px-4 py-2 bg-secondary font-semibold hover:text-primary-foreground hover:bg-primary transition-colors rounded-lg text-center"
-              >
-                Read full post...
-              </Link>
+            <CardFooter className="flex justify-center p-4 -mt-2 w-full">
+              <Button
+                link={`/blog/posts/${post?.slug?.current}`}
+                text="Read full article..."
+                className="text-center w-96"
+              />
             </CardFooter>
           </Card>
         ))}
       </section>
       <div className="flex justify-center items-center gap-4 mb-4">
         <Button
-          text="Previous"
+          text="&larr; Previous"
           onClick={handlePrevPage}
           disabled={currentPage === 1}
           className="disabled:opacity-50"
@@ -201,7 +200,7 @@ export default function Categories() {
           {currentPage} / {totalPages}
         </span>
         <Button
-          text="Next"
+          text="Next &rarr;"
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
           className="disabled:opacity-50"

@@ -43,7 +43,7 @@ pre[class*="language-"] {
 /* Code blocks */
 pre[class*="language-"] {
   padding: 1em;
-  margin: 0.5em 0;
+  margin: 1rem 0 2.5rem;
   overflow: auto;
 }
 
@@ -254,18 +254,45 @@ pre[class*="language-"] {
   }
 }
 
-.cat-react {
+.cat-other {
   background-color: #0050c7;
 }
-.cat-html {
+.cat-code {
   background-color: #d04924;
 }
 .cat-security {
   background-color: #990015;
 }
+.cat-hardware {
+  background-color: #0e671a;
+}
 
 .sidebar {
   width: calc(var(--sidebar-size) - 16px);
+}
+
+.article-content a {
+  color: hsl(var(--primary));
+  font-weight: 600;
+}
+.article-content a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.article-content h1,
+h2,
+h3 {
+  font-weight: bold;
+}
+.article-content h1 {
+  font-size: 2.25rem;
+}
+.article-content h2 {
+  font-size: 1.75rem;
+}
+.article-content h3 {
+  font-size: 1.5rem;
 }
 
 @media screen and (max-width: 768px) {
