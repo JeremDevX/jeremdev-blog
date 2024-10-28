@@ -36,7 +36,7 @@ const options = { next: { revalidate: 60 } };
 const POST_QUERY = defineQuery(`*[
   _type == "post" &&
   slug.current == $slug
-  ][0]{_id, title, slug, date, coverImage, content, view}`);
+  ][0]{_id, title, slug, date, coverImage, content, resume, view}`);
 
 async function getPosts(params: { slug: string }) {
   const posts = await client.fetch(POST_QUERY, params, options);
@@ -51,6 +51,7 @@ export async function generateMetadata({
   const post = await getPosts(params);
   return {
     title: `TechHowlerX - ${post.title}`,
+    description: post.resume,
   };
 }
 

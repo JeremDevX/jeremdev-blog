@@ -8,6 +8,14 @@ import { client } from "@/sanity/lib/client";
 import imageUrlBuilder from "@sanity/image-url";
 import HomeNews from "@/components/custom/HomeNews";
 import HomeArticles from "@/components/custom/HomeArticles";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "TechHowlerX - Dev blog and utility tools",
+  description:
+    "TechHowlerX is two parts website, one part blog and one part utility tools. Discover weekly posts about tech, programming and more or browse a wide range of tools like formatters, CSS utilities, and more.",
+  keywords: "tech, programming, blog, dev tools, utility tools",
+};
 
 export interface Post extends SanityDocument {
   title: string;

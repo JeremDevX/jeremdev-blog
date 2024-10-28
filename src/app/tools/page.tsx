@@ -4,6 +4,14 @@ import Link from "next/link";
 import * as LucideIcons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import React from "react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "TechHowlerX - Dev Tools",
+  description:
+    "Discover a wide range of utility tools like formatters, CSS utilities, and more.",
+  keywords: "tech, programming, dev tools, utility tools",
+};
 
 export interface ToolsCategory {
   name: string;
@@ -61,7 +69,7 @@ export default function Tools() {
   return (
     <>
       <section className="mb-8 max-w-1440 w-full px-4">
-        <h1 className="text-3xl font-bold px-2 text-center my-8">Dev tools</h1>
+        <h1 className="text-3xl font-bold px-2 text-center my-8">Dev Tools</h1>
         {fetchedToolsCategories.map((category) => (
           <ToolList key={category.name} category={category} />
         ))}

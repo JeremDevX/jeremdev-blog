@@ -1,4 +1,4 @@
-import { Category } from "@/app/blog/categories/page";
+import { Category } from "@/app/blog/categories/Categories";
 import { client } from "@/sanity/lib/client";
 import { defineQuery } from "next-sanity";
 import AsideBlogContent from "./AsideBlogContent";

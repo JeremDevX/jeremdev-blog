@@ -1,5 +1,12 @@
 import { Mail } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "TechHowlerX - About",
+  description:
+    "Discover the purpose of this website and learn more about the creator behind TechHowlerX.",
+};
 
 export default function About() {
   return (

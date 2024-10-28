@@ -5,6 +5,14 @@ import imageUrlBuilder from "@sanity/image-url";
 import ArticleCard from "@/components/custom/ArticleCard";
 import MostViewedPosts from "@/components/custom/MostViewedPosts";
 import CategoryList from "@/components/custom/CategoryList";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "TechHowlerX - Blog",
+  description:
+    " Discover the latest or most viewed articles on TechHowlerX's bog.",
+  keywords: "tech, programming, blog",
+};
 
 export interface Post extends SanityDocument {
   title: string;

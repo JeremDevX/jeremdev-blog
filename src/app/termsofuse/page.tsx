@@ -1,4 +1,10 @@
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "TechHowlerX - Terms of Use",
+  description: "Terms of use of TechHowlerX's website.",
+};
 
 export default function TermsOfUse() {
   return (
