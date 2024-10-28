@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 
 export default function CategoriesPage() {
   return (
-    <>
+    <main className="flex flex-col gap-12 w-full max-w-screen-xl p-4 mt-20">
       <Categories />
-    </>
+    </main>
   );
 }

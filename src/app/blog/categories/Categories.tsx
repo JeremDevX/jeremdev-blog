@@ -1,8 +1,14 @@
 "use client";
+
 import Link from "next/link";
 import { defineQuery } from "next-sanity";
 import { client } from "@/sanity/lib/client";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { Post } from "../../page";
+import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import imageUrlBuilder from "@sanity/image-url";
+import Image from "next/image";
 import {
   Card,
   CardContent,
@@ -11,11 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useState, useEffect, Suspense } from "react";
-import { Post } from "../../page";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import imageUrlBuilder from "@sanity/image-url";
-import Image from "next/image";
+import Button from "@/components/custom/Button";
 
 export interface Category {
   _id: string;
@@ -24,6 +26,7 @@ export interface Category {
     current: string;
   };
 }
+
 const { projectId, dataset } = client.config();
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
@@ -34,12 +37,22 @@ const options = { next: { revalidate: 60 } };
 const CATEGORIES_QUERY = defineQuery(`
   *[_type == "category"]`);
 
-function CategoriesContent() {
+const PAGE_SIZE = 6;
+
+export default function Categories() {
   const router = useRouter();
   const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [categoryTitle, setCategoryTitle] = useState<string>("All");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPosts, setTotalPosts] = useState(0);
+
+  const totalPages = Math.ceil(totalPosts / PAGE_SIZE);
+
+  const handleNextPage = () => setCurrentPage((prevPage) => prevPage + 1);
+  const handlePrevPage = () =>
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
 
   const fetchCategories = async () => {
     const fetchedCategories = await client.fetch(CATEGORIES_QUERY, {}, options);
@@ -47,25 +60,40 @@ function CategoriesContent() {
     return fetchedCategories;
   };
 
-  const fetchPosts = async (category: string) => {
+  const fetchPosts = async (category: string, page: number) => {
     const categoryFilter =
       category !== "all" ? `&& Category->slug.current == "${category}"` : "";
-    const POSTS_QUERY = defineQuery(`*[
-      _type == "post" && defined(slug.current) ${categoryFilter}
-    ]{_id, title, slug, date, resume, coverImage, "category" : Category->{title}}|order(date desc)`);
 
-    const fetchedPosts = await client.fetch(POSTS_QUERY, {}, options);
+    const startIndex = (page - 1) * PAGE_SIZE;
+    const endIndex = startIndex + PAGE_SIZE;
+
+    const POSTS_QUERY = defineQuery(`{
+      "posts": *[
+        _type == "post" && defined(slug.current) ${categoryFilter}
+      ] | order(date desc) [${startIndex}...${endIndex}] {
+        _id, title, slug, date, resume, coverImage, 
+        "category" : Category->{title}
+      },
+      "total": count(*[
+        _type == "post" && defined(slug.current) ${categoryFilter}
+      ])
+    }`);
+
+    const { posts: fetchedPosts, total: fetchedTotalPosts } =
+      await client.fetch(POSTS_QUERY, {}, options);
+
     setPosts(fetchedPosts);
+    setTotalPosts(fetchedTotalPosts);
   };
 
   const handleCategoryChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    console.log(event);
     const newCategory = event.target.value;
     const newCategoryTitle = event.target.selectedOptions[0].text;
     setSelectedCategory(newCategory);
     setCategoryTitle(newCategoryTitle);
+    setCurrentPage(1);
     router.replace(`/blog/categories?category=${newCategory}`);
   };
 
@@ -93,8 +121,8 @@ function CategoriesContent() {
   }, [router]);
 
   useEffect(() => {
-    fetchPosts(selectedCategory);
-  }, [selectedCategory]);
+    fetchPosts(selectedCategory, currentPage);
+  }, [selectedCategory, currentPage]);
 
   return (
     <>
@@ -116,10 +144,10 @@ function CategoriesContent() {
         </select>
       </div>
 
-      <section className="grid grid-cols-2 grid-rows-4 gap-12 w-full mt-12 mb-8">
+      <section className="grid grid-cols-2 gap-12 w-full mt-12 mb-8">
         {posts.map((post: Post) => (
           <Card
-            className="bg-card overflow-hidden col-span-2 sm:col-span-1 flex flex-col justify-between hover:drop-shadow-light"
+            className="bg-card overflow-hidden col-span-2 sm:col-span-1 flex flex-col justify-between hover:drop-shadow-light hover:scale-101"
             key={post._id}
           >
             <CardHeader className={`p-4 relative`}>
@@ -133,6 +161,7 @@ function CategoriesContent() {
               <Link
                 href={`/blog/posts/${post?.slug?.current}`}
                 className="hover:underline-offset-4 hover:underline z-10"
+                tabIndex={-1}
               >
                 <CardTitle className="text-xl font-bold h-14 line-clamp-2 z-10">
                   {post?.title}
@@ -161,16 +190,23 @@ function CategoriesContent() {
           </Card>
         ))}
       </section>
+      <div className="flex justify-center items-center gap-4 mb-4">
+        <Button
+          text="Previous"
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          className="disabled:opacity-50"
+        />
+        <span>
+          {currentPage} / {totalPages}
+        </span>
+        <Button
+          text="Next"
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className="disabled:opacity-50"
+        />
+      </div>
     </>
-  );
-}
-
-export default function Categories() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <main className="flex flex-col min-h-screen gap-12 w-full max-w-screen-xl p-4 mt-20">
-        <CategoriesContent />
-      </main>
-    </Suspense>
   );
 }

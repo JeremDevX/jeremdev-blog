@@ -33,6 +33,7 @@ export default function ArticleCard(props: ArticleCardProps) {
           <Link
             href={`/blog/posts/${slug}`}
             className="hover:underline-offset-4 hover:underline font-semibold z-10 focus:underline h-14 line-clamp-2"
+            tabIndex={-1}
           >
             <h3 className="w-full h-fit md:text-xl text-lg font-bold pl-1 ">
               {title}
@@ -46,6 +47,7 @@ export default function ArticleCard(props: ArticleCardProps) {
               catClass={category.toLowerCase()}
               href={category.toLowerCase()}
               growOnHover={false}
+              tabIndex={-1}
             >
               {category}
             </CategoryButton>
