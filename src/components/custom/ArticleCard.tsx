@@ -14,10 +14,10 @@ interface ArticleCardProps {
 }
 
 export default function ArticleCard(props: ArticleCardProps) {
-  const { imgSrc, title, date, category, resume, slug, className } = props;
+  const { imgSrc, title, date, category, resume, slug } = props;
   return (
     <article
-      className={`flex col-span-2 bg-muted h-80 rounded-xl border hover:drop-shadow-lighter hover:scale-101 overflow-hidden ${className}`}
+      className={`flex col-span-2 bg-muted h-80 rounded-xl border hover:drop-shadow-lighter hover:scale-101 overflow-hidden`}
     >
       <div className="w-full flex flex-col">
         <div className="h-2/5 bg-secondary p-3 flex flex-col justify-between relative">
