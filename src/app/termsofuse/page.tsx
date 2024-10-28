@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function TermsOfUse() {
   return (
-    <main className="flex flex-col max-w-1000 mt-10 px-4 mb-12">
+    <main className="flex flex-col max-w-1000 mt-10 px-4 mb-12 w-full">
       <h1 className="text-center text-3xl font-bold mb-8">Terms of Use</h1>
       <ul>
         <li>

@@ -21,7 +21,7 @@ export default function ArticleCard(props: ArticleCardProps) {
     >
       <div className="w-full flex flex-col">
         <div className="h-2/5 bg-secondary p-3 flex flex-col justify-between relative">
-          <div className="absolute inset-0 bg-gray-900 opacity-85 z-10"></div>
+          <div className="absolute inset-0 bg-gray-950 opacity-90 z-10"></div>
           <Image src={imgSrc} fill alt="" className="object-cover" />
           <Link
             href={`/blog/posts/${slug}`}
