@@ -6,12 +6,11 @@ import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const pathname = usePathname();
-  const isPostPage = pathname.startsWith("/blog/posts");
   const isToolPage = pathname.startsWith("/tools/");
 
   return (
     <footer
-      className={`h-auto md:h-20 bg-background w-full flex justify-center items-center text-base border-t border-muted mt-auto ${isPostPage || isToolPage ? "hidden" : ""}`}
+      className={`h-auto md:h-20 bg-background w-full flex justify-center items-center text-base border-t border-muted mt-auto ${isToolPage ? "hidden" : ""}`}
     >
       <div className="max-w-1440 w-full flex gap-4 py-4 md:py-0 md:gap-10 justify-between items-center  flex-col md:flex-row sm:px-8">
         <div className="flex items-center">

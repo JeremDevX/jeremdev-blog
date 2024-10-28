@@ -8,6 +8,8 @@ import { notFound } from "next/navigation";
 import { Refractor, registerLanguage } from "react-refractor";
 import tsx from "refractor/lang/tsx";
 import { incrementViews } from "@/utils/incrementViews";
+import Link from "next/link";
+import ArrowTopOfPage from "@/components/custom/ArrowTopOfPage";
 
 registerLanguage(tsx);
 
@@ -85,22 +87,31 @@ export default async function ArticlePage({
   }
 
   return (
-    <section className="w-full min-h-min px-8 pb-4 mt-4">
+    <section className="max-w-1440 w-full min-h-min px-8 pb-4 mt-4 mx-auto relative">
+      <Link
+        href="/blog"
+        className="font-semibold hover:underline underline-offset-4"
+      >
+        &larr; Back to blog
+      </Link>
       <Image
         src={ImageUrl || "https://via.placeholder.com/550x310"}
         alt=""
-        className="mx-auto overflow-hidden rounded-xl object-cover object-center"
+        className="mx-auto overflow-hidden rounded-xl object-cover object-center mt-8"
         height="810"
         width="810"
       />
-      <div className="flex flex-col justify-between py-8">
+      <div className="flex flex-col justify-between pt-8 pb-2 border-b-2 border-card mb-8">
         <h1 className="text-2xl font-semibold underline-offset-2 underline mb-2">
           {title}
         </h1>
-        <span className="text-end">Date : {date}</span>
+        <span className="text-end text-lg">Date : {date}</span>
       </div>
       <div className="article-content">
         <PortableText value={content} components={customComponents} />
+      </div>
+      <div className="flex w-full justify-end my-2">
+        <ArrowTopOfPage />
       </div>
     </section>
   );
