@@ -11,7 +11,7 @@ interface AsideProps {
   asideFor: "tools" | "blog";
 }
 
-const options = { next: { revalidate: 36000 } };
+const options = { next: { revalidate: 86400 } };
 
 const CATEGORIES_QUERY = defineQuery(`
   *[_type == "category"]`);

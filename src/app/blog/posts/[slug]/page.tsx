@@ -33,7 +33,7 @@ const customComponents = {
   },
 };
 
-const options = { next: { revalidate: 60 } };
+const options = { next: { revalidate: 86400 } };
 
 const POST_QUERY = defineQuery(`*[
   _type == "post" &&

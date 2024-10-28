@@ -3,7 +3,7 @@ import { client } from "@/sanity/lib/client";
 import { defineQuery } from "next-sanity";
 import CategoryButton from "./CategoryButton";
 
-const options = { next: { revalidate: 36000 } };
+const options = { next: { revalidate: 86400 } };
 
 const CATEGORIES_QUERY = defineQuery(`
   *[_type == "category"]`);
