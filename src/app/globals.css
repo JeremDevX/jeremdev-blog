@@ -153,7 +153,8 @@ pre[class*="language-"] {
     --accent: 200 58% 54%;
     --accent-darker: 200 20% 5%;
     --accent-foreground: 212 8% 98.45%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 24 100% 61%;
+    /* --destructive: 0 63% 55%; */
     --destructive-foreground: 212 8% 98.45%;
     --ring: 212 80% 69%;
     --radius: 0.5rem;
