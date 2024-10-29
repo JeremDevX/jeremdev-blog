@@ -71,7 +71,7 @@ export default function ContrastChecker() {
 
   return (
     <div className="flex flex-col h-auto gap-8 w-full items-center">
-      <h2 className="font-bold text-4xl mt-8 lg:mt-0">Contrast Checker</h2>
+      <h1 className="font-bold text-4xl mt-8 lg:mt-0">Contrast Checker Tool</h1>
       <div className="flex flex-col md:flex-row justify-center gap-8">
         <ColorPicker
           label="Foreground"
@@ -124,7 +124,7 @@ export default function ContrastChecker() {
           <p>Large text : {getTag(ratio >= 4.5)}</p>
         </div>
       </div>
-      <div className="rounded-lg p-4 border-2 relative flex flex-col gap-4 mt-8 mx-2">
+      <div className="rounded-lg p-4 border-2 border-secondary relative flex flex-col gap-4 mt-8 mx-2">
         <h2 className="text-3xl font-bold absolute -top-4 left-8 bg-background px-2">
           What is Contrast Ratio?
         </h2>

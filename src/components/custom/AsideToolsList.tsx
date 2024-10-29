@@ -65,7 +65,7 @@ export default function AsideToolsList({ category }: AsideToolsListProps) {
           ${displayed ? "max-h-96" : "max-h-0"}
         `}
       >
-        <div className="flex flex-col gap-4 text-sm font-semibold">
+        <div className="flex flex-col gap-4 text-base font-semibold">
           {tools.map((tool) => (
             <Link
               href={tool.url}

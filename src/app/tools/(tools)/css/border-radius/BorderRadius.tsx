@@ -145,7 +145,7 @@ export default function BorderRadius() {
   };
   return (
     <div className="flex flex-col h-auto gap-8 w-full items-center p-2 xl:p-0 relative">
-      <h1 className="text-3xl font-bold">Border Radius Tool</h1>
+      <h1 className="text-4xl font-bold">Border Radius Tool</h1>
       <div
         className={`flex items-center justify-center w-full m-auto border-2 bg-card p-4 ${toggleCustomSize || toggleSlides ? "pt-72" : ""} md:pt-0 md:pb-0 pb-28 min-h-96 rounded-lg relative`}
       >
