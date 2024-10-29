@@ -24,7 +24,14 @@
     },
     {
       "name": "Code",
-      "tools": []
+      "tools": [
+        {
+          "name": "Slug Generator",
+          "url": "/tools/code/slug-generator",
+          "desc": "Generate a URL-friendly slug from a string.",
+          "icon": "Link"
+        }
+      ]
     }
   ]
 }
