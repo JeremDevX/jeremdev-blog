@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/custom/Button";
+import NotificationPopup from "@/components/custom/CopyPopup";
 import { handleCopy } from "@/utils/handleCopy";
 import { useEffect, useRef, useState } from "react";
 
@@ -9,8 +10,7 @@ export default function SlugGenerator() {
   const [outputValue, setOutputValue] = useState("");
   const outputRef = useRef<HTMLInputElement>(null);
   const [isCopied, setIsCopied] = useState(false);
-  const [failedToCopy, setFailToCopy] = useState(false);
-  const [lineWidth, setLineWidth] = useState(100);
+  const [failedToCopy, setFailedToCopy] = useState(false);
 
   useEffect(() => {
     const slug = inputValue
@@ -31,31 +31,12 @@ export default function SlugGenerator() {
       getValue: (ref) => (ref.current as HTMLInputElement).value,
       onSuccess: () => {
         setIsCopied(true);
-        setTimeout(() => {
-          setIsCopied(false);
-        }, 2000);
       },
       onError: () => {
-        setFailToCopy(true);
-        setTimeout(() => setFailToCopy(false), 2000);
+        setFailedToCopy(true);
       },
     });
   };
-
-  useEffect(() => {
-    if (isCopied || failedToCopy) {
-      const interval = setInterval(() => {
-        setLineWidth((prev) => Math.max(prev - 1, 0));
-      }, 20);
-      return () => clearInterval(interval);
-    }
-    setLineWidth(100);
-  }, [isCopied, failedToCopy]);
-
-  const notificationMessage = isCopied ? "Slug copied!" : "An error occurred.";
-  const notificationStyles = isCopied
-    ? "bg-secondary text-secondary-foreground"
-    : "bg-destructive text-destructive-foreground";
 
   return (
     <div className="flex flex-col h-auto gap-8 w-full items-center px-2 relative">
@@ -96,21 +77,20 @@ export default function SlugGenerator() {
             className="mt-2"
             disabled={outputValue.length === 0}
           />
-          {(isCopied || failedToCopy) && (
-            <div
-              className={`flex flex-col ${notificationStyles} absolute top-4 right-4 p-2 rounded-lg animate-fade-left`}
-            >
-              {notificationMessage}
-              <span
-                style={{
-                  borderBottom: "3px solid white",
-                  width: `${lineWidth}%`,
-                  height: "3px",
-                  transition: "width 0.02s linear",
-                }}
-              ></span>
-            </div>
-          )}
+          <NotificationPopup
+            message="Slug copied!"
+            isVisible={isCopied}
+            onClose={() => setIsCopied(false)}
+            duration={2000}
+            styles="bg-secondary text-secondary-foreground"
+          />
+          <NotificationPopup
+            message="An error occurred."
+            isVisible={failedToCopy}
+            onClose={() => setFailedToCopy(false)}
+            duration={2000}
+            styles="bg-destructive text-destructive-foreground"
+          />
         </label>
       </div>
     </div>

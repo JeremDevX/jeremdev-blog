@@ -1,5 +1,8 @@
 "use client";
 
+import Button from "@/components/custom/Button";
+import NotificationPopup from "@/components/custom/CopyPopup";
+import { handleCopy } from "@/utils/handleCopy";
 import { useEffect, useRef, useState } from "react";
 
 export default function BorderRadius() {
@@ -17,6 +20,8 @@ export default function BorderRadius() {
   const [toggleCustomSize, setToggleCustomSize] = useState(false);
   const squareRef = useRef<HTMLDivElement | null>(null);
   const [dragging, setDragging] = useState<null | string>(null);
+  const [isCopied, setIsCopied] = useState(false);
+  const [failedToCopy, setFailedToCopy] = useState(false);
 
   const handleMouseDown = (corner: string) => {
     setDragging(corner);
@@ -119,33 +124,19 @@ export default function BorderRadius() {
   ];
 
   const handleCopyBorderRadius = () => {
-    if (squareRef.current) {
-      const borderRadiusValue = `border-radius: ${squareRef.current.style.borderRadius}`;
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard
-          .writeText(borderRadiusValue)
-          .then(() => {
-            alert(`CSS copied: ${borderRadiusValue}`);
-          })
-          .catch((err) => {
-            console.error("Failed to copy: ", err);
-          });
-      } else {
-        // Fallback for navigators that don't support clipboard API
-        const textArea = document.createElement("textarea");
-        textArea.value = borderRadiusValue;
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-          document.execCommand("copy");
-          alert(`CSS copied: ${borderRadiusValue}`);
-        } catch (err) {
-          console.error("Fallback: Oops, unable to copy", err);
-        }
-        document.body.removeChild(textArea);
-      }
-    }
+    handleCopy({
+      ref: squareRef,
+      getValue: (ref) =>
+        `border-radius: ${(ref.current as HTMLElement).style.borderRadius}`,
+      onSuccess: () => {
+        setIsCopied(true);
+      },
+      onError: () => {
+        setFailedToCopy(true);
+      },
+    });
   };
+
   const handleCustomSize = () => {
     setToggleCustomSize(!toggleCustomSize);
     if (toggleCustomSize) {
@@ -153,7 +144,7 @@ export default function BorderRadius() {
     }
   };
   return (
-    <div className="flex flex-col h-auto gap-8 w-full items-center p-2 xl:p-0">
+    <div className="flex flex-col h-auto gap-8 w-full items-center p-2 xl:p-0 relative">
       <h1 className="text-3xl font-bold">Border Radius Tool</h1>
       <div
         className={`flex items-center justify-center w-full m-auto border-2 bg-card p-4 ${toggleCustomSize || toggleSlides ? "pt-72" : ""} md:pt-0 md:pb-0 pb-28 min-h-96 rounded-lg relative`}
@@ -283,15 +274,27 @@ export default function BorderRadius() {
       </div>
       <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-0">
         <span className="px-4 py-2 ml-2 bg-muted rounded border-2 border-secondary text-base xs:text-lg">{`border-radius : ${100 - Number(borderRadius.topRight)}% ${borderRadius.topRight}% ${100 - Number(borderRadius.bottomLeft)}% ${borderRadius.bottomLeft}% / ${borderRadius.topLeft}% ${100 - Number(borderRadius.bottomRight)}% ${borderRadius.bottomRight}% ${100 - Number(borderRadius.topLeft)}%`}</span>
-        <button
-          className="px-4 py-2 ml-4 bg-secondary rounded border-2 border-muted active:bg-primary active:text-primary-foreground w-20 h-12"
+        <Button
+          className="px-4 py-2 ml-4 bg-secondary rounded active:bg-primary active:text-primary-foreground w-20 h-12"
           onClick={handleCopyBorderRadius}
-          title="Click to copy the CSS border-radius value"
           aria-label="Click to copy the CSS border-radius value"
-        >
-          Copy
-        </button>
+          text="Copy"
+        />
       </div>
+      <NotificationPopup
+        message="Border Radius copied!"
+        isVisible={isCopied}
+        onClose={() => setIsCopied(false)}
+        duration={2000}
+        styles="bg-secondary text-secondary-foreground"
+      />
+      <NotificationPopup
+        message="An error occurred."
+        isVisible={failedToCopy}
+        onClose={() => setFailedToCopy(false)}
+        duration={2000}
+        styles="bg-destructive text-destructive-foreground"
+      />
     </div>
   );
 }
