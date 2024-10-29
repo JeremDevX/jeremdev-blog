@@ -269,7 +269,7 @@ export default function BorderRadius() {
           title="Click to switch between using slides and direct control"
           aria-label="Click to switch between using slides and direct control"
         >
-          {!toggleSlides ? "Use Slides" : "Direct Control"}
+          {!toggleSlides ? "Use Sliders" : "Direct Control"}
         </button>
       </div>
       <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-0">
@@ -295,6 +295,47 @@ export default function BorderRadius() {
         duration={2000}
         styles="bg-destructive text-destructive-foreground"
       />
+      <div className="rounded-lg p-4 border-2 border-secondary relative flex flex-col gap-4 mt-8 mx-2">
+        <h2 className="text-3xl font-bold absolute -top-4 left-8 bg-background px-2">
+          Border Radius Tool
+        </h2>
+
+        <h3 className="mt-4 text-2xl underline underline-offset-4">
+          Why this tool?
+        </h3>
+        <p>
+          The <code className="bg-secondary p-1 rounded">border-radius</code>{" "}
+          CSS property is one of the most widely used tools for giving shape to
+          containers by rounding their edges. Usually, this property is applied
+          in a simple way, using only one or two values, which creates classic
+          rounded shapes. With this tool, however, you can take it a step
+          further and create entirely customized and original shapes, adding a
+          unique touch to your website&apos;s design.
+        </p>
+
+        <h3 className="text-2xl underline underline-offset-4 mt-2">
+          How to use the tool
+        </h3>
+        <p>
+          By default, the central shape is a 150px by 150px square, but you can
+          customize its size by clicking on
+          <strong className="text-primary"> “Custom Size”</strong> to adjust the
+          width and height within a range of 50 to 250px.
+        </p>
+        <p className="mt-2">
+          To modify the radius, click on any corner of the square and drag it to
+          increase or decrease the radius value, making it easy to shape each
+          corner to your preference. If you prefer more precise control, press
+          <strong className="text-primary"> “Use Sliders”</strong> to adjust
+          each corner’s radius value individually via a slider.
+        </p>
+
+        <p className="mt-2">
+          CSS property values are displayed below in real time, and you can
+          retrieve them easily by clicking the
+          <strong className="text-primary"> “Copy”</strong> button.
+        </p>
+      </div>
     </div>
   );
 }

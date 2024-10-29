@@ -2,7 +2,7 @@ import BorderRadius from "./BorderRadius";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "TechHowlerX - Border Radius CSS Tool",
+  title: "TechHowlerX - Border Radius Tool",
   description:
     "Interactive tool to generate CSS border radius values and see the result in real-time.",
 };
