@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "../../globals.css";
 import Aside from "@/components/custom/Aside";
+import Link from "next/link";
+import ArrowTopOfPage from "@/components/custom/ArrowTopOfPage";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,8 +17,17 @@ export default function PostLayout({
   return (
     <div className="w-full">
       <Aside asideFor="tools" />
-      <main className="flex justify-center article-padding mb-8">
+      <main className="flex flex-col justify-center article-padding mb-8">
+        <Link
+          href="/tools"
+          className="font-semibold underline-offset-4 hover:underline mb-8 w-fit"
+        >
+          ← Back to tools
+        </Link>
         {children}
+        <div className="flex w-full justify-end mt-4">
+          <ArrowTopOfPage />
+        </div>
       </main>
     </div>
   );

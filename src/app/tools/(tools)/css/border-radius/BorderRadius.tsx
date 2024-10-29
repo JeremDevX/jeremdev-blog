@@ -296,7 +296,7 @@ export default function BorderRadius() {
         styles="bg-destructive text-destructive-foreground"
       />
       <div className="rounded-lg p-4 border-2 border-secondary relative flex flex-col gap-4 mt-8 mx-2">
-        <h2 className="text-3xl font-bold absolute -top-4 left-8 bg-background px-2">
+        <h2 className="text-2xl xs:text-3xl font-bold absolute -top-4 xs:left-8 bg-background px-2">
           Border Radius Tool
         </h2>
 

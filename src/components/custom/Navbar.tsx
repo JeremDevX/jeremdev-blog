@@ -33,22 +33,22 @@ export default function Navbar() {
           <Image
             src="/wolf-logo.svg"
             width={308}
-            height={500}
-            alt="Logo"
+            height={112}
+            alt=""
             className="max-w-1000 max-h-screen h-28 hidden xs:block"
           />
           <Image
             src="/wolf-logo-small.svg"
             width={247}
-            height={500}
-            alt="Logo"
+            height={112}
+            alt=""
             className="max-w-1000 max-h-screen h-28 hidden xs:hidden xxs:block"
           />
           <Image
             src="/wolf-only.svg"
             width={176}
-            height={500}
-            alt="Logo"
+            height={64}
+            alt=""
             className="max-w-1000 max-h-screen h-16 block xxs:hidden"
           />
         </Link>
