@@ -11,7 +11,7 @@ import HomeArticles from "@/components/custom/HomeArticles";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "TechHowlerX - Dev blog and utility tools",
+  title: "TechHowlerX - Tech Blog & Dev Tools",
   description:
     "TechHowlerX is two parts website, one part blog and one part utility tools. Discover weekly posts about tech, programming and more or browse a wide range of tools like formatters, CSS utilities, and more.",
   keywords: "tech, programming, blog, dev tools, utility tools",
@@ -70,7 +70,7 @@ export default async function IndexPage() {
         <div className="max-w-1440 w-full flex flex-col p-4 justify-center items-center">
           <h1 className="text-4xl font-bold mt-8 mb-12 text-center w-fit flex flex-col md:flex-row">
             TechHowlerX -
-            <span className="ml-0 md:ml-2">Dev blog and utility tools</span>
+            <span className="ml-0 md:ml-2">Tech Blog &amp; Dev Tools</span>
           </h1>
           <div className="flex xl:flex-row-reverse gap-8 xl:gap-0 items-center h-full relative">
             <div className="flex-1 relative justify-center items-center hidden md:flex">
@@ -84,14 +84,14 @@ export default async function IndexPage() {
             </div>
             <div className="flex flex-col flex-1 justify-center text-center xl:text-left h-full gap-8 relative w-full md:absolute inset-0 p-8 bg-gray-950 rounded-lg bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-80 ring-1 xl:relative xl:p-0 xl:pr-8 xl:bg-transparent xl:ring-0">
               <div className="flex flex-col gap-4 sm:gap-12 xl:gap-4 border-b border-secondary pb-8">
-                <p className="text-2xl font-semibold">
+                <h2 className="text-2xl font-semibold">
                   Weekly posts about tech, programming and more.
                   <br />
-                  <span className="text-lg font-normal">
+                  <p className="text-lg font-normal">
                     Every week, discover new content covering a variety of
                     topics, from software to hardware and everything on between.
-                  </span>
-                </p>
+                  </p>
+                </h2>
                 <div className="flex flex-col gap-4 xs:flex-row xs:gap-8 justify-center items-center xl:items-start xl:justify-normal">
                   <Button
                     text="Explore blog"
@@ -106,14 +106,14 @@ export default async function IndexPage() {
                 </div>
               </div>
               <div className="flex flex-col gap-4 sm:gap-12 xl:gap-4">
-                <p className="text-2xl font-bold">
-                  Free and interactive dev tools.
+                <h2 className="text-2xl font-bold">
+                  Free and interactive Dev Tools.
                   <br />
-                  <span className="text-lg font-normal">
+                  <p className="text-lg font-normal">
                     Browse a wide range of tools like code formatters, CSS
                     utilities, and more
-                  </span>
-                </p>
+                  </p>
+                </h2>
                 <div className="flex justify-center xl:justify-normal">
                   <Button
                     text="Explore tools"

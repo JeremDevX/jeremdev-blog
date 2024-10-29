@@ -16,7 +16,7 @@ interface HomeArticlesProps {
 export default function HomeArticles(props: HomeArticlesProps) {
   const { latestPost, mostViewedPost, imgUrlMostViewed, imgUrlLatest } = props;
 
-  const [showLatest, setShowLatest] = useState(false);
+  const [showLatest, setShowLatest] = useState(true);
   const [isFading, setIsFading] = useState(false);
 
   const toggleLatest = () => {
@@ -42,21 +42,21 @@ export default function HomeArticles(props: HomeArticlesProps) {
     <div className="max-w-1440 flex flex-col p-4 justify-center items-center">
       <h2 className="text-3xl font-bold mt-8 mb-8 underline-offset-4 flex flex-col md:flex-row gap-2 items-center">
         <span
-          onClick={toggleMostViewed}
-          className={`${!showLatest && "underline  bg-secondary"} hover:bg-primary hover:text-primary-foreground p-2 rounded-lg hover:drop-shadow-lighter cursor-pointer hover:underline`}
-          tabIndex={0}
-          onKeyDown={(e) => handleEnterKeyDown(e, toggleMostViewed)}
-        >
-          Most Viewed Article
-        </span>
-        <span className="hidden md:inline">/</span>
-        <span
           onClick={toggleLatest}
-          className={`${showLatest && "underline  bg-secondary"} hover:bg-primary hover:text-primary-foreground p-2 rounded-lg hover:drop-shadow-lighter cursor-pointer hover:underline`}
+          className={`${showLatest && "bg-secondary"} hover:bg-primary hover:text-primary-foreground p-2 rounded-lg hover:drop-shadow-lighter cursor-pointer hover:underline`}
           tabIndex={0}
           onKeyDown={(e) => handleEnterKeyDown(e, toggleLatest)}
         >
           Latest Article
+        </span>
+        <span className="hidden md:inline">/</span>
+        <span
+          onClick={toggleMostViewed}
+          className={`${!showLatest && "bg-secondary"} hover:bg-primary hover:text-primary-foreground p-2 rounded-lg hover:drop-shadow-lighter cursor-pointer hover:underline`}
+          tabIndex={0}
+          onKeyDown={(e) => handleEnterKeyDown(e, toggleMostViewed)}
+        >
+          Most Viewed Article
         </span>
       </h2>
       <article
@@ -86,12 +86,6 @@ export default function HomeArticles(props: HomeArticlesProps) {
             {homeContent[0].resume}
           </p>
           <div className="flex w-full justify-center">
-            {/* <Link
-              href={`/blog/posts/${homeContent[0].slug.current}`}
-              className="mt-2 font-semibold hover:underline underline-offset-4 focus:text-accent hover:text-accent"
-            >
-              Read full article...
-            </Link> */}
             <Button
               link={`/blog/posts/${homeContent[0].slug.current}`}
               text="Read full article..."
