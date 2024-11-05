@@ -10,7 +10,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "TechHowlerX - Blog",
   description:
-    " Discover the latest or most viewed articles on TechHowlerX's bog.",
+    " Discover the latest or most viewed articles on TechHowlerX's blog.",
   keywords: "tech, programming, blog",
 };
 
@@ -28,6 +28,9 @@ export interface Post extends SanityDocument {
   resume: string;
   category: {
     title: string;
+    slug: {
+      current: string;
+    };
   };
   view: number;
 }
@@ -37,7 +40,7 @@ const options = { next: { revalidate: 86400 } };
 const POSTS_QUERY = defineQuery(`*[
   _type == "post"
   && defined(slug.current)
-]{_id, title, slug, date, resume, coverImage, "category" : Category->{title}}|order(date desc)[0...5]`);
+]{_id, title, slug, date, resume, coverImage, "category" : Category->{title,slug}}|order(date desc)[0...5]`);
 
 const { projectId, dataset } = client.config();
 const urlFor = (source: SanityImageSource) =>
@@ -65,6 +68,7 @@ export default async function BlogPage() {
               imgSrc={urlFor(post.coverImage)?.url() || ""}
               date={post.date}
               category={post.category.title}
+              categorySlug={post.category.slug.current}
               resume={post.resume}
               slug={post.slug.current}
             />

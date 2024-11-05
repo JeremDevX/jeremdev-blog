@@ -16,6 +16,10 @@ export default async function CategoryList() {
         Browse by category
       </h2>
       <div className="flex gap-4 flex-wrap">
+        <CategoryButton href="/blog/categories" catClass="all" growOnHover>
+          All
+        </CategoryButton>
+
         {fetchedCategories.map((category: Category) => (
           <CategoryButton
             key={category._id}

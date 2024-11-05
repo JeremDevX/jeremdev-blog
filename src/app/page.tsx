@@ -31,6 +31,9 @@ export interface Post extends SanityDocument {
   resume: string;
   category: {
     title: string;
+    slug: {
+      current: string;
+    };
   };
   view: number;
 }

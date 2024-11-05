@@ -1,5 +1,5 @@
 import { defineQuery, type SanityDocument } from "next-sanity";
-import { PortableText } from "@portabletext/react";
+import { PortableText, PortableTextReactComponents } from "@portabletext/react";
 import imageUrlBuilder from "@sanity/image-url";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/lib/client";
@@ -13,7 +13,7 @@ import ArrowTopOfPage from "@/components/custom/ArrowTopOfPage";
 
 registerLanguage(tsx);
 
-const customComponents = {
+const customComponents: Partial<PortableTextReactComponents> = {
   types: {
     code: ({ value }: { value: SanityDocument }) => (
       <Refractor
@@ -30,6 +30,25 @@ const customComponents = {
         height={100}
       />
     ),
+  },
+  marks: {
+    link: ({
+      children,
+      value,
+    }: {
+      children: React.ReactNode;
+      value?: HTMLLinkElement;
+    }) => {
+      if (value) {
+        const rel = !value.href.startsWith("/") ? "noopener noreferrer" : "";
+        const target = !value.href.startsWith("/") ? "_blank" : "";
+        return (
+          <Link href={value.href} rel={rel} target={target}>
+            {children}
+          </Link>
+        );
+      }
+    },
   },
 };
 
@@ -102,9 +121,7 @@ export default async function ArticlePage({
         width="810"
       />
       <div className="flex flex-col justify-between pt-8 pb-2 border-b-2 border-card mb-8">
-        <h1 className="text-2xl font-semibold underline-offset-2 underline mb-2">
-          {title}
-        </h1>
+        <h1 className="text-4xl text-center font-bold mb-2">{title}</h1>
         <span className="text-end text-lg">Date : {date}</span>
       </div>
       <div className="article-content">

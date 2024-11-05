@@ -72,7 +72,7 @@ export default function Categories() {
         _type == "post" && defined(slug.current) ${categoryFilter}
       ] | order(date desc) [${startIndex}...${endIndex}] {
         _id, title, slug, date, resume, coverImage, 
-        "category" : Category->{title}
+        "category" : Category->{title,slug}
       },
       "total": count(*[
         _type == "post" && defined(slug.current) ${categoryFilter}
@@ -170,7 +170,7 @@ export default function Categories() {
               <CardDescription className="flex justify-between items-end text-base text-card-foreground z-10">
                 <span>{new Date(post.date).toLocaleDateString()}</span>
                 <span
-                  className={`font-bold px-2 py-1 mt-2 rounded-lg text-xl cat-${post.category.title.toLowerCase()}`}
+                  className={`font-bold px-2 py-1 mt-2 rounded-lg text-base xs:text-xl cat-${post.category.slug.current}`}
                 >
                   {post?.category.title}
                 </span>

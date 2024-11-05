@@ -8,13 +8,14 @@ interface ArticleCardProps {
   title: string;
   date: Date;
   category: string;
+  categorySlug: string;
   resume: string;
   slug: string;
   className?: string;
 }
 
 export default function ArticleCard(props: ArticleCardProps) {
-  const { imgSrc, title, date, category, resume, slug } = props;
+  const { imgSrc, title, date, category, resume, slug, categorySlug } = props;
   return (
     <article
       className={`flex col-span-2 bg-muted h-80 rounded-xl border hover:drop-shadow-lighter hover:scale-101 overflow-hidden`}
@@ -37,8 +38,8 @@ export default function ArticleCard(props: ArticleCardProps) {
               {new Date(date).toLocaleDateString()}
             </span>
             <CategoryButton
-              catClass={category.toLowerCase()}
-              href={category.toLowerCase()}
+              catClass={categorySlug}
+              href={categorySlug}
               growOnHover={false}
               tabIndex={-1}
             >
