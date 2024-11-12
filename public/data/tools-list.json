@@ -12,7 +12,7 @@
       ]
     },
     {
-      "name": "CSS",
+      "name": "CSS & Styling",
       "tools": [
         {
           "name": "Border Radius",
@@ -23,13 +23,24 @@
       ]
     },
     {
-      "name": "Code",
+      "name": "Development",
       "tools": [
         {
           "name": "Slug Generator",
           "url": "/tools/code/slug-generator",
           "desc": "Generate a URL-friendly slug from a string.",
           "icon": "Link"
+        }
+      ]
+    },
+    {
+      "name": "Content & Text",
+      "tools": [
+        {
+          "name": "Word Counter",
+          "url": "/tools/text/word-counter",
+          "desc": "Count the number of words and characters in a text.",
+          "icon": "Text"
         }
       ]
     }
