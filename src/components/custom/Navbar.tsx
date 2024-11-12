@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import SearchInput from "./Search";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useCloseOnClickAway } from "@/utils/useOnClickAway";
 
 export default function Navbar() {
   const [toggleMenu, setToggleMenu] = useState(false);
+  const menuRef = useRef(null);
+  const hamburgerRef = useRef(null);
   const pathname = usePathname();
   const isBlogPage = pathname.startsWith("/blog");
   const isToolPage = pathname.startsWith("/tools");
@@ -21,6 +24,26 @@ export default function Navbar() {
   const closeMenu = () => {
     setToggleMenu(false);
   };
+
+  const handleEscapeKeyPress = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setToggleMenu(false);
+    }
+  };
+
+  useEffect(() => {
+    if (toggleMenu) {
+      document.addEventListener("keydown", handleEscapeKeyPress);
+    } else {
+      document.removeEventListener("keydown", handleEscapeKeyPress);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKeyPress);
+    };
+  }, [toggleMenu]);
+
+  useCloseOnClickAway(menuRef, closeMenu, hamburgerRef);
 
   return (
     <nav className="flex justify-center items-center bg-background fixed top-0 left-0 right-0 h-20 z-30 border-b border-muted overflow-y-hidden">
@@ -102,8 +125,9 @@ export default function Navbar() {
           <SearchInput />
         </div>
         <div
-          className={`flex md:hidden flex-col justify-center items-end cursor-pointer h-16`}
+          className={`flex flex-col justify-center items-end cursor-pointer h-16`}
           onClick={handleToggleMenu}
+          ref={hamburgerRef}
         >
           <span
             className={`${hamburgerLine} ${
@@ -124,7 +148,8 @@ export default function Navbar() {
       {toggleMenu && (
         <div className="fixed top-20 left-0 right-0 bottom-0 bg-background animate-fade animate-duration-300">
           <div
-            className={`flex flex-col w-full mt-8 p-4 justify-center items-center gap-4 ${toggleMenu && "animate-fade-down"}`}
+            className={`flex flex-col w-full md:w-1/2 max-w-1440 mx-auto mt-8 p-4 justify-center items-center gap-4 ${toggleMenu && "animate-fade-down"}`}
+            ref={menuRef}
           >
             <p className="py-1 text-center rounded-lg bg-secondary mt-2 w-1/3 font-semibold max-w-40">
               Blog

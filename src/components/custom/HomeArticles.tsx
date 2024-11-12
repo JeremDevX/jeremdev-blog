@@ -43,7 +43,7 @@ export default function HomeArticles(props: HomeArticlesProps) {
       <h2 className="text-3xl font-bold mt-8 mb-8 underline-offset-4 flex flex-col md:flex-row gap-2 items-center">
         <span
           onClick={toggleLatest}
-          className={`${showLatest && "bg-secondary"} hover:bg-primary hover:text-primary-foreground p-2 rounded-lg hover:drop-shadow-lighter cursor-pointer hover:underline`}
+          className={`${showLatest && "bg-secondary"} hover:bg-primary hover:text-primary-foreground p-2 rounded-lg hover:drop-shadow-lighter cursor-pointer`}
           tabIndex={0}
           onKeyDown={(e) => handleEnterKeyDown(e, toggleLatest)}
         >
@@ -52,7 +52,7 @@ export default function HomeArticles(props: HomeArticlesProps) {
         <span className="hidden md:inline">/</span>
         <span
           onClick={toggleMostViewed}
-          className={`${!showLatest && "bg-secondary"} hover:bg-primary hover:text-primary-foreground p-2 rounded-lg hover:drop-shadow-lighter cursor-pointer hover:underline`}
+          className={`${!showLatest && "bg-secondary"} hover:bg-primary hover:text-primary-foreground p-2 rounded-lg hover:drop-shadow-lighter cursor-pointer`}
           tabIndex={0}
           onKeyDown={(e) => handleEnterKeyDown(e, toggleMostViewed)}
         >

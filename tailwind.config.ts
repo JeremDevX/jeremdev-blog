@@ -35,6 +35,12 @@ const config: Config = {
         "1440": "1440px",
         "1000": "1000px",
       },
+      minHeight: {
+        "650": "650px",
+      },
+      maxHeight: {
+        "650": "650px",
+      },
       width: { logo: "calc(var(--sidebar-size) - 64px)", "66": "16.5rem" },
       colors: {
         background: "hsl(var(--background))",

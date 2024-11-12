@@ -39,13 +39,23 @@ export default function SearchInput() {
     setIsArticleSearch(!isArticleSearch);
   };
 
-  const handleEscapeKeyPress = (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ) => {
+  const handleEscapeKeyPress = (event: KeyboardEvent) => {
     if (event.key === "Escape") {
       resetSearch(false);
     }
   };
+
+  useEffect(() => {
+    if (isSearchOpen) {
+      document.addEventListener("keydown", handleEscapeKeyPress);
+    } else {
+      document.removeEventListener("keydown", handleEscapeKeyPress);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKeyPress);
+    };
+  }, [isSearchOpen]);
 
   useCloseOnClickAway(searchContainerRef, handleSearchClose);
 
@@ -125,7 +135,6 @@ export default function SearchInput() {
                 autoFocus
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={handleEscapeKeyPress}
               />
             ) : (
               <Input
@@ -135,7 +144,6 @@ export default function SearchInput() {
                 autoFocus
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={handleEscapeKeyPress}
               />
             )}
             <Search className="absolute left-6 top-6" />

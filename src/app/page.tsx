@@ -75,27 +75,27 @@ export default async function IndexPage() {
             TechHowlerX -
             <span className="ml-0 md:ml-2">Tech Blog &amp; Dev Tools</span>
           </h1>
-          <div className="flex xl:flex-row-reverse gap-8 xl:gap-0 items-center h-full relative">
-            <div className="flex-1 relative justify-center items-center hidden md:flex">
+          <div className="flex items-center justify-center w-full h-full relative drop-shadow-light">
+            <div className="relative justify-center items-center min-h-650 w-full flex">
               <Image
                 src="/home-hero-image.png"
-                height={750}
-                width={1000}
+                // height={750}
+                // width={1500}
+                fill
                 alt=""
-                className="rounded-lg drop-shadow-light hidden md:block"
+                className="rounded-lg min-h-650 max-h-650 object-cover"
               />
             </div>
-            <div className="flex flex-col flex-1 justify-center text-center xl:text-left h-full gap-8 relative w-full md:absolute inset-0 p-8 bg-gray-950 rounded-lg bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-80 ring-1 xl:relative xl:p-0 xl:pr-8 xl:bg-transparent xl:ring-0">
-              <div className="flex flex-col gap-4 sm:gap-12 xl:gap-4 border-b border-secondary pb-8">
-                <h2 className="text-2xl font-semibold">
-                  Weekly posts about tech, programming and more.
-                  <br />
-                  <p className="text-lg font-normal">
-                    Every week, discover new content covering a variety of
-                    topics, from software to hardware and everything on between.
-                  </p>
+            <div className="flex flex-col justify-center items-center text-center w-full h-full absolute inset-0 px-6 bg-gray-950 rounded-lg bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-80">
+              <div className="flex flex-1 flex-col items-center justify-center gap-3 xs:gap-6 border-b border-secondary">
+                <h2 className="text-2xl xs:text-3xl font-bold">
+                  Weekly Tech and Programming Insights
                 </h2>
-                <div className="flex flex-col gap-4 xs:flex-row xs:gap-8 justify-center items-center xl:items-start xl:justify-normal">
+                <p className="text-lg xs:text-xl font-normal">
+                  Discover fresh content each week, covering topics from
+                  software and hardware to everything in between.
+                </p>
+                <div className="flex flex-col gap-4 xs:flex-row xs:gap-8 justify-center items-center md:-mb-12">
                   <Button
                     text="Explore blog"
                     link="/blog"
@@ -108,16 +108,15 @@ export default async function IndexPage() {
                   />
                 </div>
               </div>
-              <div className="flex flex-col gap-4 sm:gap-12 xl:gap-4">
-                <h2 className="text-2xl font-bold">
-                  Free and interactive Dev Tools.
-                  <br />
-                  <p className="text-lg font-normal">
-                    Browse a wide range of tools like code formatters, CSS
-                    utilities, and more
-                  </p>
+              <div className="flex flex-1 flex-col items-center justify-center gap-3 xs:gap-6">
+                <h2 className="text-2xl xs:text-3xl font-bold md:-mt-12">
+                  Free and Interactive Developer Tools
                 </h2>
-                <div className="flex justify-center xl:justify-normal">
+                <p className="text-lg xs:text-xl font-normal">
+                  Explore a range of tools for design & accessibility, CSS
+                  styling, development utilities, and text content optimization.
+                </p>
+                <div className="flex justify-center">
                   <Button
                     text="Explore tools"
                     link="/tools"
