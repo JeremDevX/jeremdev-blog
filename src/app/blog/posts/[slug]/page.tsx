@@ -59,7 +59,7 @@ const POST_QUERY = defineQuery(`*[
   slug.current == $slug
   ][0]{_id, title, slug, date, coverImage, content, resume, view}`);
 
-async function getPosts(params: { slug: string }) {
+async function getPosts(params: Promise<{ slug: string }>) {
   const posts = await client.fetch(POST_QUERY, params, options);
   return posts;
 }
@@ -67,7 +67,7 @@ async function getPosts(params: { slug: string }) {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   const post = await getPosts(params);
   return {
@@ -85,7 +85,7 @@ const urlFor = (source: SanityImageSource) =>
 export default async function ArticlePage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   const post = await getPosts(params);
 
