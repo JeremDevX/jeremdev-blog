@@ -59,16 +59,15 @@ const POST_QUERY = defineQuery(`*[
   slug.current == $slug
   ][0]{_id, title, slug, date, coverImage, content, resume, view}`);
 
-async function getPosts(params: Promise<{ slug: string }>) {
+async function getPosts(params: { slug: string }) {
   const posts = await client.fetch(POST_QUERY, params, options);
   return posts;
 }
 
-export async function generateMetadata({
-  params,
-}: {
+export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
 }) {
+  const params = await props.params;
   const post = await getPosts(params);
   return {
     title: `TechHowlerX - ${post.title}`,
@@ -82,11 +81,10 @@ const urlFor = (source: SanityImageSource) =>
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
-export default async function ArticlePage({
-  params,
-}: {
+export default async function ArticlePage(props: {
   params: Promise<{ slug: string }>;
 }) {
+  const params = await props.params;
   const post = await getPosts(params);
 
   if (!post) {
