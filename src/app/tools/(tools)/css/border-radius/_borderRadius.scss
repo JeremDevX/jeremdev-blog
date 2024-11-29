@@ -1,0 +1,167 @@
+@use "../../../../../styles/mixins" as mix;
+@use "../../../../../styles/variables" as vars;
+
+.border-radius {
+  &__tool {
+    @include mix.flex-c-c-row;
+
+    position: relative;
+    width: 100%;
+    min-height: 24rem;
+    margin: auto;
+    padding: 0 1rem 0;
+    border: 2px solid hsl(var(--border));
+    border-radius: 0.5rem;
+    background-color: hsl(var(--card));
+
+    @media (max-width: 768px) {
+      padding-bottom: 7rem;
+    }
+
+    &--mobile {
+      @media (max-width: 640px) {
+        padding-top: 18rem;
+      }
+    }
+  }
+  &__square-border {
+    position: relative;
+
+    &--manual {
+      border: 2px dashed hsl(var(--foreground));
+    }
+  }
+  &__square {
+    background-image: (var(--gradient));
+    &-drag {
+      position: absolute;
+      cursor: pointer;
+      width: 0.75rem;
+      height: 0.75rem;
+      border: 2px solid (hsl(var(--foreground)));
+      &:active,
+      &:hover {
+        width: 1rem;
+        height: 1rem;
+      }
+      &--green {
+        background-color: rgb(21, 128, 61);
+      }
+      &--red {
+        background-color: rgb(185, 28, 28);
+      }
+      &--blue {
+        background-color: rgb(29, 78, 216);
+      }
+      &--yellow {
+        background-color: rgb(161, 98, 7);
+      }
+    }
+    &-sliders {
+      @include mix.text-normal;
+
+      line-height: 1;
+      position: absolute;
+      top: 1rem;
+      &--size {
+        left: 1rem;
+        @media (max-width: 425px) {
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
+      &--size-mobile {
+        left: 1rem;
+        transform: translateX(0);
+      }
+      &--control {
+        right: 1rem;
+        @media (max-width: 425px) {
+          right: 50%;
+          transform: translateX(50%);
+        }
+      }
+      &--control-mobile {
+        right: 1rem;
+        transform: translateX(0);
+      }
+    }
+  }
+  &__label {
+    @include mix.flex-c-c-col;
+    @include mix.text-normal;
+
+    line-height: 1;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  &__slide {
+    width: 10rem;
+
+    @media (max-width: 425px) {
+      width: 7rem;
+    }
+  }
+  &__button {
+    @include mix.text-normal;
+
+    position: absolute;
+    width: 10rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 2px solid hsl(var(--primary));
+    background-color: hsl(var(--secondary));
+
+    &:hover {
+      color: hsl(var(--primary-foreground));
+      background-color: hsl(var(--primary));
+      border-color: hsl(var(--secondary));
+      box-shadow: vars.$drop-light;
+    }
+
+    @media (max-width: 425px) {
+      width: 9rem;
+      padding: 0.25rem;
+    }
+
+    &--size {
+      bottom: 1rem;
+      @media (min-width: 426px) {
+        left: 1rem;
+      }
+    }
+    &--control {
+      bottom: 1rem;
+      @media (min-width: 426px) {
+        right: 1rem;
+      }
+      @media (max-width: 425px) {
+        bottom: 4rem;
+      }
+    }
+  }
+  &__box {
+    @include mix.flex-c-c-row;
+
+    gap: 0.5rem;
+    @media (max-width: 425px) {
+      flex-direction: column;
+    }
+  }
+  &__value {
+    @include mix.text-normal;
+
+    min-height: 3rem;
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    border: 2px solid hsl(var(--secondary));
+    border-radius: 0.5rem;
+    background-color: hsl(var(--muted));
+  }
+  &__copy {
+    @include mix.text-normal;
+
+    height: 3rem;
+    padding: 0.5rem 1rem;
+  }
+}

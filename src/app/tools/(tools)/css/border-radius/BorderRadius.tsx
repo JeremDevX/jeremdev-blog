@@ -144,24 +144,24 @@ export default function BorderRadius() {
     }
   };
   return (
-    <div className="flex flex-col h-auto gap-8 w-full items-center p-2 xl:p-0 relative">
-      <h1 className="text-4xl font-bold">Border Radius Tool</h1>
+    <div className="tool__main">
+      <h1 className="tool__main-title">Border Radius Tool</h1>
       <div
-        className={`flex items-center justify-center w-full m-auto border-2 bg-card p-4 ${toggleCustomSize || toggleSlides ? "pt-72" : ""} md:pt-0 md:pb-0 pb-28 min-h-96 rounded-lg relative`}
+        className={`border-radius__tool ${toggleCustomSize || toggleSlides ? "border-radius__tool--mobile" : ""}`}
       >
         <div
           style={squareBorder}
-          className={`relative ${!toggleSlides && "border-2 border-dashed border-gray-400"}`}
+          className={`border-radius__square-border ${!toggleSlides && "border-radius__square-border--manual"}`}
         >
           <div
             style={squareStyle}
-            className={`bg-gradient ${toggleSlides && "absolute"}`}
+            className="border-radius__square"
             ref={squareRef}
           />
           {!toggleSlides && (
             <>
               <div
-                className="absolute bg-green-700 w-3 h-3 cursor-pointer border-2 border-white active:w-4 active:h-4 hover:w-4 hover:h-4"
+                className="border-radius__square-drag border-radius__square-drag--green"
                 style={{
                   top: `${borderRadius.topLeft}%`,
                   left: 0,
@@ -172,7 +172,7 @@ export default function BorderRadius() {
                 aria-label="Drag to the bottom to increase the border radius"
               />
               <div
-                className="absolute bg-red-700 w-3 h-3 cursor-pointer border-2 border-white active:w-4 active:h-4 hover:w-4 hover:h-4"
+                className="border-radius__square-drag border-radius__square-drag--red"
                 style={{
                   top: 0,
                   right: `${borderRadius.topRight}%`,
@@ -183,7 +183,7 @@ export default function BorderRadius() {
                 aria-label="Drag to the left to increase the border radius"
               />
               <div
-                className="absolute bg-blue-700 w-3 h-3 cursor-pointer border-2 border-white active:w-4 active:h-4 hover:w-4 hover:h-4"
+                className="border-radius__square-drag border-radius__square-drag--blue"
                 style={{
                   bottom: 0,
                   left: `${borderRadius.bottomLeft}%`,
@@ -194,7 +194,7 @@ export default function BorderRadius() {
                 aria-label="Drag to the right to increase the border radius"
               />
               <div
-                className="absolute bg-yellow-700 w-3 h-3 cursor-pointer border-2 border-white active:w-4 active:h-4 hover:w-4 hover:h-4"
+                className="border-radius__square-drag border-radius__square-drag--yellow"
                 style={{
                   bottom: `${borderRadius.bottomRight}%`,
                   right: 0,
@@ -209,13 +209,13 @@ export default function BorderRadius() {
         </div>
         {toggleCustomSize && (
           <div
-            className={`absolute top-4 xs:left-4 ${toggleSlides && "left-4"} text-base xs:text-lg`}
+            className={`border-radius__square-sliders border-radius__square-sliders--size ${toggleSlides && "border-radius__square-sliders--size-mobile"}`}
           >
             {squareSizeInputs.map((input) => (
               <label
                 htmlFor={input.id}
                 key={input.id}
-                className="flex flex-col items-center gap-2 mb-4"
+                className="border-radius__label"
               >
                 {input.name} : {input.value}px
                 <input
@@ -225,14 +225,14 @@ export default function BorderRadius() {
                   id={input.id}
                   value={input.value}
                   onChange={input.onChange}
-                  className="w-28 xs:w-40"
+                  className="border-radius__slide"
                 />
               </label>
             ))}
           </div>
         )}
         <button
-          className="absolute bottom-4 xs:left-4 bg-secondary p-1 xs:p-2 rounded w-36 xs:w-40 border-2 border-primary font-semibold"
+          className="border-radius__button border-radius__button--size semi-bold"
           onClick={handleCustomSize}
           title="Click to change the size of the square or restore the default size"
           aria-label="Click to change the size of the square or restore the default size"
@@ -241,13 +241,13 @@ export default function BorderRadius() {
         </button>
         {toggleSlides && (
           <div
-            className={`absolute top-4 xs:right-4 ${toggleCustomSize && "right-4"} text-base xs:text-lg`}
+            className={`border-radius__square-sliders border-radius__square-sliders--control ${toggleCustomSize && "border-radius__square-sliders--control-mobile"}`}
           >
             {inputRanges.map((inputRange) => (
               <label
                 htmlFor={inputRange.id}
                 key={inputRange.id}
-                className="flex flex-col items-center gap-2 mb-4 px-2"
+                className="border-radius__label"
               >
                 {inputRange.name} : {inputRange.value}%
                 <input
@@ -257,14 +257,14 @@ export default function BorderRadius() {
                   id={inputRange.id}
                   value={inputRange.value}
                   onChange={inputRange.onChange}
-                  className="w-28 xs:w-40"
+                  className="border-radius__slide"
                 />
               </label>
             ))}
           </div>
         )}
         <button
-          className="absolute bottom-16 xs:bottom-4 xs:right-4 bg-secondary p-1 xs:p-2 rounded w-36 xs:w-40 border-2 border-primary font-semibold"
+          className="border-radius__button border-radius__button--control semi-bold"
           onClick={() => setToggleSlides(!toggleSlides)}
           title="Click to switch between using slides and direct control"
           aria-label="Click to switch between using slides and direct control"
@@ -272,40 +272,37 @@ export default function BorderRadius() {
           {!toggleSlides ? "Use Sliders" : "Direct Control"}
         </button>
       </div>
-      <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-0">
-        <span className="px-4 py-2 ml-2 bg-muted rounded border-2 border-secondary text-base xs:text-lg">{`border-radius : ${100 - Number(borderRadius.topRight)}% ${borderRadius.topRight}% ${100 - Number(borderRadius.bottomLeft)}% ${borderRadius.bottomLeft}% / ${borderRadius.topLeft}% ${100 - Number(borderRadius.bottomRight)}% ${borderRadius.bottomRight}% ${100 - Number(borderRadius.topLeft)}%`}</span>
+      <div className="border-radius__box">
+        <span className="border-radius__value">{`border-radius : ${100 - Number(borderRadius.topRight)}% ${borderRadius.topRight}% ${100 - Number(borderRadius.bottomLeft)}% ${borderRadius.bottomLeft}% / ${borderRadius.topLeft}% ${100 - Number(borderRadius.bottomRight)}% ${borderRadius.bottomRight}% ${100 - Number(borderRadius.topLeft)}%`}</span>
         <Button
-          className="px-4 py-2 ml-4 bg-secondary rounded active:bg-primary active:text-primary-foreground w-20 h-12"
+          className="border-radius__copy"
           onClick={handleCopyBorderRadius}
           aria-label="Click to copy the CSS border-radius value"
-          text="Copy"
-        />
+        >
+          Copy
+        </Button>
       </div>
       <NotificationPopup
         message="Border Radius copied!"
         isVisible={isCopied}
         onClose={() => setIsCopied(false)}
         duration={2000}
-        styles="bg-secondary text-secondary-foreground"
+        className="copy-success"
       />
       <NotificationPopup
         message="An error occurred."
         isVisible={failedToCopy}
         onClose={() => setFailedToCopy(false)}
         duration={2000}
-        styles="bg-destructive text-destructive-foreground"
+        className="copy-error"
       />
-      <div className="rounded-lg p-4 border-2 border-secondary relative flex flex-col gap-4 mt-8 mx-2">
-        <h2 className="text-2xl xs:text-3xl font-bold absolute -top-4 xs:left-8 bg-background px-2">
-          Border Radius Tool
-        </h2>
+      <div className="tool__desc">
+        <h2 className="tool__desc-title">Border Radius Tool</h2>
 
-        <h3 className="mt-4 text-2xl underline underline-offset-4">
-          Why this tool?
-        </h3>
-        <p>
-          The <code className="bg-secondary p-1 rounded">border-radius</code>{" "}
-          CSS property is one of the most widely used tools for giving shape to
+        <h3 className="tool__desc-med-title">Why this tool?</h3>
+        <p className="tool__desc-text">
+          The <code className="tool__desc-code">border-radius</code> CSS
+          property is one of the most widely used tools for giving shape to
           containers by rounding their edges. Usually, this property is applied
           in a simple way, using only one or two values, which creates classic
           rounded shapes. With this tool, however, you can take it a step
@@ -313,27 +310,25 @@ export default function BorderRadius() {
           unique touch to your website&apos;s design.
         </p>
 
-        <h3 className="text-2xl underline underline-offset-4 mt-2">
-          How to use the tool
-        </h3>
-        <p>
+        <h3 className="tool__desc-med-title">How to use the tool</h3>
+        <p className="tool__desc-text">
           By default, the central shape is a 150px by 150px square, but you can
           customize its size by clicking on
-          <strong className="text-primary"> “Custom Size”</strong> to adjust the
-          width and height within a range of 50 to 250px.
+          <b className="highlight"> “Custom Size”</b> to adjust the width and
+          height within a range of 50 to 250px.
         </p>
-        <p className="mt-2">
+        <p className="tool__desc-text">
           To modify the radius, click on any corner of the square and drag it to
           increase or decrease the radius value, making it easy to shape each
           corner to your preference. If you prefer more precise control, press
-          <strong className="text-primary"> “Use Sliders”</strong> to adjust
-          each corner’s radius value individually via a slider.
+          <b className="highlight"> “Use Sliders”</b> to adjust each corner’s
+          radius value individually via a slider.
         </p>
 
-        <p className="mt-2">
-          CSS property values are displayed below in real time, and you can
+        <p className="tool__desc-nb">
+          * CSS property values are displayed below in real time, and you can
           retrieve them easily by clicking the
-          <strong className="text-primary"> “Copy”</strong> button.
+          <b className="highlight"> “Copy”</b> button.
         </p>
       </div>
     </div>

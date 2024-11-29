@@ -1,0 +1,17 @@
+@use "../variables" as vars;
+@use "../mixins" as mix;
+
+.cat-button {
+  @include mix.text-normal;
+
+  padding: 0.25rem 0.5rem;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  cursor: default;
+
+  &--grow:hover {
+    transform: scale(1.05);
+    box-shadow: vars.$drop-light;
+    cursor: pointer;
+  }
+}

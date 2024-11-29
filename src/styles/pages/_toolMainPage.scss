@@ -1,0 +1,77 @@
+@use "../mixins" as mix;
+@use "../variables" as vars;
+
+.tool-index {
+  width: 100%;
+  max-width: vars.$max-layout-width;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+  &__title {
+    @include mix.main-title;
+    margin: 2rem 0;
+    text-align: center;
+  }
+  &__container {
+    margin-bottom: 1.5rem;
+  }
+  &__category {
+    @include mix.secondary-title;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  &__list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+    padding: 0 4rem;
+
+    @media (max-width: 1200px) {
+      padding: 0;
+    }
+  }
+  &__card {
+    display: flex;
+    flex-direction: column;
+
+    width: 20rem;
+    height: 12rem;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background-color: hsl(var(--muted));
+    border-radius: 0.5rem;
+    &:hover {
+      box-shadow: vars.$drop-light-lg;
+      transform: scale(1.01) translate(-0.125rem, -0.125rem);
+    }
+  }
+  &__tool-name {
+    @include mix.flex-c-c-row;
+    @include mix.medium-title;
+
+    gap: 0.5rem;
+    margin: 0 auto;
+    padding: 0.25rem 0.5rem;
+    width: 85%;
+    border-radius: 0.5rem;
+    background-color: hsl(var(--secondary));
+  }
+  &__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  &__desc {
+    @include mix.flex-c-c-col;
+
+    height: 100%;
+    text-align: center;
+  }
+  &__cta {
+    @include mix.text-normal;
+    text-align: right;
+    font-weight: 500;
+  }
+}

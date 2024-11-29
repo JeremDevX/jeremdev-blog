@@ -1,0 +1,37 @@
+@use "../mixins" as mix;
+@use "../variables" as vars;
+
+.about {
+  @include mix.info-page;
+
+  &__main-title {
+    @include mix.info-main-title;
+  }
+  &__secondary-title {
+    @include mix.info-secondary-title;
+  }
+  &__paragraph {
+    @include mix.text-normal;
+  }
+  &__socials {
+    @include mix.flex-c-c-row;
+    flex-wrap: wrap;
+    gap: 3rem;
+    margin-top: 0.5rem;
+    &-icon {
+      @include mix.flex-c-c-col;
+
+      border-radius: 0.25rem;
+      padding: 0.5rem 1rem 0.25rem;
+
+      &:hover {
+        transform: scale(1.1);
+        box-shadow: vars.$drop-light;
+      }
+      &:focus,
+      &:hover {
+        background-color: hsl(var(--secondary));
+      }
+    }
+  }
+}

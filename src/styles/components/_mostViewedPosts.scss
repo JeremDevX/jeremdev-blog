@@ -1,0 +1,31 @@
+@use "../mixins" as mix;
+@use "../variables" as vars;
+
+.mv-posts {
+  @include mix.flex-c-c-col;
+
+  gap: 1rem;
+  &__title {
+    @include mix.medium-border-title;
+  }
+  &__link:focus {
+    color: hsl(var(--primary));
+  }
+  &__post-title {
+    font-size: clamp(1.125rem, 1.5vw, 1.25rem);
+    font-weight: 600;
+    line-height: 1.75rem;
+
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      color: hsl(var(--primary));
+    }
+  }
+}

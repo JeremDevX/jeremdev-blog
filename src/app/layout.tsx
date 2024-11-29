@@ -3,6 +3,7 @@ import { League_Spartan } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/custom/Navbar";
 import Footer from "@/components/custom/Footer";
+import "../styles/main.scss";
 
 const leagueSpartan = League_Spartan({
   subsets: ["latin"],
@@ -21,10 +22,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="">
-      <body
-        className={`${leagueSpartan.className} antialiased flex items-center flex-col min-h-screen text-xl tracking-tight`}
-      >
-        <header className="mb-20">
+      <body className={`body ${leagueSpartan.className}`}>
+        <header className="header">
           <Navbar />
         </header>
         {children}

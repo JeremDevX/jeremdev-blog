@@ -1,0 +1,56 @@
+@use "../variables" as vars;
+@use "../mixins" as mix;
+
+.home-news {
+  @include mix.flex-c-c-col;
+  padding: 0 1rem;
+
+  &__container {
+    @include mix.flex-c-c-col;
+
+    position: relative;
+    max-width: vars.$max-w-1000;
+    min-height: 12rem;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: hsl(var(--muted));
+    border-radius: 0.5rem;
+    box-shadow: vars.$drop-light;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      min-height: 16rem;
+    }
+    &--fade-right {
+      animation: fadeRight 0.75s ease;
+    }
+    &--fade-left {
+      animation: fadeLeft 0.75s ease;
+    }
+  }
+  &__title {
+    @include mix.medium-title;
+
+    text-align: center;
+  }
+  &__date {
+    @include mix.text-normal;
+    font-weight: 400;
+  }
+  &__desc {
+    @include mix.text-normal;
+    padding: 0 0.75em 2rem;
+  }
+  &__pagination {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  &__btns {
+    @include mix.flex-c-c-row;
+    margin-top: 2rem;
+    gap: 1rem;
+  }
+}

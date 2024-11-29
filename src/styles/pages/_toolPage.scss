@@ -1,0 +1,104 @@
+@use "../mixins" as mix;
+@use "../variables" as vars;
+
+.tool {
+  width: 100%;
+
+  &__container {
+    @include mix.flex-c-c-col;
+    align-items: start;
+  }
+  &__back {
+    @include mix.text-normal;
+    font-weight: 600;
+    width: fit-content;
+
+    @media (max-width: 1024px) {
+      margin: 1rem 0 0 1rem;
+    }
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+  &__return-top {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    margin-top: 2rem;
+  }
+  &__main {
+    @include mix.flex-c-c-col;
+
+    position: relative;
+    width: 100%;
+    gap: 2rem;
+    padding: 0 0.5rem;
+    &-title {
+      @include mix.main-title;
+      text-align: center;
+
+      @media (max-width: 1024px) {
+        margin-top: 2rem;
+      }
+    }
+  }
+  &__desc {
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+    width: 100%;
+    gap: 1rem;
+    padding: 1rem;
+    margin: 2rem 0.5rem 0;
+    border: 2px solid hsl(var(--secondary));
+    border-radius: 0.5rem;
+
+    &-title {
+      @include mix.secondary-title;
+
+      position: absolute;
+      top: -1rem;
+      left: 2rem;
+      padding: 0 0.5rem;
+      background-color: hsl(var(--background));
+
+      @media (max-width: 425px) {
+        left: 0.5rem;
+      }
+    }
+    &-med-title {
+      @include mix.medium-title;
+
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      margin-top: 1rem;
+    }
+    &-minor-title {
+      @include mix.minor-title;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      margin-top: 0.5rem;
+    }
+    &-text {
+      @include mix.text-normal;
+    }
+    &-nb {
+      @include mix.text-small;
+      font-style: italic;
+    }
+    &-code {
+      padding: 0.25rem;
+      border-radius: 0.25rem;
+      background-color: hsl(var(--secondary));
+    }
+    &-link {
+      color: hsl(var(--primary));
+      &:hover {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+    }
+  }
+}

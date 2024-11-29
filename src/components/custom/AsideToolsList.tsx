@@ -26,7 +26,7 @@ export default function AsideToolsList({ category }: AsideToolsListProps) {
 
   const chevronStyle = {
     transform: !displayed ? "rotate(-180deg)" : "rotate(0deg)",
-    transition: "transform 1s ease",
+    transition: "transform 0.75s ease",
   };
 
   const fetchToolsByCategory = async () => {
@@ -46,12 +46,12 @@ export default function AsideToolsList({ category }: AsideToolsListProps) {
   };
 
   return (
-    <div className="flex flex-col mt-2">
-      <div className="flex justify-between font-semibold my-4">
+    <div className="aside__tools">
+      <div className="aside__tools-category semi-bold">
         <span>{category}</span>
         <span>
           <ChevronDown
-            className="cursor-pointer outline-none focus:rounded focus-visible:ring-2 focus-visible:ring-primary"
+            className="aside__tools-chevron"
             onClick={fetchToolsByCategory}
             style={chevronStyle}
             onKeyDown={(e) => handleEnterKeyDown(e, fetchToolsByCategory)}
@@ -60,27 +60,16 @@ export default function AsideToolsList({ category }: AsideToolsListProps) {
         </span>
       </div>
       <div
-        className={`
-          overflow-hidden transition-[max-height] duration-700 ease-in-out p-0.5
-          ${displayed ? "max-h-96" : "max-h-0"}
+        className={`aside__tools-list semi-bold
+          ${displayed ? "aside__tools-list--display" : "aside__tools-list--hidden"}
         `}
       >
-        <div className="flex flex-col gap-4 text-base font-semibold">
-          {tools.map((tool) => (
-            <Link
-              href={tool.url}
-              key={tool.name}
-              className="hover:underline underline-offset-4 hover:text-primary focus:text-primary "
-              tabIndex={displayed ? 0 : -1}
-            >
-              {tool.name}
-            </Link>
-          ))}
-        </div>
+        {tools.map((tool) => (
+          <Link href={tool.url} key={tool.name} tabIndex={displayed ? 0 : -1}>
+            {tool.name}
+          </Link>
+        ))}
       </div>
-      <span
-        className={`w-full border-b-2 border-secondary ${!displayed ? "-mt-2" : "mt-2"}`}
-      ></span>
     </div>
   );
 }

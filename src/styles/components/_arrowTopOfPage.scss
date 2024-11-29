@@ -1,0 +1,13 @@
+@use "../mixins" as mix;
+
+.arrow-top {
+  @include mix.flex-c-c-row;
+  margin: 0.5rem 0;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1);
+  }
+  &__icon {
+    width: clamp(26px, 5vw, 36px);
+  }
+}

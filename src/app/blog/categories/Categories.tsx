@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { defineQuery } from "next-sanity";
 import { client } from "@/sanity/lib/client";
 import { useRouter } from "next/navigation";
@@ -8,16 +7,8 @@ import { useState, useEffect } from "react";
 import { Post } from "../../page";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
-import Image from "next/image";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import Button from "@/components/custom/Button";
+import ArticleCard from "@/components/custom/ArticleCard";
 
 export interface Category {
   _id: string;
@@ -126,15 +117,9 @@ export default function Categories() {
 
   return (
     <>
-      <h1 className="w-full text-3xl xs:text-4xl font-bold tracking-tighter text-center absolute top-28 left-1/2 transform -translate-x-1/2">
-        Category : {categoryTitle}
-      </h1>
-      <div className="flex justify-end w-full">
-        <select
-          value={selectedCategory}
-          onChange={handleCategoryChange}
-          className="p-2 bg-secondary rounded-lg"
-        >
+      <h1 className="blog-cat__title">Category : {categoryTitle}</h1>
+      <div className="blog-cat__select-container">
+        <select value={selectedCategory} onChange={handleCategoryChange}>
           <option value="all">All</option>
           {categories.map((category: Category) => (
             <option value={category.slug.current} key={category._id}>
@@ -144,67 +129,30 @@ export default function Categories() {
         </select>
       </div>
 
-      <section className="grid grid-cols-2 gap-12 w-full mt-12 mb-8">
+      <section className="blog-cat__list">
         {posts.map((post: Post) => (
-          <Card
-            className="bg-card overflow-hidden col-span-2 sm:col-span-1 flex flex-col justify-between hover:drop-shadow-light hover:scale-101"
+          <ArticleCard
             key={post._id}
-          >
-            <CardHeader className={`p-4 relative`}>
-              <div className="absolute inset-0 bg-gray-900 opacity-85 z-10"></div>
-              <Image
-                src={urlFor(post.coverImage)?.url() || ""}
-                fill
-                alt=""
-                className="object-cover"
-              />
-              <Link
-                href={`/blog/posts/${post?.slug?.current}`}
-                className="hover:underline-offset-4 hover:underline z-10"
-                tabIndex={-1}
-              >
-                <CardTitle className="text-xl font-bold h-14 line-clamp-2 z-10">
-                  {post?.title}
-                </CardTitle>
-              </Link>
-              <CardDescription className="flex justify-between items-end text-base text-card-foreground z-10">
-                <span>{new Date(post.date).toLocaleDateString()}</span>
-                <span
-                  className={`font-bold px-2 py-1 mt-2 rounded-lg text-base xs:text-xl cat-${post.category.slug.current}`}
-                >
-                  {post?.category.title}
-                </span>
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="px-4 my-4 h-28 overflow-hidden text-ellipsis line-clamp-4">
-              <span>{post.resume}</span>
-            </CardContent>
-            <CardFooter className="flex justify-center p-4 -mt-2 w-full">
-              <Button
-                link={`/blog/posts/${post?.slug?.current}`}
-                text="Read full article..."
-                className="text-center w-96"
-              />
-            </CardFooter>
-          </Card>
+            title={post.title}
+            imgSrc={urlFor(post.coverImage)?.url() || ""}
+            date={post.date}
+            category={post.category.title}
+            categorySlug={post.category.slug.current}
+            resume={post.resume}
+            slug={post.slug.current}
+          />
         ))}
       </section>
-      <div className="flex justify-center items-center gap-4 mb-4">
-        <Button
-          text="&larr; Previous"
-          onClick={handlePrevPage}
-          disabled={currentPage === 1}
-          className="disabled:opacity-50"
-        />
+      <div className="blog-cat__btns">
+        <Button onClick={handlePrevPage} disabled={currentPage === 1}>
+          &larr; Previous
+        </Button>
         <span>
           {currentPage} / {totalPages}
         </span>
-        <Button
-          text="Next &rarr;"
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-          className="disabled:opacity-50"
-        />
+        <Button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          Next &rarr;
+        </Button>
       </div>
     </>
   );

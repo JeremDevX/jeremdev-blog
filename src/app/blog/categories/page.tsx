@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function CategoriesPage() {
   return (
-    <main className="flex flex-col w-full max-w-screen-xl p-4 mt-20">
+    <main className="blog-cat">
       <Categories />
     </main>
   );

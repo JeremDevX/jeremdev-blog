@@ -1,0 +1,101 @@
+@use "../mixins" as mix;
+@use "../variables" as vars;
+
+.article-card {
+  display: flex;
+  grid-column: span 1 / span 1;
+
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  height: 20rem;
+  border-radius: 0.75rem;
+  border: 2px solid hsl(var(--muted));
+  background-color: hsl(var(--card));
+  overflow: hidden;
+  transition: all 0.1s ease-in-out;
+  &:hover {
+    box-shadow: vars.$drop-light-lg;
+    transform: translate(-0.125rem, -0.125rem);
+  }
+  @media (max-width: 768px) {
+    grid-column: span 2 / span 2;
+  }
+  &__container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  &__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+
+    height: 40%;
+    background-color: hsl(var(--secondary));
+    padding: 0.75rem;
+    overflow: hidden;
+  }
+  &__mask {
+    position: absolute;
+    // inset: 0;
+    top: -10px;
+    left: -10px;
+    bottom: -10px;
+    right: -10px;
+    background-color: rgba(3, 7, 18, 0.9);
+    z-index: 10;
+  }
+  &__img {
+    object-fit: cover;
+    border-radius: 0.75rem 0.75rem 0 0;
+  }
+  &__link {
+    @include mix.flex-c-c-row;
+    z-index: 10;
+    height: 3.5rem;
+    line-clamp: 2;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+  &__post-title {
+    @include mix.medium-title;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    line-clamp: 2;
+  }
+  &__infos {
+    @include mix.flex-between-row;
+    align-items: end;
+    z-index: 10;
+  }
+  &__date {
+    font-weight: 500;
+    margin-bottom: -0.25rem;
+  }
+  &__content {
+    @include mix.flex-between-col;
+
+    height: 60%;
+    padding: 0.75rem;
+  }
+  &__paragraph {
+    @include mix.text-normal;
+
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+  }
+  &__btn {
+    @include mix.flex-c-c-row;
+
+    margin: auto;
+  }
+}

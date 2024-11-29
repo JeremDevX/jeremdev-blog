@@ -1,0 +1,38 @@
+@use "../variables" as vars;
+@use "../mixins" as mix;
+
+.button {
+  width: fit-content;
+  padding: 0.25rem 1.5rem;
+  border-radius: 0.5rem;
+  background-color: hsl(var(--secondary));
+  font-size: clamp(1rem, 3vw, 1.125rem);
+  line-height: 1.75rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    transform: scale(1.05);
+    box-shadow: vars.$drop-light-lg;
+
+    &:active {
+      opacity: 0.8;
+    }
+  }
+}
+
+.btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  &:hover {
+    transform: none;
+    box-shadow: none;
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--foreground));
+  }
+  &:active {
+    opacity: 0.5 !important;
+  }
+}

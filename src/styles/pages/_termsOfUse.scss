@@ -1,0 +1,21 @@
+@use "../mixins" as mix;
+@use "../variables" as vars;
+
+.tou {
+  @include mix.info-page;
+  @include mix.text-normal;
+  &__main-title {
+    @include mix.info-main-title;
+  }
+  &__secondary-title {
+    @include mix.info-secondary-title;
+  }
+  &__list {
+    list-style-type: disc;
+    padding-left: 3rem;
+  }
+  &__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}

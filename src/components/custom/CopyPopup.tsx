@@ -6,7 +6,7 @@ interface NotificationPopupProps {
   isVisible: boolean;
   onClose: () => void;
   duration?: number;
-  styles?: string;
+  className?: string;
 }
 
 const NotificationPopup = ({
@@ -14,7 +14,7 @@ const NotificationPopup = ({
   isVisible,
   onClose,
   duration = 2000,
-  styles = "",
+  className = "",
 }: NotificationPopupProps) => {
   const [lineWidth, setLineWidth] = useState(100);
 
@@ -22,7 +22,9 @@ const NotificationPopup = ({
     if (isVisible) {
       setLineWidth(100);
       const interval = setInterval(() => {
-        setLineWidth((prev) => Math.max(prev - 100 / (duration / 20), 0));
+        setLineWidth((prev) =>
+          Math.max(prev - 100 / (duration / 20) - 0.25, 0)
+        );
       }, 20);
       const timeout = setTimeout(onClose, duration);
 
@@ -36,9 +38,7 @@ const NotificationPopup = ({
   if (!isVisible) return null;
 
   return (
-    <div
-      className={`flex flex-col ${styles} absolute top-2 right-8 p-2 rounded-lg animate-fade-left`}
-    >
+    <div className={`copy-popup ${className}`}>
       {message}
       <span
         style={{

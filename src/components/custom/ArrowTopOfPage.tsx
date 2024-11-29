@@ -1,13 +1,14 @@
 "use client";
 import { ArrowUpToLine } from "lucide-react";
+import Button from "./Button";
 export default function ArrowTopOfPage() {
   return (
-    <button
+    <Button
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="my-4 font-semibold cursor-pointer p-2 rounded-lg bg-secondary w-fit h-12 hover:bg-primary hover:text-primary-foreground hover:drop-shadow-light flex items-center"
+      className="arrow-top"
     >
       Back to Top
-      <ArrowUpToLine size={36} className="" />
-    </button>
+      <ArrowUpToLine size={36} className="arrow-top__icon" />
+    </Button>
   );
 }

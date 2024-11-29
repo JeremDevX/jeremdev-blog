@@ -1,0 +1,102 @@
+@use "../../../../../styles/mixins" as mix;
+@use "../../../../../styles/variables" as vars;
+
+.contrast-check {
+  @include mix.flex-c-c-row;
+
+  width: 100%;
+  gap: 2rem;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+  &__sample {
+    width: 67%;
+    text-align: center;
+    p {
+      font-size: clamp(1.75rem, 3vw, 1.875rem);
+      font-weight: 700;
+      padding: 1rem;
+      border: 2px solid hsl(var(--secondary));
+      border-radius: 0.5rem;
+    }
+  }
+  &__ratio {
+    @include mix.text-normal;
+    &--number {
+      font-size: clamp(1.5rem, 3vw, 1.75rem);
+      font-weight: 700;
+      margin-left: 0.5rem;
+    }
+  }
+  &__tests {
+    width: 67%;
+    @media (max-width: 768px) {
+      width: 83%;
+    }
+  }
+  &__wcag {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border: 2px solid;
+    border-radius: 0.5rem;
+
+    &--good {
+      border-color: rgb(21, 128, 61);
+    }
+    &--bad {
+      border-color: rgb(185, 28, 28);
+    }
+    &-norm {
+      @include mix.secondary-title;
+    }
+    p {
+      @include mix.text-normal;
+
+      margin-bottom: 0.5rem;
+    }
+  }
+  &__success {
+    background-color: rgb(21, 128, 61);
+  }
+  &__fail {
+    background-color: rgb(185, 28, 28);
+  }
+  &__success,
+  &__fail {
+    padding: 0.5rem;
+    margin-left: 1rem;
+    border-radius: 0.5rem;
+  }
+  &__color-picker {
+    @include mix.flex-c-c-col;
+    align-items: end;
+
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+    padding: 1rem 1.5rem;
+    border: 2px solid hsl(var(--secondary));
+
+    p {
+      @include mix.text-normal;
+
+      width: 100%;
+      text-align: center;
+    }
+    label {
+      @include mix.flex-c-c-row;
+
+      gap: 0.5rem;
+    }
+    input {
+      border: none;
+      text-align: center;
+      color: hsl(var(--background));
+      text-transform: uppercase;
+      width: 8rem;
+    }
+  }
+}

@@ -9,43 +9,29 @@ export default function Footer() {
   const isToolPage = pathname.startsWith("/tools/");
 
   return (
-    <footer
-      className={`h-auto md:h-20 bg-background w-full flex justify-center items-center text-base border-t border-muted mt-auto ${isToolPage ? "hidden" : ""}`}
-    >
-      <div className="max-w-1440 w-full flex gap-4 py-4 md:py-0 md:gap-10 justify-between items-center  flex-col md:flex-row sm:px-8">
-        <div className="flex items-center">
+    <footer className={`footer ${isToolPage ? "footer--hidden" : ""}`}>
+      <div className="footer__container">
+        <div className="footer__logo">
           <Image src={"/wolf-only.svg"} height={50} width={50} alt="" />
-          <span className="mt-6 font-bold text-xl">TechHowlerX</span>
+          <span className="footer__logo-text">TechHowlerX</span>
         </div>
-        <div className="flex gap-6">
-          <Link
-            href={"/about"}
-            className="hover:text-primary hover:underline underline-offset-4 focus:text-primary"
-          >
+        <div className="footer__links">
+          <Link href={"/about"} className="footer__link">
             About
           </Link>
-          <Link
-            href={"/termsofuse"}
-            className="hover:text-primary hover:underline underline-offset-4 focus:text-primary"
-          >
+          <Link href={"/termsofuse"} className="footer__link">
             Terms of Use
           </Link>
-          <Link
-            href={"https://github.com/JeremDevX"}
-            className="hover:text-primary hover:underline underline-offset-4 focus:text-primary"
-          >
+          <Link href={"https://github.com/JeremDevX"} className="footer__link">
             GitHub
           </Link>
-          <Link
-            href={"/"}
-            className="hover:text-primary hover:underline underline-offset-4 focus:text-primary"
-          >
+          <Link href={"/"} className="footer__link">
             Support me
           </Link>
         </div>
-        <div className="flex flex-col">
+        <div className="footer__legal">
           <span>© 2024 TechHowlerX</span>
-          <span className="text-center">All rights reserved</span>
+          <span>All rights reserved</span>
         </div>
       </div>
     </footer>

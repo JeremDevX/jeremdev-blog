@@ -18,10 +18,10 @@ function ColorPicker({
   setColorValue: (value: string) => void;
 }) {
   return (
-    <div className="flex flex-col justify-center items-center ring py-4 px-6 gap-2 rounded">
+    <div className="contrast-check__color-picker">
       <p>{label}</p>
-      <label className="flex items-center gap-3" htmlFor={idColor}>
-        Select color
+      <label className="" htmlFor={idColor}>
+        Select color :
         <input
           type="color"
           value={colorValue}
@@ -31,11 +31,10 @@ function ColorPicker({
       </label>
       <span>
         <label htmlFor={idHex}>
-          HEX value:
+          HEX value :
           <input
             type="text"
             value={colorValue}
-            className="text-black text-center w-32 ml-2 uppercase"
             onChange={(e) => {
               const value = e.target.value;
               const sanitizedValue =
@@ -52,9 +51,9 @@ function ColorPicker({
 
 function getTag(isSuccess: boolean) {
   return isSuccess ? (
-    <span className="bg-green-700 p-2 rounded-lg ml-4">Success</span>
+    <span className="contrast-check__success">Success</span>
   ) : (
-    <span className="bg-red-700 py-2 px-4 rounded-lg ml-4">Fail</span>
+    <span className="contrast-check__fail">Fail</span>
   );
 }
 
@@ -70,9 +69,9 @@ export default function ContrastChecker() {
   };
 
   return (
-    <div className="flex flex-col h-auto gap-8 w-full items-center">
-      <h1 className="font-bold text-4xl mt-8 lg:mt-0">Contrast Checker Tool</h1>
-      <div className="flex flex-col md:flex-row justify-center gap-8">
+    <div className="tool__main">
+      <h1 className="tool__main-title">Contrast Checker Tool</h1>
+      <div className="contrast-check">
         <ColorPicker
           label="Foreground"
           colorValue={firstColorValue}
@@ -90,9 +89,8 @@ export default function ContrastChecker() {
         />
       </div>
 
-      <div className="w-2/3 text-center">
+      <div className="contrast-check__sample">
         <p
-          className="text-3xl font-bold p-4 ring rounded"
           style={sampleTextStyle}
           title="Sample text color testing"
           aria-label="Sample text color testing"
@@ -100,172 +98,162 @@ export default function ContrastChecker() {
           SAMPLE TEXT COLOR TESTING
         </p>
       </div>
-      <p>
+      <p className="contrast-check__ratio">
         Contrast ratio :
-        <span className="text-3xl font-bold ml-2">{ratio.toFixed(2)}:1</span>
+        <span className="contrast-check__ratio--number">
+          {ratio.toFixed(2)}:1
+        </span>
       </p>
-      <div className="w-5/6 md:w-2/3">
+      <div className="contrast-check__tests">
         <div
-          className={`flex flex-col gap-2 mb-8 ring p-4 rounded ${
-            ratio >= 4.5 ? "ring-green-700" : "ring-red-700"
+          className={`contrast-check__wcag ${
+            ratio >= 4.5
+              ? "contrast-check__wcag--good"
+              : "contrast-check__wcag--bad"
           }`}
         >
-          <h3 className="font-bold text-3xl">WCAG AA</h3>
-          <p className="mb-2">Normal text : {getTag(ratio >= 4.5)}</p>
+          <h3 className="contrast-check__wcag-norm">WCAG AA</h3>
+          <p>Normal text : {getTag(ratio >= 4.5)}</p>
           <p>Large text : {getTag(ratio >= 3)}</p>
         </div>
         <div
-          className={`flex flex-col gap-2 ring p-4 rounded ${
-            ratio >= 7 ? "ring-green-700" : "ring-red-700"
+          className={`contrast-check__wcag ${
+            ratio >= 7
+              ? "contrast-check__wcag--good"
+              : "contrast-check__wcag--bad"
           }`}
         >
-          <h3 className="font-bold text-3xl">WCAG AAA</h3>
-          <p className="mb-2">Normal text : {getTag(ratio >= 7)}</p>
+          <h3 className="contrast-check__wcag-norm">WCAG AAA</h3>
+          <p>Normal text : {getTag(ratio >= 7)}</p>
           <p>Large text : {getTag(ratio >= 4.5)}</p>
         </div>
       </div>
-      <div className="rounded-lg p-4 border-2 border-secondary relative flex flex-col gap-4 mt-8 mx-2">
-        <h2 className="text-2xl xs:text-3xl font-bold absolute -top-4 xs:left-8 bg-background px-2">
-          What is Contrast Ratio?
-        </h2>
-        <h3 className="mt-4 text-2xl underline underline-offset-4">
-          Definition:
-        </h3>
-        <p>
+      <div className="tool__desc">
+        <h2 className="tool__desc-title">What is Contrast Ratio?</h2>
+        <h3 className="tool__desc-med-title">Definition:</h3>
+        <p className="tool__desc-text">
           Contrast ratio is the result of a calculation between the foreground
           color (usually text) and the background color. It&apos;s essential for
           determining whether the contrast between two colors is sufficient for
           the text to be easily legible by all users, including those with
           visual impairments.
         </p>
-        <h3 className="text-2xl underline underline-offset-4 mt-2">
-          How does it work?
-        </h3>
-        <p>
+        <h3 className="tool__desc-med-title">How does it work?</h3>
+        <p className="tool__desc-text">
           To calculate this ratio, we first need the relative luminance of the
           two colors being compared. This involves transforming each{" "}
-          <strong className="text-primary">RGB</strong> color component into a
-          luminance value.
+          <b className="highlight">RGB</b> color component into a luminance
+          value.
         </p>
-        <p className="-mb-2 mt-2">
+        <br />
+        <p className="tool__desc-text">
           We use the following formulas to achieve this:
         </p>
-        <ul className="list-disc pl-8 space-y-2">
+        <ul className="ul-list">
           <li>
-            If <strong className="text-primary">RsRGB</strong> ≤{" "}
-            <strong className="text-primary">0.03928</strong> then{" "}
-            <strong className="text-primary">R</strong> ={" "}
-            <strong className="text-primary">RsRGB</strong> /{" "}
-            <strong className="text-primary">12.92</strong> else{" "}
-            <strong className="text-primary">R</strong> = ((
-            <strong className="text-primary">RsRGB</strong> +{" "}
-            <strong className="text-primary">0.055</strong>) /{" "}
-            <strong className="text-primary">1.055</strong>) ^{" "}
-            <strong className="text-primary">2.4</strong>
+            If <b className="highlight">RsRGB</b> ≤{" "}
+            <b className="highlight">0.03928</b> then{" "}
+            <b className="highlight">R</b> = <b className="highlight">RsRGB</b>{" "}
+            / <b className="highlight">12.92</b> else{" "}
+            <b className="highlight">R</b> = ((
+            <b className="highlight">RsRGB</b> +{" "}
+            <b className="highlight">0.055</b>) /{" "}
+            <b className="highlight">1.055</b>) ^{" "}
+            <b className="highlight">2.4</b>
           </li>
           <li>
-            If <strong className="text-primary">GsRGB</strong> ≤{" "}
-            <strong className="text-primary">0.03928</strong> then{" "}
-            <strong className="text-primary">G</strong> ={" "}
-            <strong className="text-primary">GsRGB</strong> /{" "}
-            <strong className="text-primary">12.92</strong> else{" "}
-            <strong className="text-primary">G</strong> = ((
-            <strong className="text-primary">GsRGB</strong> +{" "}
-            <strong className="text-primary">0.055</strong>) /{" "}
-            <strong className="text-primary">1.055</strong>) ^{" "}
-            <strong className="text-primary">2.4</strong>
+            If <b className="highlight">GsRGB</b> ≤{" "}
+            <b className="highlight">0.03928</b> then{" "}
+            <b className="highlight">G</b> = <b className="highlight">GsRGB</b>{" "}
+            / <b className="highlight">12.92</b> else{" "}
+            <b className="highlight">G</b> = ((
+            <b className="highlight">GsRGB</b> +{" "}
+            <b className="highlight">0.055</b>) /{" "}
+            <b className="highlight">1.055</b>) ^{" "}
+            <b className="highlight">2.4</b>
           </li>
           <li>
-            If <strong className="text-primary">BsRGB</strong> ≤{" "}
-            <strong className="text-primary">0.03928</strong> then{" "}
-            <strong className="text-primary">B</strong> ={" "}
-            <strong className="text-primary">BsRGB</strong> /{" "}
-            <strong className="text-primary">12.92</strong> else{" "}
-            <strong className="text-primary">B</strong> = ((
-            <strong className="text-primary">BsRGB</strong> +{" "}
-            <strong className="text-primary">0.055</strong>) /{" "}
-            <strong className="text-primary">1.055</strong>) ^{" "}
-            <strong className="text-primary">2.4</strong>
+            If <b className="highlight">BsRGB</b> ≤{" "}
+            <b className="highlight">0.03928</b> then{" "}
+            <b className="highlight">B</b> = <b className="highlight">BsRGB</b>{" "}
+            / <b className="highlight">12.92</b> else{" "}
+            <b className="highlight">B</b> = ((
+            <b className="highlight">BsRGB</b> +{" "}
+            <b className="highlight">0.055</b>) /{" "}
+            <b className="highlight">1.055</b>) ^{" "}
+            <b className="highlight">2.4</b>
           </li>
         </ul>
-        <p className="-mb-2 mt-2">
+        <p className="tool__desc-text">
           Once the relative luminance values of both colors are obtained, we
           sort them by brightness:
         </p>
-        <ul className="list-disc pl-8 space-y-2">
+        <ul className="ul-list">
           <li>
-            <strong className="text-primary">L1</strong> = the lighter color
+            <b className="highlight">L1</b> = the lighter color
           </li>
           <li>
-            <strong className="text-primary">L2</strong> = the darker color
-          </li>
-        </ul>
-        <p className="-mb-2 mt-2">We then perform the following calculation:</p>
-        <ul className="list-disc pl-8">
-          <li>
-            (<strong className="text-primary">L1</strong> +{" "}
-            <strong className="text-primary">0.05</strong>) / (
-            <strong className="text-primary">L2</strong> +{" "}
-            <strong className="text-primary">0.05</strong>)
+            <b className="highlight">L2</b> = the darker color
           </li>
         </ul>
-        <p>
-          Which gives us a ratio between{" "}
-          <strong className="text-primary">1:1</strong> (lowest contrast) and{" "}
-          <strong className="text-primary">21:1</strong> (highest contrast).
+        <p className="tool__desc-text">
+          We then perform the following calculation:
+        </p>
+        <ul className="ul-list">
+          <li>
+            (<b className="highlight">L1</b> + <b className="highlight">0.05</b>
+            ) / (<b className="highlight">L2</b> +{" "}
+            <b className="highlight">0.05</b>)
+          </li>
+        </ul>
+        <p className="tool__desc-text">
+          Which gives us a ratio between <b className="highlight">1:1</b>{" "}
+          (lowest contrast) and <b className="highlight">21:1</b> (highest
+          contrast).
         </p>
 
-        <h3 className="text-2xl underline underline-offset-4 mt-2">
-          What is it for?
-        </h3>
-        <p>
+        <h3 className="tool__desc-med-title">What is it for?</h3>
+        <p className="tool__desc-text">
           The contrast ratio is a key metric for web accessibility, ensuring
           that website text is readable by everyone, including users with visual
           limitations. Depending on the text size, weight, and contrast ratio,
           we can evaluate if a text element meets the standards for readability.
         </p>
-        <p className="mt-2 -mb-2">
+        <p className="tool__desc-text">
           According to WCAG standards, the minimum acceptable values for
           accessible text are:
         </p>
-        <h4 className="text-xl font-semibold underline underline-offset-4">
-          WCAG AA :
-        </h4>
-        <ul className="list-disc pl-8 space-y-2">
+        <h4 className="tool__desc-minor-title">WCAG AA :</h4>
+        <ul className="ul-list">
           <li>
-            Normal text: <strong className="text-primary">4.5:1</strong>
+            Normal text: <b className="highlight">4.5:1</b>
           </li>
           <li>
-            Large text: <strong className="text-primary">3:1</strong>
+            Large text: <b className="highlight">3:1</b>
           </li>
         </ul>
-        <h4 className="text-xl font-semibold underline underline-offset-4">
-          WCAG AAA :
-        </h4>
-        <ul className="list-disc pl-8 space-y-2">
+        <h4 className="tool__desc-minor-title">WCAG AAA :</h4>
+        <ul className="ul-list">
           <li>
-            Normal text: <strong className="text-primary">7:1</strong>
+            Normal text: <b className="highlight">7:1</b>
           </li>
           <li>
-            Large text: <strong className="text-primary">4.5:1</strong>
+            Large text: <b className="highlight">4.5:1</b>
           </li>
         </ul>
-        <p className="text-lg italic -mb-4">
-          * Normal text = font size &lt; 18pt / 24px.
+        <p className="tool__desc-nb">
+          * Normal text = font size &lt; 18pt / 24px. <br />
+          ** Large text = font size ≥ 18pt / 24px or 14pt / 18px if <b>bold</b>.
         </p>
-        <p className="text-lg italic">
-          ** Large text = font size ≥ 18pt / 24px or 14pt / 18px if{" "}
-          <strong>bold</strong>.
-        </p>
-        <p className="mt-2 -mb-2">Sources:</p>
-        <ul className="list-disc pl-8">
+        <p className="tool__desc-text">Sources:</p>
+        <ul className="ul-list">
           <li>
             <Link
               href={"https://www.w3.org/WAI/GL/wiki/Relative_luminance"}
               aria-label="Learn more about relative luminance"
               rel="noopener noreferrer"
               target="_blank"
-              className="hover:underline underline-offset-4 text-primary"
+              className="tool__desc-link"
             >
               Relative luminance
             </Link>
@@ -276,7 +264,7 @@ export default function ContrastChecker() {
               aria-label="Learn more about contrast ratio"
               rel="noopener noreferrer"
               target="_blank"
-              className="hover:underline underline-offset-4 text-primary"
+              className="tool__desc-link"
             >
               Contrast ratio
             </Link>
@@ -289,7 +277,7 @@ export default function ContrastChecker() {
               aria-label="Learn more about WCAG contrast minimum"
               rel="noopener noreferrer"
               target="_blank"
-              className="hover:underline underline-offset-4 text-primary"
+              className="tool__desc-link"
             >
               WCAG contrast minimum (Level AA)
             </Link>
@@ -302,7 +290,7 @@ export default function ContrastChecker() {
               aria-label="Learn more about WCAG contrast enhanced"
               rel="noopener noreferrer"
               target="_blank"
-              className="hover:underline underline-offset-4 text-primary"
+              className="tool__desc-link"
             >
               WCAG contrast enhanced (Level AAA)
             </Link>

@@ -15,17 +15,14 @@ export default function PostLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="w-full">
+    <div className="tool">
       <Aside asideFor="tools" />
-      <main className="flex flex-col justify-center article-padding mb-8">
-        <Link
-          href="/tools"
-          className="font-semibold underline-offset-4 hover:underline mb-8 w-fit ml-4 lg:ml-0 mt-4 lg:mt-0"
-        >
+      <main className="tool__container article-padding">
+        <Link href="/tools" className="tool__back">
           ← Back to tools
         </Link>
         {children}
-        <div className="flex w-full justify-end mt-4">
+        <div className="tool__return-top">
           <ArrowTopOfPage />
         </div>
       </main>

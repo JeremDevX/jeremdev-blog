@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Input } from "../ui/input";
 import { Search } from "lucide-react";
 import { useCloseOnClickAway } from "@/utils/useOnClickAway";
 import { client } from "@/sanity/lib/client";
@@ -114,48 +113,43 @@ export default function SearchInput() {
   }, [query]);
 
   return (
-    <div className="relative">
+    <div className="search">
       <Search
-        className="cursor-pointer outline-none"
+        className="search__icon"
         onClick={handleSearchOpen}
         onKeyDown={(e) => handleEnterKeyDown(e, handleSearchOpen)}
         tabIndex={0}
       />
       {isSearchOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-10">
-          <div
-            className={`fixed p-4 h-96 w-11/12 md:w-4/12 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center bg-background ring-muted ring-2 rounded-lg max-w-1000 overflow-y-auto`}
-            ref={searchContainerRef}
-          >
+        <div className="search__background">
+          <div className="search__container" ref={searchContainerRef}>
             {isArticleSearch ? (
-              <Input
+              <input
                 type="search"
                 placeholder="Search articles..."
-                className="text-left indent-8 text-lg bg-background focus:ring-2 focus:ring-primary w-full h-12 mb-2 placeholder:opacity-40 relative"
+                className="search__input"
                 autoFocus
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
             ) : (
-              <Input
+              <input
                 type="search"
                 placeholder="Search tools..."
-                className="text-left indent-8 text-lg bg-background focus:ring-2 focus:ring-primary w-full h-12 mb-2 placeholder:opacity-40 relative"
+                className="search__input"
                 autoFocus
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
             )}
-            <Search className="absolute left-6 top-6" />
-            <div>
-              <span className="mr-2">Search for :</span>
-              <Button
-                text={isArticleSearch ? "Articles" : "Tools"}
-                className="mt-2"
-                onClick={handleSearchType}
-              />
+            <Search className="search__input-icon" />
+            <div className="search__type">
+              <span>Search for :</span>
+              <Button onClick={handleSearchType}>
+                {isArticleSearch ? "Articles" : "Tools"}
+              </Button>
             </div>
-            <div className="flex flex-col w-full overflow-auto mt-4">
+            <div className="search__results-list">
               {results.length > 0 ? (
                 isArticleSearch ? (
                   results.map((post: Post) => {
@@ -164,7 +158,7 @@ export default function SearchInput() {
                         href={`/blog/posts/${post?.slug?.current}`}
                         onClick={() => setIsSearchOpen(false)}
                         key={post._id}
-                        className="p-2 bg-secondary mt-2 mb-2 w-full h-auto text-left md:text-center rounded-lg hover:bg-primary hover:text-primary-foreground"
+                        className="search__result"
                       >
                         {post.title}
                       </Link>
@@ -177,7 +171,7 @@ export default function SearchInput() {
                         href={tool.url}
                         onClick={() => setIsSearchOpen(false)}
                         key={tool.name}
-                        className="p-2 bg-secondary mt-2 mb-2 w-full h-auto text-left md:text-center rounded-lg hover:bg-primary hover:text-primary-foreground"
+                        className="search__result"
                       >
                         {tool.name}
                       </Link>
@@ -185,9 +179,7 @@ export default function SearchInput() {
                   })
                 )
               ) : (
-                <span className="h-full flex mt-8 justify-center">
-                  {statusMessage}
-                </span>
+                <span className="search__message">{statusMessage}</span>
               )}
             </div>
           </div>

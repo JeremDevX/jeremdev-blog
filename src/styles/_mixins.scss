@@ -1,0 +1,118 @@
+@use "./variables" as vars;
+
+@mixin flex-c-c-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+@mixin flex-c-c-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+@mixin flex-e-c-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: row;
+}
+
+@mixin flex-c-e-col {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+@mixin flex-between-col {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+@mixin flex-between-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+@mixin section-index {
+  border-bottom: 1px solid hsl(var(--card));
+  gap: 1rem;
+  padding-bottom: 2rem;
+  max-width: vars.$max-layout-width;
+  width: 100%;
+}
+
+@mixin info-page {
+  @include flex-c-c-col;
+
+  max-width: vars.$max-w-1000;
+  width: 100%;
+  margin-top: 2.5rem;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+}
+
+@mixin info-main-title {
+  @include main-title;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+@mixin info-secondary-title {
+  @include secondary-title;
+  text-align: center;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@mixin main-title {
+  font-size: clamp(2.25rem, 3vw, 2.5rem);
+  line-height: 2.5rem;
+  font-weight: 700;
+}
+
+@mixin secondary-title {
+  font-size: clamp(1.5rem, 3vw, 1.875rem);
+  line-height: clamp(2rem, 2.5vw, 2.25rem);
+  font-weight: 700;
+}
+
+@mixin medium-title {
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
+  line-height: clamp(1.875rem, 2.5vw, 2rem);
+  font-weight: 600;
+}
+
+@mixin medium-border-title {
+  font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid hsl(var(--secondary));
+}
+
+@mixin minor-title {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  line-height: 1.5rem;
+  font-weight: 600;
+}
+
+@mixin text-normal {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  line-height: 1.75rem;
+}
+
+@mixin text-small {
+  font-size: clamp(1rem, 2.5vw, 1.125rem);
+  line-height: 1.5rem;
+}

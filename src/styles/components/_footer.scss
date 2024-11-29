@@ -1,0 +1,63 @@
+@use "../variables" as vars;
+@use "../mixins" as mix;
+
+.footer {
+  @include mix.flex-c-c-row;
+  height: 5rem;
+  width: 100%;
+  background-color: hsl(var(--background));
+  font-size: 1rem;
+  line-height: 1.5rem;
+  margin-top: auto;
+  border-top: 1px solid hsl(var(--muted));
+
+  @media (max-width: 768px) {
+    height: auto;
+  }
+  &--hidden {
+    display: none;
+  }
+  &__container {
+    @include mix.flex-between-row;
+
+    max-width: vars.$max-layout-width;
+    width: 100%;
+    gap: 2.5rem;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 1rem;
+      padding: 2rem 0;
+    }
+    @media (max-width: 640px) {
+      padding: 1rem 0;
+    }
+  }
+  &__logo {
+    @include mix.flex-c-c-row;
+    &-text {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+      font-weight: 700;
+      margin-top: 1.5rem;
+    }
+  }
+  &__links {
+    @include mix.flex-c-c-row;
+
+    gap: 1.5rem;
+  }
+  &__link {
+    &:focus,
+    &:hover {
+      color: hsl(var(--primary));
+    }
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+  &__legal {
+    @include mix.flex-c-c-col;
+  }
+}

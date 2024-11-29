@@ -1,0 +1,14 @@
+@use "../mixins" as mix;
+@use "../variables" as vars;
+
+.cat-list {
+  &__title {
+    @include mix.medium-border-title;
+  }
+
+  &__container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}

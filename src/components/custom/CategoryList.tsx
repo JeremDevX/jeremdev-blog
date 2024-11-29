@@ -11,12 +11,10 @@ const CATEGORIES_QUERY = defineQuery(`
 export default async function CategoryList() {
   const fetchedCategories = await client.fetch(CATEGORIES_QUERY, {}, options);
   return (
-    <div>
-      <h2 className="text-center font-semibold text-2xl mb-6 border-b border-secondary pb-3">
-        Browse by category
-      </h2>
-      <div className="flex gap-4 flex-wrap">
-        <CategoryButton href="/blog/categories" catClass="all" growOnHover>
+    <div className="cat-list">
+      <h2 className="cat-list__title">Browse by category</h2>
+      <div className="cat-list__container">
+        <CategoryButton href="/blog/categories" catClass="all" growOnHover link>
           All
         </CategoryButton>
 
@@ -26,6 +24,7 @@ export default async function CategoryList() {
             catClass={category.slug.current}
             href={category.slug.current}
             growOnHover
+            link
           >
             {category.title}
           </CategoryButton>

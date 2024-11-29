@@ -1,0 +1,33 @@
+:root {
+  --gradient: linear-gradient(to top left, #56a5cd, #0068bd);
+  --background: 210, 56%, 5%;
+  --foreground: 212 8% 98.45%;
+  --muted: 212 40% 20.7%;
+  --muted-foreground: 212 8% 56.9%;
+  --popover: 212 49% 8.969999999999999%;
+  --popover-foreground: 212 8% 98.45%;
+  --card: 212 49% 8.969999999999999%;
+  --card-foreground: 212 8% 98.45%;
+  --border: 212 40% 20.7%;
+  --input: 212 40% 20.7%;
+  --primary: 212 80% 69%;
+  --primary-foreground: 212 8% 6.8999999999999995%;
+  --secondary: 212 80% 32.43%;
+  --secondary-foreground: 212 8% 98.45%;
+  --accent: 200 58% 54%;
+  --accent-darker: 200 20% 5%;
+  --accent-foreground: 212 8% 98.45%;
+  --destructive: 24 100% 61%;
+  /* --destructive: 0 63% 55%; */
+  --destructive-foreground: 212 8% 98.45%;
+  --ring: 212 80% 69%;
+  --radius: 0.5rem;
+
+  --max-layout-width: 1440px;
+  --sidebar-size: 272px;
+}
+
+$max-layout-width: 1440px;
+$max-w-1000: 1000px;
+$drop-light: 0 0px 15px rgba(62, 112, 138, 0.15);
+$drop-light-lg: 0 0px 15px rgba(62, 112, 138, 0.5);

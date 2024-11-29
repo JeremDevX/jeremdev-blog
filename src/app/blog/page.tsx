@@ -52,15 +52,11 @@ export default async function BlogPage() {
   const posts = await client.fetch(POSTS_QUERY, {}, options);
 
   return (
-    <main className="flex gap-12 w-full max-w-screen-xl p-4 mt-24 mb-8">
-      <h1 className="text-4xl font-bold tracking-tighter text-center absolute top-28 left-1/2 transform -translate-x-1/2">
-        Blog
-      </h1>
-      <section className="flex-3 sm:px-6">
-        <h2 className="text-center text-3xl font-bold mb-12 border-b border-secondary pb-2">
-          Latest articles
-        </h2>
-        <div className="grid grid-cols-2 grid-rows-3 gap-8">
+    <main className="blog">
+      <h1 className="blog__main-title">Blog</h1>
+      <section className="blog__latest">
+        <h2 className="blog__latest-title">Latest articles</h2>
+        <div className="blog__latest-articles">
           {posts.map((post: Post) => (
             <ArticleCard
               key={post._id}
@@ -75,7 +71,7 @@ export default async function BlogPage() {
           ))}
         </div>
       </section>
-      <section className="flex-col flex-1 lg:flex hidden gap-8">
+      <section className="blog__most-viewed">
         <MostViewedPosts />
         <CategoryList />
       </section>

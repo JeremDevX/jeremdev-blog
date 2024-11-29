@@ -1,0 +1,13 @@
+.copy-popup {
+  display: flex;
+  flex-direction: column;
+
+  position: fixed;
+  top: 6rem;
+  right: 2rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  z-index: 999;
+
+  animation: fadeLeft 0.5s ease;
+}

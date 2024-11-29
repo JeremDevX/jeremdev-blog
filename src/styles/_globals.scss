@@ -1,0 +1,243 @@
+@use "./mixins" as mix;
+@use "./variables" as vars;
+
+*:focus-visible {
+  outline: none;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0 3px hsl(212, 80%, 69%);
+}
+
+.body {
+  @include mix.flex-c-c-col;
+
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  border-color: hsl(var(--border));
+  min-height: 100vh;
+  font-size: clamp(1.125rem, 3vw, 1.25rem);
+  line-height: 1.75rem;
+  letter-spacing: -0.025em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.header {
+  margin-bottom: 5rem;
+}
+
+.highlight {
+  color: hsl(var(--primary));
+  font-weight: 700;
+}
+
+.semi-bold {
+  font-weight: 600;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.underline {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.destructive {
+  color: hsl(var(--destructive));
+  font-weight: 700;
+}
+
+.ul-list {
+  list-style: disc;
+  margin: 0.5rem 0;
+  padding-left: 2rem;
+}
+
+.copy-success {
+  background-color: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+}
+
+.copy-error {
+  background-color: hsl(var(--destructive));
+  color: hsl(var(--destructive-foreground));
+}
+
+.cat-all {
+  background-color: #212773;
+}
+.cat-ressources {
+  background-color: #0050c7;
+}
+.cat-programming {
+  background-color: #d04924;
+}
+.cat-security-privacy {
+  background-color: #990015;
+}
+.cat-hardware {
+  background-color: #0e671a;
+}
+
+@media screen and (max-width: 768px) {
+  .article-padding {
+    padding: 0px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .article-padding {
+    padding: 32px 16px 32px;
+    padding-left: var(--sidebar-size);
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .article-padding {
+    padding-left: calc(
+      (100vw - var(--max-layout-width)) / 2 + var(--sidebar-size) + 16px
+    );
+    padding-right: calc((100vw - var(--max-layout-width)) / 2 + 16px);
+  }
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #ccc;
+  background: none;
+  /* font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace; */
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: 1em;
+  margin: 1rem 0 2.5rem;
+  overflow: auto;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+  background: #2d2d2d;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: 0.1em;
+  border-radius: 0.3em;
+  white-space: normal;
+}
+
+.token.comment,
+.token.block-comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #999;
+}
+
+.token.punctuation {
+  color: #ccc;
+}
+
+.token.tag,
+.token.attr-name,
+.token.namespace,
+.token.deleted {
+  color: #e2777a;
+}
+
+.token.function-name {
+  color: #6196cc;
+}
+
+.token.boolean,
+.token.number,
+.token.function {
+  color: #f08d49;
+}
+
+.token.property,
+.token.class-name,
+.token.constant,
+.token.symbol {
+  color: #f8c555;
+}
+
+.token.selector,
+.token.important,
+.token.atrule,
+.token.keyword,
+.token.builtin {
+  color: #cc99cd;
+}
+
+.token.string,
+.token.char,
+.token.attr-value,
+.token.regex,
+.token.variable {
+  color: #7ec699;
+}
+
+.token.operator,
+.token.entity,
+.token.url {
+  color: #67cdcc;
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.inserted {
+  color: green;
+}
+
+/* Scrollbar */
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+*::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+  border-radius: 50%;
+}
+textarea::-webkit-scrollbar-track {
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground));
+  border-radius: 8px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-color: hsl(var(--muted-foreground)) hsl(var(--background));
+    scrollbar-width: thin;
+  }
+}

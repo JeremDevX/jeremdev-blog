@@ -39,20 +39,20 @@ export default function HomeArticles(props: HomeArticlesProps) {
   const homeContentImgUrl = showLatest ? imgUrlLatest : imgUrlMostViewed;
 
   return (
-    <div className="max-w-1440 flex flex-col p-4 justify-center items-center">
-      <h2 className="text-3xl font-bold mt-8 mb-8 underline-offset-4 flex flex-col md:flex-row gap-2 items-center">
+    <div className="home-articles">
+      <h2 className="home-articles__types">
         <span
           onClick={toggleLatest}
-          className={`${showLatest && "bg-secondary"} hover:bg-primary hover:text-primary-foreground p-2 rounded-lg hover:drop-shadow-lighter cursor-pointer`}
+          className={`home-articles__type ${showLatest ? "home-articles__type--active" : ""}`}
           tabIndex={0}
           onKeyDown={(e) => handleEnterKeyDown(e, toggleLatest)}
         >
           Latest Article
         </span>
-        <span className="hidden md:inline">/</span>
+        <span className="home-articles__type-slash">/</span>
         <span
           onClick={toggleMostViewed}
-          className={`${!showLatest && "bg-secondary"} hover:bg-primary hover:text-primary-foreground p-2 rounded-lg hover:drop-shadow-lighter cursor-pointer`}
+          className={`home-articles__type ${!showLatest ? "home-articles__type--active" : ""}`}
           tabIndex={0}
           onKeyDown={(e) => handleEnterKeyDown(e, toggleMostViewed)}
         >
@@ -60,37 +60,35 @@ export default function HomeArticles(props: HomeArticlesProps) {
         </span>
       </h2>
       <article
-        className={`max-w-1000 min-h-96 h-fit md:h-96 p-3 rounded-lg md:bg-muted text-secondary-foreground relative md:flex hover:scale-101 drop-shadow-light hover:drop-shadow-lighter transition-all duration-300 transform ${
-          isFading ? "opacity-0" : "opacity-100"
+        className={`home-articles__content ${
+          isFading ? "home-articles__content--fading" : ""
         }`}
       >
-        <div className="bg-gray-950 rounded-lg z-0 absolute inset-0 opacity-85 md:hidden"></div>
-        <div className="w-5/12 md:relative">
+        <div className="home-articles__content-mask"></div>
+        <div className="home-articles__content-img-container">
           <Image
             src={homeContentImgUrl}
             fill
             alt=""
-            className="object-cover rounded-lg -z-10 md:z-0"
+            className="home-articles__content-img"
           />
         </div>
-        <div className="w-full md:w-7/12 relative z-10 flex flex-col items-center justify-between py-2 min-h-96 md:min-h-max">
+        <div className="home-articles__content-container">
           <Link
             href={`/blog/posts/${homeContent[0].slug.current}`}
-            className="focus:text-accent hover:text-accent"
+            className="home-articles__content-link"
           >
-            <h3 className="font-semibold underline underline-offset-4 line-clamp-2 text-2xl px-4 mt-4 md:mt-0 text-center">
+            <h3 className="home-articles__content-title">
               {homeContent[0].title}
             </h3>
           </Link>
-          <p className="mt-4 md:-mt-6 px-2 md:px-6 md:pb-0 md:text-center line-clamp-6 text-lg md:text-xl">
+          <p className="home-articles__content-summary">
             {homeContent[0].resume}
           </p>
-          <div className="flex w-full justify-center">
-            <Button
-              link={`/blog/posts/${homeContent[0].slug.current}`}
-              text="Read full article..."
-              className="md:w-96 text-center"
-            />
+          <div className="home-articles__content-btn">
+            <Button link={`/blog/posts/${homeContent[0].slug.current}`}>
+              Read full article...
+            </Button>
           </div>
         </div>
       </article>

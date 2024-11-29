@@ -1,0 +1,38 @@
+@use "../mixins" as mix;
+@use "../variables" as vars;
+
+.blog-cat {
+  @include mix.flex-c-c-col;
+
+  max-width: vars.$max-layout-width;
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1rem;
+  &__title {
+    @include mix.main-title;
+    text-align: center;
+    margin: 1rem 0;
+  }
+  &__select-container {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    select {
+      padding: 0.5rem;
+      background-color: hsl(var(--secondary));
+      border-radius: 0.5rem;
+    }
+  }
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3rem;
+    width: 100%;
+    margin: 3rem 0 2rem;
+  }
+  &__btns {
+    @include mix.flex-c-c-row;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+}

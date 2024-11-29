@@ -1,0 +1,47 @@
+@use "../mixins" as mix;
+@use "../variables" as vars;
+
+.blog {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  padding: 1rem;
+  margin: 6rem 0 2rem;
+  gap: 3rem;
+
+  &__main-title {
+    @include mix.main-title;
+    text-align: center;
+    position: absolute;
+    top: 7rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  &__latest {
+    flex: 3;
+    padding: 0 1.5rem;
+
+    @media (max-width: 640px) {
+      padding: 0;
+    }
+    &-title {
+      @include mix.medium-border-title;
+      margin-bottom: 3rem;
+      text-align: center;
+      border-bottom: 1px solid hsl(var(--secondary));
+    }
+    &-articles {
+      @include mix.flex-c-c-col;
+      gap: 2rem;
+    }
+  }
+  &__most-viewed {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 2rem;
+    @media (max-width: 1024px) {
+      display: none;
+    }
+  }
+}

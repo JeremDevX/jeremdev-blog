@@ -104,28 +104,27 @@ export default async function ArticlePage(props: {
   }
 
   return (
-    <section className="max-w-1440 w-full min-h-min px-8 pb-4 mt-4 mx-auto relative">
-      <Link
-        href="/blog"
-        className="font-semibold hover:underline underline-offset-4"
-      >
+    <section className="post__container">
+      <Link href="/blog" className="post__back-link">
         &larr; Back to blog
       </Link>
       <Image
         src={ImageUrl || "https://via.placeholder.com/550x310"}
         alt=""
-        className="mx-auto overflow-hidden rounded-xl object-cover object-center mt-8"
+        className="post__img"
         height="810"
         width="810"
       />
-      <div className="flex flex-col justify-between pt-8 pb-2 border-b-2 border-card mb-8">
-        <h1 className="text-4xl text-center font-bold mb-2">{title}</h1>
-        <span className="text-end text-lg">Date : {date}</span>
+      <div className="post__header">
+        <h1 className="post__header-title">{title}</h1>
+        <span className="post__header-date">
+          Date : <time>{date}</time>
+        </span>
       </div>
-      <div className="article-content">
+      <div className="post__content">
         <PortableText value={content} components={customComponents} />
       </div>
-      <div className="flex w-full justify-end my-2">
+      <div className="post__return-top">
         <ArrowTopOfPage />
       </div>
     </section>

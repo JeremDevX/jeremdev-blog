@@ -40,39 +40,33 @@ export default function HomeNews({ news }: HomeNewsProps) {
   const currentNews = news[currentIndex];
 
   return (
-    <div className={`flex flex-col items-center px-4`}>
+    <div className="home-news">
       <article
-        className={`max-w-1000 flex flex-col p-4 justify-center items-center gap-4 md:flex-row bg-muted rounded-lg relative h-auto lg:h-52 xs:h-auto sm:h-72 drop-shadow-light animate-duration-1000 ${isSlidingRight && "animate-fade-right"} ${isSlidingLeft && "animate-fade-left"}`}
+        className={`home-news__container ${isSlidingRight && "home-news__container--fade-right"} ${isSlidingLeft && "home-news__container--fade-left"}`}
       >
-        <div className="flex-1 flex flex-col items-center justify-start gap-4 h-full">
-          <h3 className="text-2xl font-semibold text-center">
-            {currentNews.title} -{" "}
-            <span className="font-normal text-xl">
-              {" "}
-              {new Date(currentNews.date).toLocaleDateString()}
-            </span>
-          </h3>
-          <p className="px-8">{currentNews.content}</p>
-          {news.length > 1 && (
-            <p className="absolute bottom-4 right-4 text-base font-semibold">
-              {currentIndex + 1}/{news.length}
-            </p>
-          )}
-        </div>
+        <h3 className="home-news__title">
+          {currentNews.title} -{" "}
+          <span className="home-news__date">
+            {" "}
+            {new Date(currentNews.date).toLocaleDateString()}
+          </span>
+        </h3>
+        <p className="home-news__desc">{currentNews.content}</p>
+        {news.length > 1 && (
+          <p className="home-news__pagination">
+            {currentIndex + 1}/{news.length}
+          </p>
+        )}
       </article>
 
       {news.length > 1 && (
-        <div className="flex mt-8 gap-4">
-          <Button
-            text="&larr; Previous"
-            onClick={handlePrev}
-            ariaLabel="Previous news"
-          />
-          <Button
-            text="Next &rarr;"
-            onClick={handleNext}
-            ariaLabel="Next news"
-          />
+        <div className="home-news__btns">
+          <Button onClick={handlePrev} ariaLabel="Previous news">
+            &larr; Previous
+          </Button>
+          <Button onClick={handleNext} ariaLabel="Next news">
+            Next &rarr;
+          </Button>
         </div>
       )}
     </div>

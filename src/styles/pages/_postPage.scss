@@ -1,0 +1,118 @@
+@use "../mixins" as mix;
+@use "../variables" as vars;
+
+.post {
+  @include mix.flex-c-c-col;
+  width: 100%;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+    max-width: vars.$max-layout-width;
+    width: 100%;
+    min-height: min-content;
+    padding: 0 2rem 1rem;
+    margin: 1rem auto 0;
+  }
+  &__back-link {
+    font-weight: 600;
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+  &__img {
+    width: 100%;
+    height: auto;
+    max-width: 810px;
+    max-height: 460px;
+    margin: 2rem auto 0;
+    object-fit: cover;
+    border-radius: 0.75rem;
+    object-position: center;
+    overflow: hidden;
+  }
+  &__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2rem 0 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid hsl(var(--card));
+    &-title {
+      @include mix.main-title;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    &-date {
+      @include mix.text-normal;
+      text-align: end;
+      time {
+        font-weight: 600;
+      }
+    }
+  }
+  &__content {
+    h2 {
+      @include mix.secondary-title;
+      margin-top: 2.5rem;
+      margin-bottom: 0.75rem;
+      text-underline-offset: 4px;
+      text-decoration: underline;
+    }
+    h3 {
+      @include mix.medium-title;
+      margin-top: 2.5rem;
+      margin-bottom: 0.25rem;
+    }
+    h4 {
+      @include mix.minor-title;
+      margin-top: 2rem;
+      margin-bottom: -0.5rem;
+    }
+    a {
+      color: hsl(var(--primary));
+      font-weight: 600;
+      &:hover {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+    }
+    p {
+      padding-left: 0.75rem;
+    }
+    strong {
+      color: hsl(var(--primary));
+    }
+    em {
+      font-style: normal;
+      font-weight: 700;
+    }
+    ul {
+      list-style-type: disc;
+      padding-left: 2.5rem;
+    }
+    ul,
+    li,
+    ol {
+      margin-bottom: 0.5rem;
+      &:first-child {
+        margin-top: 0.5rem;
+      }
+    }
+    p,
+    ul,
+    li,
+    ol {
+      @include mix.text-normal;
+    }
+  }
+  &__return-top {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+}

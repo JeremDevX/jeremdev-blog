@@ -1,0 +1,89 @@
+@use "../mixins" as mix;
+
+.aside {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: calc(var(--sidebar-size) - 16px);
+  background-color: hsl(var(--accent-darker));
+  border-right: 1px solid hsl(var(--border));
+  overflow-y: hidden;
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 8px 32px 96px;
+    margin-top: 64px;
+  }
+
+  @media (min-width: 1440px) {
+    padding: 8px 16px 96px;
+    padding-left: max(32px, calc((100% - var(--max-layout-width) + 64px) / 2));
+    width: calc(
+      (100% - (var(--max-layout-width) - 64px)) / 2 + var(--sidebar-size) - 32px
+    );
+  }
+  &__container {
+    width: 100%;
+  }
+
+  &__tools {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 0.5rem;
+    &-category {
+      @include mix.flex-between-row;
+
+      margin: 1rem 0;
+    }
+    &-chevron {
+      cursor: pointer;
+      outline: none;
+    }
+    &-list {
+      @include mix.text-small;
+      display: flex;
+      flex-direction: column;
+
+      border-bottom: 2px solid hsl(var(--secondary));
+      gap: 1rem;
+      padding: 0.125rem;
+      overflow: hidden;
+      -webkit-transition: max-height 1s ease;
+      -moz-transition: max-height 1s ease;
+      -ms-transition: max-height 1s ease;
+      -o-transition: max-height 1s ease;
+      transition: max-height 1s ease;
+
+      &--display {
+        max-height: 2000px;
+      }
+
+      &--hidden {
+        max-height: 0;
+      }
+      a {
+        width: fit-content;
+      }
+      a:hover,
+      a:focus {
+        color: hsl(var(--primary));
+      }
+      a:hover {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+      a:focus {
+        padding: 0 0.5rem;
+      }
+      a:last-child {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}

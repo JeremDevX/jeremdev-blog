@@ -1,0 +1,33 @@
+@use "../../../../../styles/mixins" as mix;
+@use "../../../../../styles/variables" as vars;
+
+.slug-gen {
+  @include mix.flex-c-c-col;
+
+  gap: 2rem;
+  width: 100%;
+  &__input {
+    @include mix.flex-c-c-col;
+
+    gap: 0.5rem;
+    min-width: 14rem;
+
+    input {
+      @include mix.text-normal;
+      width: 24rem;
+      height: 3rem;
+      text-indent: 0.5rem;
+      border-radius: 0.5rem;
+      border: 2px solid hsl(var(--secondary));
+      background-color: hsl(var(--background));
+      color: hsl(var(--foreground));
+
+      @media (max-width: 425px) {
+        width: 100%;
+      }
+    }
+    &--disabled {
+      cursor: not-allowed;
+    }
+  }
+}
