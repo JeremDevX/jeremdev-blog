@@ -29,6 +29,8 @@
 @use "./pages/blogCategoriesPage";
 @use "./pages/toolMainPage";
 @use "./pages/toolPage";
+@use "./pages/studio";
+@use "./pages/notFound";
 
 //Specific styles import
 @use "../app/tools/(tools)/text/word-counter/wordCounter";

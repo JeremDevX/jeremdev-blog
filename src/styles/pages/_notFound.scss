@@ -1,0 +1,24 @@
+@use "../mixins" as mix;
+@use "../variables" as vars;
+
+.not-found {
+  @include mix.flex-c-c-col;
+
+  gap: 5rem;
+  width: 100%;
+  height: 100%;
+  max-width: vars.$max-layout-width;
+  margin: auto;
+  padding: 0 1rem;
+  text-align: center;
+
+  h2 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+  }
+  p {
+    font-size: clamp(1.5rem, 2vw, 2.125rem);
+  }
+  &__button {
+    @include mix.secondary-title;
+  }
+}

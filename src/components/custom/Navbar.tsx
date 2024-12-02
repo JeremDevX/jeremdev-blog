@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useCloseOnClickAway } from "@/utils/useOnClickAway";
+import { handleEnterKeyDown } from "@/utils/handleKeyDown";
 
 const links = [
   { label: "Blog", href: "/blog", isBlogPage: true, isHomePage: true },
@@ -56,7 +57,14 @@ export default function Navbar() {
   });
 
   const handleToggleMenu = () => {
-    setToggleMenu(!toggleMenu);
+    const mainElement = document.querySelector("main");
+    const footerElement = document.querySelector("footer");
+
+    const newToggleState = !toggleMenu;
+    setToggleMenu(newToggleState);
+
+    if (mainElement) mainElement.inert = newToggleState;
+    if (footerElement) footerElement.inert = newToggleState;
   };
 
   const closeMenu = () => {
@@ -84,7 +92,7 @@ export default function Navbar() {
   useCloseOnClickAway(menuRef, closeMenu, hamburgerRef);
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" tabIndex={-1}>
       <div className="navbar__container">
         <Link href="/" className="navbar__logo" onClick={closeMenu}>
           <Image
@@ -128,6 +136,8 @@ export default function Navbar() {
           className="navbar__hamburger"
           onClick={handleToggleMenu}
           ref={hamburgerRef}
+          tabIndex={0}
+          onKeyDown={(e) => handleEnterKeyDown(e, handleToggleMenu)}
         >
           <span
             className={`navbar__hamburger-line ${

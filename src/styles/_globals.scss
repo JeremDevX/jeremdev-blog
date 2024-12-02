@@ -241,3 +241,13 @@ textarea::-webkit-scrollbar-track {
     scrollbar-width: thin;
   }
 }
+
+#portal-root {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: none;
+}
+#portal-root.active {
+  display: initial;
+}

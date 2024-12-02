@@ -13,7 +13,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "TechHowlerX - Tech Blog & Dev Tools",
   description:
-    "TechHowlerX is two parts website, one part blog and one part utility tools. Discover weekly posts about tech, programming and more or browse a wide range of tools like formatters, CSS utilities, and more.",
+    "TechHowlerX: A blog and a collection of dev tools. Explore tech and programming articles, plus practical tools to support your development process!",
   keywords: "tech, programming, blog, dev tools, utility tools",
 };
 

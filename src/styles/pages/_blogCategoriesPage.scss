@@ -18,6 +18,7 @@
     justify-content: end;
     width: 100%;
     select {
+      @include mix.text-normal;
       padding: 0.5rem;
       background-color: hsl(var(--secondary));
       border-radius: 0.5rem;

@@ -103,9 +103,12 @@
   &__hamburger {
     @include mix.flex-c-e-col;
 
-    height: 4rem;
+    height: auto;
     cursor: pointer;
 
+    &:focus-visible {
+      padding: 0.125rem;
+    }
     &-line {
       width: 1.5rem;
       height: 0.125rem;

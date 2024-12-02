@@ -99,7 +99,7 @@ export default function WordCounter() {
                 </td>
                 <td
                   className={`word-counter__table-count ${
-                    numberOfCharacters >= 150 && numberOfCharacters <= 160
+                    numberOfCharacters >= 1 && numberOfCharacters <= 160
                       ? "word-counter__table-count--green"
                       : "word-counter__table-count--red"
                   }`}
@@ -112,7 +112,7 @@ export default function WordCounter() {
                 <td className="word-counter__table-use-case">Title Tag</td>
                 <td
                   className={`word-counter__table-count ${
-                    numberOfCharacters >= 50 && numberOfCharacters <= 60
+                    numberOfCharacters >= 1 && numberOfCharacters <= 60
                       ? "word-counter__table-count--green"
                       : "word-counter__table-count--red"
                   }`}
@@ -183,7 +183,7 @@ export default function WordCounter() {
                 </td>
                 <td
                   className={`word-counter__table-count ${
-                    numberOfCharacters >= 40 && numberOfCharacters <= 60
+                    numberOfCharacters >= 1 && numberOfCharacters <= 60
                       ? "word-counter__table-count--green"
                       : "word-counter__table-count--red"
                   }`}

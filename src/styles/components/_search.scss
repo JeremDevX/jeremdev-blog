@@ -10,7 +10,7 @@
   &__background {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.8);
     z-index: -10;
   }
   &__container {
@@ -81,7 +81,8 @@
     background-color: hsl(var(--secondary));
     border-radius: 0.5rem;
 
-    &:hover {
+    &:hover,
+    &:focus {
       background-color: hsl(var(--primary));
       color: hsl(var(--primary-foreground));
     }

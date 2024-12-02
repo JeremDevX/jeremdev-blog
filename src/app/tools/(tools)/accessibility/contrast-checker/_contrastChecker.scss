@@ -73,6 +73,7 @@
   }
   &__color-picker {
     @include mix.flex-c-c-col;
+    @include mix.text-normal;
     align-items: end;
 
     gap: 0.5rem;
@@ -81,8 +82,6 @@
     border: 2px solid hsl(var(--secondary));
 
     p {
-      @include mix.text-normal;
-
       width: 100%;
       text-align: center;
     }
@@ -92,6 +91,8 @@
       gap: 0.5rem;
     }
     input {
+      @include mix.text-normal;
+
       border: none;
       text-align: center;
       color: hsl(var(--background));

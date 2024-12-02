@@ -11,5 +11,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className="w-screen h-full z-50 fixed inset-0">{children}</div>;
+  return <div className="studio">{children}</div>;
 }
