@@ -23,7 +23,7 @@ const urlFor = (source: SanityImageSource) =>
   projectId && dataset
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
-const options = { next: { revalidate: 86400 } };
+const options = { next: { revalidate: 30 } };
 
 const CATEGORIES_QUERY = defineQuery(`
   *[_type == "category"]`);

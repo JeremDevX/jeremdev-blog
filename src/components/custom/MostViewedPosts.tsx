@@ -3,7 +3,7 @@ import { client } from "@/sanity/lib/client";
 import { defineQuery } from "next-sanity";
 import Link from "next/link";
 
-const options = { next: { revalidate: 86400 } };
+const options = { next: { revalidate: 30 } };
 
 const POSTS_QUERY = defineQuery(`*[
     _type == "post"
