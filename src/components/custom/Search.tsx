@@ -56,7 +56,7 @@ export default function SearchInput() {
 
   const handleEscapeKeyPress = (event: KeyboardEvent) => {
     if (event.key === "Escape") {
-      resetSearch(false);
+      handleSearchToggle();
     }
   };
 
