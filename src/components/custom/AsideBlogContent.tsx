@@ -11,7 +11,7 @@ interface AsideContentProps {
   category: string;
 }
 
-const options = { next: { revalidate: 30 } };
+const options = { next: { revalidate: 43200 } };
 
 export default function AsideBlogContent(props: AsideContentProps) {
   const [articles, setArticles] = useState([]);

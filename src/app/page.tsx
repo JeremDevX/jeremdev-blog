@@ -37,7 +37,7 @@ export interface Post extends SanityDocument {
   };
   view: number;
 }
-const options = { next: { revalidate: 30 } };
+const options = { next: { revalidate: 43200 } };
 
 const HOME_QUERY = defineQuery(`{
   "posts": *[

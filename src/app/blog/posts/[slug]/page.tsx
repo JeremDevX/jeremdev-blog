@@ -52,7 +52,7 @@ const customComponents: Partial<PortableTextReactComponents> = {
   },
 };
 
-const options = { next: { revalidate: 30 } };
+const options = { next: { revalidate: 43200 } };
 
 const POST_QUERY = defineQuery(`*[
   _type == "post" &&
