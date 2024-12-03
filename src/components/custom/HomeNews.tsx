@@ -46,10 +46,13 @@ export default function HomeNews({ news }: HomeNewsProps) {
       >
         <h3 className="home-news__title">
           {currentNews.title} -{" "}
-          <span className="home-news__date">
+          <time
+            dateTime={new Date(currentNews.date).toISOString()}
+            className="home-news__date"
+          >
             {" "}
             {new Date(currentNews.date).toLocaleDateString()}
-          </span>
+          </time>
         </h3>
         <p className="home-news__desc">{currentNews.content}</p>
         {news.length > 1 && (

@@ -118,7 +118,10 @@ export default async function ArticlePage(props: {
       <div className="post__header">
         <h1 className="post__header-title">{title}</h1>
         <span className="post__header-date">
-          Date : <time>{date}</time>
+          Date :{" "}
+          <time dateTime={new Date(date).toISOString()}>
+            {new Date(date).toLocaleDateString()}
+          </time>
         </span>
       </div>
       <div className="post__content">

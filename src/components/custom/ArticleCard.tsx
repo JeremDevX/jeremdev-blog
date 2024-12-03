@@ -30,7 +30,10 @@ export default function ArticleCard(props: ArticleCardProps) {
             <h3 className="article-card__post-title">{title}</h3>
           </Link>
           <div className="article-card__infos">
-            <time className="article-card__date">
+            <time
+              dateTime={new Date(date).toISOString()}
+              className="article-card__date"
+            >
               {new Date(date).toLocaleDateString()}
             </time>
             <CategoryButton
