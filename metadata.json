@@ -1,0 +1,6 @@
+{
+  "description": {
+    "fr": "<h2>Blog & Devtools</h2> <h3>Description</h3> <p>Plateforme fullstack combinant un blog technique et une suite d’outils pour développeurs.</p>\n<h3>Fonctionnalités principales :</h3>\n<ul>\n<li>Blog technique</li>\n<li>Outils de développement</li>\n<li>Recherche avancée (articles via GROQ, API standard pour les outils)</li>\n<li>Génération statique incrémentale (ISR) pour des performances optimales</li>\n</ul>\n<h3>Technologies utilisées :</h3>\n<ul>\n<li>HTML5 sémantique</li>\n<li>SCSS</li>\n<li>Flexbox</li>\n<li>Sanity.io</li>\n<li>React</li>\n<li>Next.js</li>\n</ul>",
+    "en": "<h2>Blog & Devtools</h2>\n<h3>Description</h3> <p>A fullstack platform combining a technical blog and a suite of developer tools, optimized for high performance and SEO.</p>\n<h3>Key features:</h3>\n<ul>\n<li>Technical blog</li>\n<li>Developer tools</li>\n<li>Advanced search capabilities (articles via GROQ, standard API for tools)</li>\n<li>Incremental Static Regeneration (ISR) for optimal performance</li>\n</ul>\n<h3>Built with :</h3>\n<ul>\n<li>Semantic HTML5</li>\n<li>SCSS</li>\n<li>Flexbox</li>\n<li>Sanity.io</li>\n<li>React</li>\n<li>Next.js</li>\n</ul>"
+  }
+}
