@@ -21,13 +21,18 @@
       @include mix.text-normal;
       padding: 0.5rem;
       background-color: hsl(var(--secondary));
-      border-radius: 0.5rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--glass-border);
+      transition: border-color var(--transition-fast);
+      &:hover {
+        border-color: var(--glass-border-hover);
+      }
     }
   }
   &__list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 3rem;
+    gap: 2rem;
     width: 100%;
     margin: 3rem 0 2rem;
   }

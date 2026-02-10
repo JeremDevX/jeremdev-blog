@@ -28,7 +28,6 @@
       @include mix.medium-border-title;
       margin-bottom: 3rem;
       text-align: center;
-      border-bottom: 1px solid hsl(var(--secondary));
     }
     &-articles {
       @include mix.flex-c-c-col;

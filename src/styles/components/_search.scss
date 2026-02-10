@@ -10,24 +10,30 @@
   &__background {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: -10;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 45;
+    animation: fadeIn 200ms ease;
   }
   &__container {
     @include mix.flex-c-c-col;
+    @include mix.glass-card;
     justify-content: start;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 50;
     width: 35%;
     max-width: vars.$max-w-1000;
-    padding: 1rem;
+    padding: 1.25rem;
     height: 24rem;
-    background-color: hsl(var(--background));
+    backdrop-filter: blur(var(--glass-blur-strong));
+    -webkit-backdrop-filter: blur(var(--glass-blur-strong));
     overflow-y: auto;
-    border: 2px solid hsl(var(--muted));
-    border-radius: 0.5rem;
+    box-shadow: vars.$drop-glow-intense;
+    animation: slideUp 300ms cubic-bezier(0.25, 1, 0.5, 1);
 
     @media (max-width: 768px) {
       width: 90%;
@@ -41,17 +47,18 @@
     margin-bottom: 0.5rem;
     text-align: left;
     text-indent: 2.25rem;
-    border: 2px solid hsl(var(--muted));
+    border: 1px solid var(--glass-border);
     border-radius: 0.5rem;
-    background-color: hsl(var(--background));
+    background-color: hsla(210, 56%, 5%, 0.6);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 
     &::placeholder {
-      opacity: 0.5;
+      opacity: 0.4;
     }
 
     &:focus {
-      border-color: hsl(var(--primary));
-      border-width: 1px;
+      border-color: hsl(var(--ring));
+      box-shadow: 0 0 0 3px hsla(212, 80%, 69%, 0.1);
     }
 
     &-icon {
@@ -77,14 +84,17 @@
     width: 100%;
     height: auto;
     text-align: center;
-    padding: 0.5rem;
-    background-color: hsl(var(--secondary));
-    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
 
     &:hover,
     &:focus {
-      background-color: hsl(var(--primary));
-      color: hsl(var(--primary-foreground));
+      background-color: hsl(var(--secondary));
+      border-color: var(--glass-border);
+      color: hsl(var(--foreground));
     }
   }
   &__message {

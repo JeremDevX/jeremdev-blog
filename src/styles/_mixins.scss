@@ -42,11 +42,21 @@
 }
 
 @mixin section-index {
-  border-bottom: 1px solid hsl(var(--card));
+  position: relative;
   gap: 1rem;
-  padding-bottom: 2rem;
+  padding-bottom: 3rem;
   max-width: vars.$max-layout-width;
   width: 100%;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: var(--gradient-divider);
+  }
 }
 
 @mixin info-page {
@@ -75,21 +85,24 @@
 }
 
 @mixin main-title {
-  font-size: clamp(2.25rem, 3vw, 2.5rem);
-  line-height: 2.5rem;
-  font-weight: 700;
+  font-size: clamp(2.25rem, 4vw, 3rem);
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
 @mixin secondary-title {
   font-size: clamp(1.5rem, 3vw, 1.875rem);
   line-height: clamp(2rem, 2.5vw, 2.25rem);
   font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 @mixin medium-title {
   font-size: clamp(1.25rem, 3vw, 1.5rem);
   line-height: clamp(1.875rem, 2.5vw, 2rem);
   font-weight: 600;
+  letter-spacing: -0.015em;
 }
 
 @mixin medium-border-title {
@@ -98,7 +111,67 @@
   text-align: center;
   margin-bottom: 1.5rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid hsl(var(--secondary));
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: var(--gradient-divider);
+  }
+}
+
+@mixin gradient-text {
+  background: var(--gradient-text);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+@mixin glass-card-hover {
+  border-color: var(--glass-border-hover);
+  box-shadow: 0 4px 20px hsla(212, 80%, 69%, 0.1);
+  transform: translateY(-2px);
+}
+
+@mixin gradient-border-card {
+  position: relative;
+  background: hsl(var(--card));
+  border-radius: var(--radius);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--gradient-card-border);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+    pointer-events: none;
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
 }
 
 @mixin minor-title {

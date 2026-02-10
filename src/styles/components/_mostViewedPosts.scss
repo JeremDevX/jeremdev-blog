@@ -15,6 +15,9 @@
     font-size: clamp(1.125rem, 1.5vw, 1.25rem);
     font-weight: 600;
     line-height: 1.75rem;
+    position: relative;
+    padding-left: 0;
+    transition: all var(--transition-fast);
 
     overflow: hidden;
     display: -webkit-box;
@@ -23,9 +26,8 @@
     line-clamp: 2;
 
     &:hover {
-      text-decoration: underline;
-      text-underline-offset: 4px;
       color: hsl(var(--primary));
+      padding-left: 0.5rem;
     }
   }
 }

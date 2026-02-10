@@ -4,14 +4,19 @@
 .cat-button {
   @include mix.text-normal;
 
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.75rem;
   font-weight: 700;
-  border-radius: 0.5rem;
+  border-radius: 2rem;
   cursor: default;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
 
-  &--grow:hover {
-    transform: scale(1.05);
-    box-shadow: vars.$drop-light;
+  &--grow {
     cursor: pointer;
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: vars.$drop-light-lg;
+      border-color: var(--glass-border-hover);
+    }
   }
 }

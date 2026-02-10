@@ -21,16 +21,14 @@
     &-icon {
       @include mix.flex-c-c-col;
 
-      border-radius: 0.25rem;
+      border-radius: var(--radius);
       padding: 0.5rem 1rem 0.25rem;
+      border: 1px solid transparent;
+      transition: border-color var(--transition-fast), transform var(--transition-fast);
 
       &:hover {
-        transform: scale(1.1);
-        box-shadow: vars.$drop-light;
-      }
-      &:focus,
-      &:hover {
-        background-color: hsl(var(--secondary));
+        transform: translateY(-2px);
+        border-color: var(--glass-border);
       }
     }
   }

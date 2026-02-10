@@ -30,9 +30,14 @@
     max-height: 460px;
     margin: 2rem auto 0;
     object-fit: cover;
-    border-radius: 0.75rem;
+    border-radius: var(--radius);
     object-position: center;
     overflow: hidden;
+    border: 1px solid var(--glass-border);
+    transition: border-color var(--transition-base);
+    &:hover {
+      border-color: var(--glass-border-hover);
+    }
   }
   &__header {
     display: flex;
@@ -40,7 +45,18 @@
     justify-content: space-between;
     padding: 2rem 0 0.5rem;
     margin-bottom: 2rem;
-    border-bottom: 1px solid hsl(var(--card));
+    border-bottom: none;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 5%;
+      right: 5%;
+      height: 1px;
+      background: var(--gradient-divider);
+    }
     &-title {
       @include mix.main-title;
       margin-bottom: 0.5rem;
@@ -49,6 +65,8 @@
     &-date {
       @include mix.text-normal;
       text-align: end;
+      color: hsl(var(--muted-foreground));
+      font-size: 0.875rem;
       time {
         font-weight: 600;
       }

@@ -8,6 +8,7 @@
 
   &__container {
     @include mix.flex-c-c-col;
+    @include mix.gradient-border-card;
     justify-content: space-between;
     position: relative;
 
@@ -16,9 +17,12 @@
     min-height: 14rem;
     gap: 1rem;
     padding: 1rem;
-    background-color: hsl(var(--muted));
-    border-radius: 0.5rem;
-    box-shadow: vars.$drop-light;
+    background-color: hsl(var(--card));
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+
+    &:hover {
+      @include mix.glass-card-hover;
+    }
 
     @media (max-width: 768px) {
       flex-direction: column;
@@ -48,18 +52,21 @@
   &__date {
     @include mix.text-normal;
     font-weight: 400;
+    color: hsl(var(--muted-foreground));
   }
   &__desc {
     @include mix.text-normal;
     padding: 0 0.75em 2rem;
     margin-bottom: auto;
+    color: hsl(var(--muted-foreground));
   }
   &__pagination {
     position: absolute;
     bottom: 1rem;
     right: 1rem;
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 500;
+    color: hsl(var(--muted-foreground));
   }
   &__btns {
     @include mix.flex-c-c-row;

@@ -17,17 +17,21 @@
     }
   }
   &__type {
-    padding: 0.5rem;
-    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 2rem;
     cursor: pointer;
+    position: relative;
+    transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 
     &:hover {
-      background-color: hsl(var(--primary));
-      color: hsl(var(--primary-foreground));
-      box-shadow: vars.$drop-light-lg;
+      background-color: hsl(var(--secondary));
+      color: hsl(var(--foreground));
+      transform: translateY(-1px);
     }
     &--active {
       background-color: hsl(var(--secondary));
+      border: 1px solid var(--glass-border);
+      color: hsl(var(--foreground));
     }
     &-slash {
       @media (max-width: 768px) {
@@ -36,16 +40,15 @@
     }
   }
   &__content {
+    @include mix.gradient-border-card;
     width: 100%;
     max-width: vars.$max-w-1000;
     min-height: 24rem;
     max-height: 26rem;
     padding: 0.75rem;
-    border-radius: 0.5rem;
-    background-color: hsl(var(--muted));
+    background-color: hsl(var(--card));
     color: hsl(var(--secondary-foreground));
-    box-shadow: vars.$drop-light;
-    transition: all 0.3s ease;
+    transition: transform var(--transition-slow), box-shadow var(--transition-slow), border-color var(--transition-slow);
     overflow: hidden;
 
     @media (min-width: 768px) {
@@ -57,8 +60,7 @@
     }
 
     &:hover {
-      box-shadow: vars.$drop-light-lg;
-      transform: scale(1.01);
+      @include mix.glass-card-hover;
     }
     &--fading {
       opacity: 0;

@@ -3,13 +3,26 @@
 
 .footer {
   @include mix.flex-c-c-row;
+  position: relative;
   height: 5rem;
   width: 100%;
-  background-color: hsl(var(--background));
+  background-color: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur-strong));
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong));
   font-size: 1rem;
   line-height: 1.5rem;
   margin-top: auto;
-  border-top: 1px solid hsl(var(--muted));
+  border-top: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient-divider);
+  }
 
   @media (max-width: 768px) {
     height: auto;
@@ -40,6 +53,7 @@
       line-height: 1.75rem;
       font-weight: 700;
       margin-top: 1.5rem;
+      color: hsl(var(--muted-foreground));
     }
   }
   &__links {
@@ -48,13 +62,27 @@
     gap: 1.5rem;
   }
   &__link {
+    position: relative;
+    color: hsl(var(--muted-foreground));
+    transition: color var(--transition-fast);
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--gradient-accent);
+      border-radius: 2px;
+      transition: width var(--transition-base), left var(--transition-base);
+    }
     &:focus,
     &:hover {
-      color: hsl(var(--primary));
+      color: hsl(var(--foreground));
     }
-    &:hover {
-      text-decoration: underline;
-      text-underline-offset: 4px;
+    &:hover::after {
+      width: 100%;
+      left: 0;
     }
   }
   &__legal {

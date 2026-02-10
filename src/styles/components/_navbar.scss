@@ -12,9 +12,21 @@
 
   height: 5rem;
   z-index: 30;
-  background-color: hsl(var(--background));
-  border-bottom: 1px solid hsl(var(--muted));
+  background-color: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur-strong));
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+  border-bottom: none;
   overflow-y: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient-divider);
+  }
 
   &__container {
     @include mix.flex-e-c-row;
@@ -84,13 +96,29 @@
   }
   &__link {
     font-weight: 600;
+    position: relative;
+    color: hsl(var(--muted-foreground));
+    transition: color var(--transition-fast);
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--gradient-accent);
+      border-radius: 2px;
+      transition: width var(--transition-base), left var(--transition-base);
+    }
     &:hover {
-      color: hsl(var(--primary));
-      text-decoration: underline;
-      text-underline-offset: 4px;
+      color: hsl(var(--foreground));
+      &::after {
+        width: 100%;
+        left: 0;
+      }
     }
     &:focus {
-      color: hsl(var(--primary));
+      color: hsl(var(--foreground));
     }
   }
 
@@ -137,10 +165,12 @@
     right: 0;
     left: 0;
     bottom: 0;
+    z-index: 40;
 
-    background-color: hsl(var(--background));
-    animation: fadeIn;
-    animation-duration: 300ms;
+    background-color: hsl(210, 56%, 5%);
+    backdrop-filter: blur(var(--glass-blur-strong));
+    -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+    animation: fadeIn 250ms ease;
 
     &__container {
       @include mix.flex-c-c-col;
@@ -160,19 +190,21 @@
       width: 33%;
       margin-top: 0.5rem;
       padding: 0.25rem 0;
-      border-radius: 0.5rem;
+      border-radius: var(--radius);
       text-align: center;
       font-weight: 600;
-      background-color: hsl(var(--secondary));
+      @include mix.glass-card;
+      background: var(--gradient-subtle);
     }
     &__link {
       text-align: left;
       padding-bottom: 0.5rem;
-      border-bottom: 1px solid hsl(var(--border));
+      border-bottom: 1px solid hsla(212, 40%, 21%, 0.5);
       width: 50%;
 
       &:hover {
         color: hsl(var(--primary));
+        padding-left: 0.25rem;
       }
 
       @media (max-width: 425px) {
