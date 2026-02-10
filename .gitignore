@@ -34,3 +34,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# templates
+.templates
+
+
+_bmad
+_bmad-output
+.agent
+.claude
+.gemini
+.github

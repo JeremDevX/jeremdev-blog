@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Search } from "lucide-react";
 import { useCloseOnClickAway } from "@/utils/useOnClickAway";
 import { client } from "@/sanity/lib/client";
@@ -30,7 +30,7 @@ export default function SearchInput() {
     setIsSearchOpen(shouldOpenSearch);
   };
 
-  const handleSearchToggle = () => {
+  const handleSearchToggle = useCallback(() => {
     const mainElement = document.querySelector("main");
     const navbarElement = document.querySelector("nav");
     const footerElement = document.querySelector("footer");
@@ -45,7 +45,7 @@ export default function SearchInput() {
     if (portalRoot) {
       portalRoot.classList.toggle("active", newToggleState);
     }
-  };
+  }, [isSearchOpen]);
 
   const handleSearchType = () => {
     setDebouncedQuery("");
@@ -54,11 +54,11 @@ export default function SearchInput() {
     setIsArticleSearch(!isArticleSearch);
   };
 
-  const handleEscapeKeyPress = (event: KeyboardEvent) => {
+  const handleEscapeKeyPress = useCallback((event: KeyboardEvent) => {
     if (event.key === "Escape") {
       handleSearchToggle();
     }
-  };
+  }, [handleSearchToggle]);
 
   useEffect(() => {
     if (isSearchOpen) {
@@ -70,7 +70,7 @@ export default function SearchInput() {
     return () => {
       document.removeEventListener("keydown", handleEscapeKeyPress);
     };
-  }, [isSearchOpen]);
+  }, [isSearchOpen, handleEscapeKeyPress]);
 
   useCloseOnClickAway(searchContainerRef, handleSearchToggle, searchIconRef);
 

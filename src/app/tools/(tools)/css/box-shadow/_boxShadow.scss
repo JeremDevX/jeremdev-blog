@@ -1,0 +1,90 @@
+@use "../../../../../styles/mixins" as mix;
+@use "../../../../../styles/variables" as vars;
+
+.box-shadow {
+  @include mix.flex-between-row;
+
+  width: 100%;
+  min-height: 26rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  background-color: hsl(var(--card));
+  padding: 1rem;
+
+  &__container {
+    position: relative;
+
+    width: 350px;
+    height: 350px;
+    border-radius: 0.5rem;
+    border: 2px solid hsl(var(--border));
+    margin: auto;
+  }
+
+  &__shape {
+    position: absolute;
+    inset: 0;
+
+    width: 150px;
+    height: 150px;
+    margin: auto;
+  }
+
+  &__inputs {
+    @include mix.flex-c-c-col;
+    align-items: start;
+
+    margin: auto;
+    width: 50%;
+    gap: 1rem;
+  }
+
+  &__slides,
+  &__colors {
+    @include mix.flex-between-col;
+
+    justify-content: end;
+    align-items: end;
+  }
+  &__colors {
+    gap: 2rem;
+  }
+
+  &__label {
+    @include mix.flex-between-row;
+    @include mix.text-normal;
+
+    width: 300px;
+    margin-bottom: 0.75rem;
+  }
+
+  &__input {
+    width: 10rem;
+
+    &--checkbox {
+      @include mix.flex-c-c-row;
+
+      width: fit-content;
+      margin: auto;
+    }
+  }
+
+  &__values {
+    @include mix.flex-c-c-row;
+
+    gap: 0.5rem;
+    width: 100%;
+    border: 1px solid white;
+  }
+
+  &__css {
+    @include mix.text-normal;
+
+    min-height: 3rem;
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    border: 2px solid hsl(var(--secondary));
+    border-radius: 0.5rem;
+    background-color: hsl(var(--muted));
+  }
+}

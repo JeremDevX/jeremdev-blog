@@ -17,8 +17,14 @@
         {
           "name": "Border Radius",
           "url": "/tools/css/border-radius",
-          "desc": "Generate CSS for border radius.",
+          "desc": "Generate custom border-radius.",
           "icon": "Squircle"
+        },
+        {
+          "name": "Box Shadow",
+          "url": "/tools/css/box-shadow",
+          "desc": "Generate custom box-shadow.",
+          "icon": "Layers2"
         }
       ]
     },

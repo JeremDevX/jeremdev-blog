@@ -3,7 +3,7 @@
 import Button from "@/components/custom/Button";
 import NotificationPopup from "@/components/custom/CopyPopup";
 import { handleCopy } from "@/utils/handleCopy";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function BorderRadius() {
   const [squareSize, setSquareSize] = useState({
@@ -27,29 +27,32 @@ export default function BorderRadius() {
     setDragging(corner);
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (dragging && squareRef.current) {
-      const rect = squareRef.current.getBoundingClientRect();
-      let percentage;
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (dragging && squareRef.current) {
+        const rect = squareRef.current.getBoundingClientRect();
+        let percentage;
 
-      if (dragging === "topLeft") {
-        percentage = ((e.clientY - rect.top) / rect.height) * 100;
-      } else if (dragging === "bottomLeft") {
-        percentage = ((e.clientX - rect.left) / rect.width) * 100;
-      } else if (dragging === "bottomRight") {
-        percentage = ((rect.bottom - e.clientY) / rect.height) * 100;
-      } else {
-        percentage = ((rect.right - e.clientX) / rect.width) * 100;
+        if (dragging === "topLeft") {
+          percentage = ((e.clientY - rect.top) / rect.height) * 100;
+        } else if (dragging === "bottomLeft") {
+          percentage = ((e.clientX - rect.left) / rect.width) * 100;
+        } else if (dragging === "bottomRight") {
+          percentage = ((rect.bottom - e.clientY) / rect.height) * 100;
+        } else {
+          percentage = ((rect.right - e.clientX) / rect.width) * 100;
+        }
+
+        const clampedPercentage = Math.max(0, Math.min(100, percentage));
+
+        setBorderRadius((prev) => ({
+          ...prev,
+          [dragging]: clampedPercentage.toFixed(0),
+        }));
       }
-
-      const clampedPercentage = Math.max(0, Math.min(100, percentage));
-
-      setBorderRadius((prev) => ({
-        ...prev,
-        [dragging]: clampedPercentage.toFixed(0),
-      }));
-    }
-  };
+    },
+    [dragging],
+  );
 
   const handleMouseUp = () => {
     setDragging(null);
@@ -63,7 +66,7 @@ export default function BorderRadius() {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [dragging]);
+  }, [dragging, handleMouseMove]);
 
   const squareStyle = {
     width: `${squareSize.width}px`,
