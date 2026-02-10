@@ -1,11 +1,11 @@
-export const handleCopy = ({
+export const handleCopy = <T extends HTMLElement>({
   ref,
   getValue,
   onSuccess,
   onError,
 }: {
-  ref: React.RefObject<HTMLElement>;
-  getValue: (ref: React.RefObject<HTMLElement>) => string;
+  ref: React.RefObject<T | null>;
+  getValue: (ref: React.RefObject<T | null>) => string;
   onSuccess?: () => void;
   onError?: () => void;
 }) => {

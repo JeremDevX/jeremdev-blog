@@ -5,8 +5,8 @@ import { client } from "@/sanity/lib/client";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Post } from "../../page";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import imageUrlBuilder from "@sanity/image-url";
+import type { SanityImageSource } from "@sanity/image-url";
+import { createImageUrlBuilder } from "@sanity/image-url";
 import Button from "@/components/custom/Button";
 import ArticleCard from "@/components/custom/ArticleCard";
 
@@ -21,7 +21,7 @@ export interface Category {
 const { projectId, dataset } = client.config();
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
-    ? imageUrlBuilder({ projectId, dataset }).image(source)
+    ? createImageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 const options = { next: { revalidate: 43200 } };
 

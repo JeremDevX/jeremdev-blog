@@ -28,7 +28,7 @@ export default function SlugGenerator() {
   const handleCopyInput = () => {
     handleCopy({
       ref: outputRef,
-      getValue: (ref) => (ref.current as HTMLInputElement).value,
+      getValue: (ref) => ref.current?.value ?? "",
       onSuccess: () => {
         setIsCopied(true);
       },

@@ -1,7 +1,7 @@
 import { defineQuery, SanityDocument } from "next-sanity";
 import { client } from "@/sanity/lib/client";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import imageUrlBuilder from "@sanity/image-url";
+import type { SanityImageSource } from "@sanity/image-url";
+import { createImageUrlBuilder } from "@sanity/image-url";
 import ArticleCard from "@/components/custom/ArticleCard";
 import MostViewedPosts from "@/components/custom/MostViewedPosts";
 import CategoryList from "@/components/custom/CategoryList";
@@ -45,7 +45,7 @@ const POSTS_QUERY = defineQuery(`*[
 const { projectId, dataset } = client.config();
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
-    ? imageUrlBuilder({ projectId, dataset }).image(source)
+    ? createImageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
 export default async function BlogPage() {

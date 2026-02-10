@@ -12,6 +12,12 @@ interface HomeNewsProps {
   news: NewsItem[];
 }
 
+const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+});
+
 export default function HomeNews({ news }: HomeNewsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSlidingRight, setIsSlidingRight] = useState(false);
@@ -50,8 +56,7 @@ export default function HomeNews({ news }: HomeNewsProps) {
             dateTime={new Date(currentNews.date).toISOString()}
             className="home-news__date"
           >
-            {" "}
-            {new Date(currentNews.date).toLocaleDateString()}
+            {dateFormatter.format(new Date(currentNews.date))}
           </time>
         </h3>
         <p className="home-news__desc">{currentNews.content}</p>

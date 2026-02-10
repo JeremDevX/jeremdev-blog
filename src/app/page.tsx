@@ -1,11 +1,11 @@
 import { defineQuery, SanityDocument } from "next-sanity";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import type { SanityImageSource } from "@sanity/image-url";
 import Image from "next/image";
 import Button from "@/components/custom/Button";
 import { Mail } from "lucide-react";
 import Link from "next/link";
 import { client } from "@/sanity/lib/client";
-import imageUrlBuilder from "@sanity/image-url";
+import { createImageUrlBuilder } from "@sanity/image-url";
 import HomeNews from "@/components/custom/HomeNews";
 import HomeArticles from "@/components/custom/HomeArticles";
 import { Metadata } from "next";
@@ -62,7 +62,7 @@ const HOME_QUERY = defineQuery(`{
 const { projectId, dataset } = client.config();
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
-    ? imageUrlBuilder({ projectId, dataset }).image(source)
+    ? createImageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
 export default async function IndexPage() {
