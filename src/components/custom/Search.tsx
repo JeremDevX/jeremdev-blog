@@ -20,7 +20,7 @@ export default function SearchInput() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [statusMessage, setStatusMessage] = useState(
-    "No results for your search..."
+    "No results for your search...",
   );
   const [debouncedQuery, setDebouncedQuery] = useDebounceValue(query, 1000);
 
@@ -54,11 +54,14 @@ export default function SearchInput() {
     setIsArticleSearch(!isArticleSearch);
   };
 
-  const handleEscapeKeyPress = useCallback((event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      handleSearchToggle();
-    }
-  }, [handleSearchToggle]);
+  const handleEscapeKeyPress = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        handleSearchToggle();
+      }
+    },
+    [handleSearchToggle],
+  );
 
   useEffect(() => {
     if (isSearchOpen) {
@@ -93,7 +96,7 @@ export default function SearchInput() {
           fetchedResults = await client.fetch(POSTS_QUERY);
         } else {
           const response = await fetch(
-            `/api/tools?name=${encodeURIComponent(debouncedQuery)}`
+            `/api/tools?name=${encodeURIComponent(debouncedQuery)}`,
           );
           fetchedResults = await response.json();
         }
@@ -202,7 +205,7 @@ export default function SearchInput() {
               </div>
             </div>
           </div>,
-          document.getElementById("portal-root")!
+          document.getElementById("portal-root")!,
         )}
     </div>
   );
