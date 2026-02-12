@@ -1,13 +1,7 @@
-import { defineQuery, SanityDocument } from "next-sanity";
-import type { SanityImageSource } from "@sanity/image-url";
 import Image from "next/image";
 import Button from "@/components/custom/Button";
 import { Mail } from "lucide-react";
 import Link from "next/link";
-import { client } from "@/sanity/lib/client";
-import { createImageUrlBuilder } from "@sanity/image-url";
-import HomeNews from "@/components/custom/HomeNews";
-import HomeArticles from "@/components/custom/HomeArticles";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -17,56 +11,7 @@ export const metadata: Metadata = {
   keywords: "tech, programming, blog, dev tools, utility tools",
 };
 
-export interface Post extends SanityDocument {
-  title: string;
-  coverImage: {
-    asset: {
-      _ref: SanityImageSource;
-    };
-  };
-  slug: {
-    current: string;
-  };
-  date: Date;
-  resume: string;
-  category: {
-    title: string;
-    slug: {
-      current: string;
-    };
-  };
-  view: number;
-}
-const options = { next: { revalidate: 43200 } };
-
-const HOME_QUERY = defineQuery(`{
-  "posts": *[
-    _type == "post"
-    && defined(slug.current)
-  ]{
-    _id, title, slug, coverImage, resume, view
-  }|order(view desc)[0...1],
-
-  "latestPost": *[
-    _type == "post"
-    && defined(slug.current)
-]{_id, title,date, slug, coverImage, resume, view}|order(date desc)[0...1],
-
-  "news": *[
-    _type == "news"
-  ]{
-    _id, title, date, content
-  }|order(date desc)[0...3]
-}`);
-
-const { projectId, dataset } = client.config();
-const urlFor = (source: SanityImageSource) =>
-  projectId && dataset
-    ? createImageUrlBuilder({ projectId, dataset }).image(source)
-    : null;
-
 export default async function IndexPage() {
-  const homeContent = await client.fetch(HOME_QUERY, {}, options);
   return (
     <main className="index">
       <section className="index__hero">
@@ -80,8 +25,6 @@ export default async function IndexPage() {
           <div className="index__hero-banner-img-container">
             <Image
               src="/home-hero-image.png"
-              // height={750}
-              // width={1500}
               fill
               alt=""
               className="index__hero-banner-img"
@@ -99,9 +42,6 @@ export default async function IndexPage() {
               <div className="index__hero-content-buttons">
                 <Button link="/blog" ariaLabel="Explore Blog">
                   Explore blog
-                </Button>
-                <Button link="/blog/categories" ariaLabel="Blog Categories">
-                  Blog Categories
                 </Button>
               </div>
             </div>
@@ -121,22 +61,6 @@ export default async function IndexPage() {
             </div>
           </div>
         </div>
-      </section>
-      <section className="index__articles">
-        <HomeArticles
-          latestPost={homeContent.latestPost}
-          mostViewedPost={homeContent.posts}
-          imgUrlLatest={
-            urlFor(homeContent.latestPost[0].coverImage)?.url() || ""
-          }
-          imgUrlMostViewed={
-            urlFor(homeContent.posts[0].coverImage)?.url() || ""
-          }
-        />
-      </section>
-      <section className="index__news">
-        <h2 className="index__news-title">Latest News</h2>
-        <HomeNews news={homeContent.news} />
       </section>
       <section className="index__contact">
         <h2 className="index__contact-title">You have a suggestion ?</h2>

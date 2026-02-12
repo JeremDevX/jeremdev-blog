@@ -3,9 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Search } from "lucide-react";
 import { useCloseOnClickAway } from "@/utils/useOnClickAway";
-import { client } from "@/sanity/lib/client";
 import { useDebounceValue } from "usehooks-ts";
-import { Post } from "@/app/page";
 import Link from "next/link";
 import { handleEnterKeyDown } from "@/utils/handleKeyDown";
 import Button from "./Button";
@@ -90,10 +88,8 @@ export default function SearchInput() {
         let fetchedResults;
 
         if (isArticleSearch) {
-          const POSTS_QUERY = `*[
-            _type == "post" && defined(slug.current) && title match "${debouncedQuery}*"
-          ]{_id, title, slug}[0...10]`;
-          fetchedResults = await client.fetch(POSTS_QUERY);
+          // Article search stubbed — Sanity removed
+          fetchedResults = [];
         } else {
           const response = await fetch(
             `/api/tools?name=${encodeURIComponent(debouncedQuery)}`,
@@ -172,33 +168,18 @@ export default function SearchInput() {
               </div>
               <div className="search__results-list">
                 {results.length > 0 ? (
-                  isArticleSearch ? (
-                    results.map((post: Post) => {
-                      return (
-                        <Link
-                          href={`/blog/posts/${post?.slug?.current}`}
-                          onClick={() => setIsSearchOpen(false)}
-                          key={post._id}
-                          className="search__result"
-                        >
-                          {post.title}
-                        </Link>
-                      );
-                    })
-                  ) : (
-                    results.map((tool: Tool) => {
-                      return (
-                        <Link
-                          href={tool.url}
-                          onClick={() => setIsSearchOpen(false)}
-                          key={tool.name}
-                          className="search__result"
-                        >
-                          {tool.name}
-                        </Link>
-                      );
-                    })
-                  )
+                  results.map((tool: Tool) => {
+                    return (
+                      <Link
+                        href={tool.url}
+                        onClick={() => setIsSearchOpen(false)}
+                        key={tool.name}
+                        className="search__result"
+                      >
+                        {tool.name}
+                      </Link>
+                    );
+                  })
                 ) : (
                   <span className="search__message">{statusMessage}</span>
                 )}
