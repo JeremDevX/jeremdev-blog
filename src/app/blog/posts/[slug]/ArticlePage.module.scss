@@ -1,0 +1,139 @@
+@use "@/styles/variables" as vars;
+@use "@/styles/mixins" as mixins;
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.backLink {
+  display: inline-block;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  transition: color var(--transition-fast);
+  text-decoration: none;
+
+  &:hover {
+    color: hsl(var(--primary));
+  }
+}
+
+.title {
+  @include mixins.main-title;
+  margin-bottom: 0.5rem;
+}
+
+.meta {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.875rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.category {
+  color: hsl(var(--accent));
+  font-weight: 500;
+}
+
+.coverImage {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  margin-bottom: 2rem;
+}
+
+.content {
+  line-height: 1.7;
+  font-size: clamp(1rem, 2.5vw, 1.125rem);
+  color: hsl(var(--foreground));
+
+  h2 {
+    @include mixins.secondary-title;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    @include mixins.medium-title;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    margin-bottom: 1.25rem;
+  }
+
+  ul,
+  ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+
+  li {
+    margin-bottom: 0.5rem;
+  }
+
+  blockquote {
+    border-left: 3px solid hsl(var(--primary));
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: hsl(var(--muted-foreground));
+    font-style: italic;
+  }
+
+  // rehype-pretty-code code blocks
+  pre {
+    padding: 1.25rem;
+    border-radius: var(--radius);
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border: 1px solid hsl(var(--border));
+  }
+
+  // inline code
+  :not(pre) > code {
+    background: hsl(var(--card));
+    color: hsl(var(--accent));
+    padding: 0.15rem 0.4rem;
+    border-radius: calc(var(--radius) / 2);
+    font-size: 0.9em;
+  }
+
+  img {
+    max-width: 100%;
+    border-radius: var(--radius);
+    margin: 1.5rem 0;
+  }
+
+  a {
+    color: hsl(var(--primary));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover {
+      color: hsl(var(--accent));
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .meta {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .content {
+    pre {
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+  }
+}

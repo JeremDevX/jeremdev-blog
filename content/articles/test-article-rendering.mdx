@@ -1,0 +1,62 @@
+---
+title: "Test Article Rendering"
+slug: "test-article-rendering"
+date: "2026-02-12"
+resume: "A test article to verify the article page rendering with MDX content, syntax highlighting, and proper formatting."
+category: "programming/css/visual-effects"
+published: false
+---
+
+## Getting Started with CSS Visual Effects
+
+CSS has evolved far beyond simple color and font changes. Modern CSS enables stunning visual effects that were once only possible with JavaScript or image editors.
+
+### Box Shadows and Depth
+
+One of the most versatile CSS properties for creating depth is `box-shadow`. Here's how to create layered shadows for a realistic effect:
+
+```typescript
+interface ShadowConfig {
+  offsetX: number;
+  offsetY: number;
+  blur: number;
+  spread: number;
+  color: string;
+}
+
+function generateShadow(configs: ShadowConfig[]): string {
+  return configs
+    .map(({ offsetX, offsetY, blur, spread, color }) =>
+      `${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`
+    )
+    .join(", ");
+}
+
+const layeredShadow = generateShadow([
+  { offsetX: 0, offsetY: 2, blur: 4, spread: 0, color: "rgba(0,0,0,0.1)" },
+  { offsetX: 0, offsetY: 8, blur: 16, spread: 0, color: "rgba(0,0,0,0.1)" },
+]);
+
+console.log(layeredShadow);
+```
+
+### Key Techniques
+
+Here are some essential techniques for visual effects:
+
+- **Gradients** — Linear and radial gradients for smooth color transitions
+- **Filters** — Blur, brightness, contrast, and more
+- **Transforms** — Scale, rotate, and skew elements
+- **Animations** — Keyframe-based motion and transitions
+
+> "Good design is as little design as possible." — Dieter Rams
+
+### Useful Resources
+
+1. Check out the [CSS tools](/blog) on this site for interactive generators
+2. The [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/CSS) have comprehensive references
+3. Experiment with combinations of effects for unique results
+
+### Summary
+
+Visual effects in CSS are powerful when used purposefully. Start with subtle shadows and transitions, then layer in gradients and filters as needed. The key is restraint — every effect should serve the user experience.
