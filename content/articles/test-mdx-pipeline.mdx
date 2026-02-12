@@ -1,0 +1,60 @@
+---
+title: "Test MDX Pipeline"
+slug: "test-mdx-pipeline"
+resume: "A test article to verify the MDX compilation pipeline works correctly with syntax highlighting and GFM features."
+date: "2026-02-12"
+category: "test"
+published: false
+---
+
+# Test MDX Pipeline
+
+This is a test article to verify the MDX compilation pipeline works correctly.
+
+## Code Block with Syntax Highlighting
+
+Here is a TypeScript code block that should render with Shiki syntax highlighting:
+
+```typescript
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+function greetUser(user: User): string {
+  return `Hello, ${user.name}!`;
+}
+
+const user: User = {
+  id: "1",
+  name: "Jerem",
+  email: "jerem@example.com",
+};
+
+console.log(greetUser(user));
+```
+
+## GFM Table
+
+| Feature         | Status    | Notes                    |
+| --------------- | --------- | ------------------------ |
+| Syntax Highlight | Working  | Shiki via rehype-pretty-code |
+| GFM Tables      | Working  | remark-gfm plugin        |
+| Strikethrough   | Working  | ~deleted text~           |
+
+## GFM Features
+
+- ~~This text is strikethrough~~
+- Visit https://example.com for autolinks
+- [ ] Task list item (unchecked)
+- [x] Task list item (checked)
+
+## Image Reference
+
+![Test image](/placeholder.png)
+
+## Internal and External Links
+
+- [Internal link to blog](/blog)
+- [External link](https://github.com)

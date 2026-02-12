@@ -10,13 +10,18 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@mdx-js/mdx": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
     "@radix-ui/react-icons": "^1.3.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "gray-matter": "^4.0.3",
     "lucide-react": "^0.563.0",
     "next": "^16.1.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "rehype-pretty-code": "^0.14.1",
+    "remark-gfm": "^4.0.1",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-animated": "^2.0.0",
@@ -35,6 +40,7 @@
     "sass-embedded": "^1.97.3",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
+    "@types/mdx": "^2.0.13",
     "vitest": "^4.0.18"
   }
 }
