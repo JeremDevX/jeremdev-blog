@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import type { ComponentType } from "react";
+import type { MDXProps } from "mdx/types";
 import { getArticleBySlug } from "@/lib/content";
 import { compileMDX } from "@/lib/mdx";
 import { formatDate } from "@/lib/utils";
@@ -10,6 +12,14 @@ import styles from "./ArticlePage.module.scss";
 type Props = {
   params: Promise<{ slug: string }>;
 };
+
+function formatCategory(categoryPath: string): string {
+  const leaf = categoryPath.split("/").pop() ?? categoryPath;
+  return leaf
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -40,10 +50,15 @@ export default async function ArticlePage({ params }: Props) {
     notFound();
   }
 
-  const MDXContent = await compileMDX(article.content);
+  let MDXContent: ComponentType<MDXProps> | null = null;
+  try {
+    MDXContent = await compileMDX(article.content);
+  } catch (error) {
+    console.error(`Failed to compile MDX for "${article.slug}":`, error);
+  }
 
   return (
-    <section className={styles.container}>
+    <article className={styles.container}>
       <Link href="/blog" className={styles.backLink}>
         &larr; Back to blog
       </Link>
@@ -53,7 +68,7 @@ export default async function ArticlePage({ params }: Props) {
         <div className={styles.meta}>
           <time dateTime={article.date}>{formatDate(article.date)}</time>
           <span aria-hidden="true">·</span>
-          <span className={styles.category}>{article.category}</span>
+          <span className={styles.category}>{formatCategory(article.category)}</span>
         </div>
       </header>
 
@@ -69,8 +84,14 @@ export default async function ArticlePage({ params }: Props) {
       )}
 
       <div className={styles.content}>
-        <MDXContent />
+        {MDXContent ? (
+          <MDXContent />
+        ) : (
+          <p className={styles.renderError}>
+            This article could not be rendered. Please try again later.
+          </p>
+        )}
       </div>
-    </section>
+    </article>
   );
 }

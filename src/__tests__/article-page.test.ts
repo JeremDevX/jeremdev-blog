@@ -27,6 +27,7 @@ describe("article page integration", () => {
       expect(data.title).toBe("Test Article Rendering");
       expect(data.slug).toBe("test-article-rendering");
       expect(data.category).toBe("programming/css/visual-effects");
+      expect(data.coverImage).toBe("/images/test-cover.jpg");
       expect(data.resume).toBeTruthy();
       expect(data.date).toBe("2026-02-12");
     });
@@ -57,37 +58,34 @@ describe("article page integration", () => {
     });
   });
 
-  describe("generateMetadata logic", () => {
-    it("produces correct metadata shape for an article", async () => {
+  describe("generateMetadata contract", () => {
+    it("article data provides all fields needed for metadata generation", async () => {
       const { data } = await readTestArticleRaw();
 
-      // Simulate what generateMetadata builds from article data
-      const metadata = {
-        title: `${data.title} - TechHowlerX`,
-        description: data.resume,
-        openGraph: {
-          title: data.title,
-          description: data.resume,
-          type: "article" as const,
-          publishedTime: data.date,
-        },
-      };
+      // Verify the article frontmatter has every field generateMetadata relies on
+      expect(data.title).toBeTypeOf("string");
+      expect(data.resume).toBeTypeOf("string");
+      expect(data.date).toBeTypeOf("string");
+      expect(data.title.length).toBeGreaterThan(0);
+      expect(data.resume.length).toBeGreaterThan(0);
 
-      expect(metadata.title).toBe("Test Article Rendering - TechHowlerX");
-      expect(metadata.description).toBeTruthy();
-      expect(metadata.openGraph.type).toBe("article");
-      expect(metadata.openGraph.publishedTime).toBe("2026-02-12");
+      // Verify title format matches what generateMetadata produces
+      const expectedTitle = `${data.title} - TechHowlerX`;
+      expect(expectedTitle).toBe("Test Article Rendering - TechHowlerX");
+
+      // Verify OG publishedTime is a valid date string
+      expect(new Date(data.date).toISOString()).toContain("2026-02-12");
     });
 
-    it("produces fallback metadata for missing article", async () => {
+    it("article with coverImage provides OG image data", async () => {
+      const { data } = await readTestArticleRaw();
+      expect(data.coverImage).toBeTypeOf("string");
+      expect(data.coverImage.length).toBeGreaterThan(0);
+    });
+
+    it("getArticleBySlug returns undefined for missing slugs (triggers fallback metadata)", async () => {
       const article = await getArticleBySlug("nonexistent");
       expect(article).toBeUndefined();
-
-      const metadata = article
-        ? { title: `${article.title} - TechHowlerX` }
-        : { title: "Article Not Found" };
-
-      expect(metadata.title).toBe("Article Not Found");
     });
   });
 });
