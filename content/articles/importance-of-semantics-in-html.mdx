@@ -1,0 +1,101 @@
+---
+title: "The Importance of Semantics in HTML"
+slug: "importance-of-semantics-in-html"
+date: "2024-10-15"
+resume: "Semantic HTML tags improve accessibility, SEO, and code maintainability by giving meaning to your content. Tags like header, nav, and article clarify the roles of different sections."
+category: "programming/html/semantics"
+published: true
+---
+
+## What is a Tag in HTML?
+
+To organize the structure of an HTML page, there are two types of tags: semantic tags and non-semantic tags. Tags like **`<header>`**, **`<aside>`**, **`<nav>`**, **`<article>`**, **`<h1>`**, etc., are semantic HTML tags that clarify the role of the content they contain. In contrast, tags like **`<div>`** or **`<span>`** are non-semantic HTML tags that serve only as containers without providing information about their content.
+
+## Why Use Semantic Tags?
+
+There are several reasons to use semantic tags:
+
+- *Improves Accessibility*: Assistive tools, such as screen readers, depend on semantics to effectively navigate the content of a page. Semantic tags also help users who use keyboard navigation because they define sections of the page more clearly. For example, a screen reader can quickly jump from one section to another using tags like **`<nav>`** or **`<main>`**.
+- *Optimizes SEO*: By using semantic tags, we organize the structure of a page and its content, allowing search engines to better analyze it and thereby improve its natural ranking. For example, using an **`<article>`** tag informs Google that this is important, well-defined content, which helps rank the article better in search results.
+- *Facilitates Maintenance*: Semantic tags make it easier to understand the code, which speeds up comprehension and simplifies maintenance, whether you're revisiting the code months later or if another developer is consulting it. For example, if a junior developer needs to continue your work, they will more easily understand that a **`<header>`** tag contains the page introduction rather than just a **`<div>`** with a `header` class.
+
+## What Are the Semantic Tags in HTML?
+
+There are two types of semantic tags: structural tags and text tags.
+
+### Structural Tags
+
+- **`<header>`**: Contains the introductory information for a page or section. It is usually located at the top of the page.
+- **`<nav>`**: Encloses the navigation links of a site. It can be found inside **`<header>`**, **`<aside>`**, or **`<footer>`** tags.
+- **`<main>`**: Contains the main content of a page. This tag must be unique per page.
+- **`<form>`**: Used to create a form for user input. It is a container for different types of input elements like text fields, checkboxes, and submit buttons.
+- **`<aside>`**: Used for content located on the sides of a page, such as a navigation bar, related information, advertisements, etc.
+- **`<section>`**: Groups together content that shares the same theme.
+- **`<article>`**: Defines content that can be independent of the page, such as a blog post, an article, etc. This tag is often useful for content that you want to reuse elsewhere.
+- **`<footer>`**: The footer, where legal information, contact information, or part of the site navigation is usually found.
+
+### Text Tags
+
+- **`<h1>`**: The most important title on a page. By convention, there should be only one per page, although this rule is more flexible today. It's possible to have multiple **`<h1>`** tags on a page if each instance is part of distinct sections defined by semantic tags like **`<section>`** or **`<article>`**. For example, one **`<h1>`** for each blog post.
+- **`<h2>`, `<h3>`, `<h4>`, `<h5>`, `<h6>`**: Titles of lesser importance. The larger the number, the lesser the importance. Use these tags to logically structure the content and maintain a clear hierarchy.
+- **`<p>`**: Paragraph tag used to write blocks of text. It helps structure the content in a readable and fluid manner.
+- **`<ul>`** and **`<ol>`**: List tags. **`<ul>`** defines an unordered list (without any particular order) and **`<ol>`** defines an ordered list (with a specific numbering).
+- **`<li>`**: List item, used in **`<ul>`** or **`<ol>`** tags to define each element in a list.
+- **`<code>`**: Used to display a piece of computer code. It is helpful for presenting code examples in a textual context.
+- **`<label>`**: Used to provide a descriptive label for form inputs, improving accessibility and making forms easier to understand for all users. It is crucial for linking text descriptions to form fields effectively.
+- **`<a>`**: Tag used to create hyperlinks leading to an external or internal page on the site. Links can also point to specific anchors within the same page.
+- **`<q>`** and **`<blockquote>`**: Tags for quoting text. **`<q>`** is used for short quotes embedded directly in the text, whereas **`<blockquote>`** is for longer quotes, often with distinct formatting.
+- **`<em>`** and **`<strong>`**: Tags to emphasize the importance of a word or text. **`<em>`** is used to lightly emphasize a word (e.g., adding slight emphasis) and **`<strong>`** is used to strongly highlight a passage, indicating particular importance.
+
+## Example of Incorrect Code Without Semantic Tags
+
+```html
+<div class="header">
+  <h1>My Blog</h1>
+</div>
+<div class="content">
+  <h2>First Article</h2>
+  <p>This is the content of my first blog post.</p>
+</div>
+<div class="footer">
+  <p>Contact us</p>
+</div>
+```
+
+In this example, generic **`<div>`** tags are used, which provides no information about the document's structure.
+
+## Example of Correct Code With Semantic Tags
+
+```html
+<header>
+  <h1>My Blog</h1>
+</header>
+<main>
+  <article>
+    <h2>First Article</h2>
+    <p>This is the content of my first blog post.</p>
+  </article>
+</main>
+<footer>
+  <p>Contact us</p>
+</footer>
+```
+
+In this example, the **`<div>`** tags have been replaced by semantic tags, making the code more readable for both humans and machines.
+
+## Some Best Practices
+
+- Although tags like **`<em>`** or **`<strong>`** modify the appearance of text, this is not their primary function. Prefer adding CSS styling if you only want to give text a particular style.
+- Respect the order of heading tags, starting from the most important to the least important (e.g., do not start with an **`<h2>`** and then use an **`<h1>`**). This helps maintain a logical and clear structure, both for users and search engines.
+- Before integrating an HTML layout, divide the containers to determine which semantic tag best fits each section. For example, if a section groups multiple articles, prefer using a **`<section>`** tag containing **`<article>`** tags to properly structure the content.
+
+Additionally, there are other semantic tags available, but the ones described here are some of the most commonly used.
+
+## Conclusion
+
+Semantics in HTML is very important for improving the understanding of a document, facilitating navigation for accessibility tools, simplifying code maintenance, and enhancing natural referencing (SEO). By using semantics, you make life easier not only for screen readers but also for everyone interacting with your code, including yourself. Always take a moment before coding to think about how to optimally implement semantic tags.
+
+#### Useful Links
+
+- [MDN: List of HTML semantic tags](https://developer.mozilla.org/en-US/docs/Web/HTML/Element)
+- [W3Schools: Use cases and explanations](https://www.w3schools.com/html/html5_semantic_elements.asp)

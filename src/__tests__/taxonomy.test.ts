@@ -59,6 +59,27 @@ describe("taxonomyTree", () => {
     expect(allSlugs).toContain("css");
     expect(allSlugs).toContain("accessibility");
   });
+
+  it("includes HTML topic under Programming", () => {
+    const programming = taxonomyTree.find((n) => n.slug === "programming");
+    expect(programming).toBeDefined();
+    const html = programming!.children!.find((n) => n.slug === "html");
+    expect(html).toBeDefined();
+    expect(html!.name).toBe("HTML");
+    const semantics = html!.children!.find((n) => n.slug === "semantics");
+    expect(semantics).toBeDefined();
+    expect(semantics!.name).toBe("Semantics");
+  });
+
+  it("includes Networking & Security big topic with privacy subtopic", () => {
+    const netSec = taxonomyTree.find((n) => n.slug === "networking-security");
+    expect(netSec).toBeDefined();
+    expect(netSec!.color).toBeTruthy();
+    const privacy = netSec!.children!.find((n) => n.slug === "privacy");
+    expect(privacy).toBeDefined();
+    const vpn = privacy!.children!.find((n) => n.slug === "vpn-anonymity");
+    expect(vpn).toBeDefined();
+  });
 });
 
 describe("findTaxonomyNode", () => {

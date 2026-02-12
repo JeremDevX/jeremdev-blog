@@ -28,6 +28,14 @@ export const taxonomyTree: TaxonomyTree = [
         ],
       },
       {
+        name: "HTML",
+        slug: "html",
+        description: "HTML structure, semantics, and markup best practices",
+        children: [
+          { name: "Semantics", slug: "semantics", description: "Semantic HTML elements and document structure" },
+        ],
+      },
+      {
         name: "General Development",
         slug: "general",
         description: "Cross-language concepts, architecture, and engineering practices",
@@ -93,6 +101,22 @@ export const taxonomyTree: TaxonomyTree = [
         description: "Text analysis and transformation utilities",
         children: [
           { name: "Word Counter", slug: "word-counter", description: "Word and character counting tool" },
+        ],
+      },
+    ],
+  },
+  {
+    name: "Networking & Security",
+    slug: "networking-security",
+    description: "Network fundamentals, cybersecurity, and online privacy",
+    color: "#8B5CF6",
+    children: [
+      {
+        name: "Privacy",
+        slug: "privacy",
+        description: "Online privacy, VPNs, and data protection",
+        children: [
+          { name: "VPN & Anonymity", slug: "vpn-anonymity", description: "VPN technology and its limitations" },
         ],
       },
     ],

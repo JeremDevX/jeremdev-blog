@@ -1,0 +1,73 @@
+---
+title: "Why a VPN doesn't really make you Anonymous"
+slug: "vpn-anonymity-explained"
+date: "2024-10-15"
+resume: "A VPN encrypts your data and hides your IP, but it doesn't fully guarantee online anonymity. Personal accounts, cookies, browser settings, DNS leaks, and browser fingerprinting can still reveal your identity."
+category: "networking-security/privacy/vpn-anonymity"
+published: true
+---
+
+## What is a VPN?
+
+A **VPN** (or Virtual Private Network) is a tunnel that encrypts your data and hides your IP address by assigning a different IP during your web requests. Today, VPNs are often advertised as the best way to surf the web **anonymously**, but is that really true?
+
+## What Makes Us Unique on the Internet?
+
+Believing that we are defined solely by our IP address is completely wrong. In reality, when we browse from page to page, there are many elements that can be used to identify us.
+
+### Using Personal Accounts
+
+First, the use of our **personal accounts**. For example, if you are logged into your Google, Facebook, Amazon, or Apple accounts (the GAFA) and make a search or use a service, these actions and the sites visited are recorded by these companies. Thus, even with a different IP address, your activities are easily traceable by the GAFA. These tech giants collect massive amounts of information about their users, which makes remaining **anonymous** practically impossible if you stay logged in to their services.
+
+### Cookies, Tracking, and Browser-Stored Data
+
+Then there are cookies, tracking, and data stored in our browsers. As we browse the web, our browser gradually stores cookies that make us unique. Data is recorded, for example, when you choose a dark theme over a light one, set a language, or log in to an account. Even clicking on cookie banners contributes to these data points (and often, even if you refuse, some cookies are still mandatory).
+
+Today, many sites also use third-party cookies to track your activities across different websites and share that information with advertisers.
+
+### The Browser Itself and Fingerprinting
+
+The browser you use is also a key factor in identifying you, thanks to numerous settings.
+
+For instance, depending on the market share of your browser, your profile is more or less unique. If you use a browser like Chrome, which is very popular (about 2/3 of users), you are less "unique" than someone using Firefox (used by less than 3% of internet users). This may seem trivial, but it is another piece of information contributing to your "**fingerprint**."
+
+Moreover, your browser settings play an important role. Depending on how they are configured, they may or may not block certain trackers, third-party cookies, etc. Details such as the language of your browser, your machine's time zone, and your screen resolution also help to identify you. For example, using a U.S.-based IP address while having a French time zone and browser language is a clear indicator of your actual location.
+
+The use of browser extensions is another identifying factor. The more extensions you have, the more "unique" you are, as everyone has different needs in terms of extensions, and some are very rarely used, making your profile even more specific.
+
+Lastly, it's essential to mention "**fingerprinting**." Websites can create a unique digital fingerprint based on many characteristics: installed plugins, screen resolution, language preferences, installed fonts, etc. These details, even without cookies, allow for surprisingly precise identification.
+
+### DNS Leaks (Domain Name System)
+
+Another important point is **DNS leaks**. DNS (Domain Name System) is the system that converts domain names, like "google.com," into IP addresses understandable by computers. When you access a website, a DNS request is sent to translate the domain name into an IP address. If this request is sent outside the VPN tunnel, it can expose your activities, even if your main connection is encrypted by the VPN.
+
+This phenomenon, known as "**DNS leakage**", compromises the **anonymity** promised by the VPN, as it leaves an evident trace of your requests to DNS servers, revealing the sites you visit. To avoid this, it is recommended to choose a VPN that offers DNS leak protection. Some VPNs redirect all DNS requests through secure servers, ensuring that all your requests go through the encrypted tunnel. By checking your VPN's settings and enabling DNS leak protection, you greatly reduce the risk of disclosing this information.
+
+### The VPN Itself and Provider Restrictions
+
+Not all VPNs are equal, and some are subject to restrictions that can affect your **anonymity**. Some providers keep activity logs, even if they claim that these records are **anonymous**. However, this data can be accessed by local authorities upon request, especially for VPNs located in jurisdictions that are part of the "**14 Eyes**" surveillance coalition. These countries share information among themselves and may require VPN providers to retain and transmit data.
+
+Moreover, the IP addresses of VPN servers are often known, which allows some websites to block these addresses to limit abuse, such as bots. This might require you to temporarily disable the VPN to access certain content.
+
+## Solutions to Strengthen Your Anonymity
+
+- **Properly configure your browser**: Increase privacy and security settings (e.g., block third-party cookies and enable "Do Not Track").
+- **Block DNS leaks**: Some VPNs offer this option, which prevents requests from being made outside the encrypted tunnel.
+- **Avoid logging into personal accounts**: For example, avoid logging into Google or social networks when you want to stay discreet.
+- **Clear cache and cookies regularly**: Whenever possible, clear them after closing your browser (note that this will log you out of any services you use).
+- **Limit the use of extensions**: Prefer popular extensions to avoid being too identifiable.
+
+## Conclusion
+
+In summary, a VPN alone will not make you **anonymous** on the internet. While it improves your connection's security, current advertising (often relayed by influencers) is misleading. Before subscribing to a VPN, it is crucial to think about its utility, check the provider's data policies, and learn about features offered, such as DNS leak prevention and zero-logging policies.
+
+#### Disclaimer
+
+- *Limitations of the techniques discussed*: These techniques will strengthen your anonymity, but they will not make you "invulnerable." Advanced techniques and vulnerabilities (such as security breaches or fingerprinting) can still be used to identify you.
+- *No promotion of illegal activities*: This article is not intended to encourage illegal activities on the internet but aims to educate and inform about the limitations of VPN providers.
+- *The complexity of anonymity*: Anonymity on the internet is a vast and extremely complex subject. This article aims to provide an overview of the basic principles and does not claim to cover everything. Some aspects might have been overlooked, but the fundamental points have been addressed to help you better understand online anonymity.
+
+#### Useful Links
+
+- [Cybernews: UKUSA Agreement (14 Eyes) Explained](https://cybernews.com/resources/5-eyes-9-eyes-14-eyes-countries/)
+- [FreeCodeCamp: How does a VPN work?](https://www.freecodecamp.org/news/how-does-a-vpn-work/)
