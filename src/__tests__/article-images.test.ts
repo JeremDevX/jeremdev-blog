@@ -11,19 +11,35 @@ describe("article cover images", () => {
     clearArticleCache();
   });
 
-  describe("image files exist on disk", () => {
-    it("vpn-anonymity-cover.webp exists and is non-empty", async () => {
+  describe("image files exist on disk and are valid WebP", () => {
+    // WebP files start with RIFF....WEBP magic bytes
+    const RIFF_MAGIC = Buffer.from("RIFF");
+    const WEBP_MAGIC = Buffer.from("WEBP");
+
+    it("vpn-anonymity-cover.webp exists, is non-empty, and is valid WebP", async () => {
       const filePath = path.join(IMAGES_DIR, "vpn-anonymity-cover.webp");
       const stat = await fs.stat(filePath);
       expect(stat.isFile()).toBe(true);
       expect(stat.size).toBeGreaterThan(0);
+      const header = Buffer.alloc(12);
+      const fh = await fs.open(filePath, "r");
+      await fh.read(header, 0, 12, 0);
+      await fh.close();
+      expect(header.subarray(0, 4).equals(RIFF_MAGIC)).toBe(true);
+      expect(header.subarray(8, 12).equals(WEBP_MAGIC)).toBe(true);
     });
 
-    it("html-semantics-cover.webp exists and is non-empty", async () => {
+    it("html-semantics-cover.webp exists, is non-empty, and is valid WebP", async () => {
       const filePath = path.join(IMAGES_DIR, "html-semantics-cover.webp");
       const stat = await fs.stat(filePath);
       expect(stat.isFile()).toBe(true);
       expect(stat.size).toBeGreaterThan(0);
+      const header = Buffer.alloc(12);
+      const fh = await fs.open(filePath, "r");
+      await fh.read(header, 0, 12, 0);
+      await fh.close();
+      expect(header.subarray(0, 4).equals(RIFF_MAGIC)).toBe(true);
+      expect(header.subarray(8, 12).equals(WEBP_MAGIC)).toBe(true);
     });
   });
 
