@@ -1,0 +1,93 @@
+@use "../styles/mixins" as mix;
+@use "../styles/variables" as vars;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: vars.$max-layout-width;
+  padding: 3rem 1.5rem;
+
+  @media (min-width: 768px) {
+    padding: 4rem 2rem;
+  }
+}
+
+.sectionHeading {
+  @include mix.secondary-title;
+  @include mix.gradient-text;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.articlesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.toolsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.emptyState {
+  color: hsl(var(--muted-foreground));
+  text-align: center;
+  padding: 2rem;
+}
+
+.contact {
+  @include mix.flex-c-c-col;
+  width: 100%;
+  max-width: vars.$max-layout-width;
+  padding: 2rem 1.5rem 3rem;
+  gap: 1.5rem;
+}
+
+.contactTitle {
+  @include mix.secondary-title;
+}
+
+.contactSocials {
+  display: flex;
+  gap: 3rem;
+}
+
+.contactIcon {
+  @include mix.flex-c-c-col;
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem 0.25rem;
+  border: 1px solid transparent;
+  transition:
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--glass-border);
+  }
+}

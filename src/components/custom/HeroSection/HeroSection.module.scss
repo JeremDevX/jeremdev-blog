@@ -1,0 +1,81 @@
+@use "../../../styles/mixins" as mix;
+@use "../../../styles/variables" as vars;
+
+.hero {
+  background: var(--gradient);
+  width: 100%;
+  padding: 5rem 1.5rem;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    padding: 6rem 2rem;
+  }
+}
+
+.container {
+  @include mix.flex-c-c-col;
+  gap: 1.5rem;
+  max-width: vars.$max-layout-width;
+  margin: 0 auto;
+}
+
+.heading {
+  @include mix.main-title;
+  color: hsl(var(--foreground));
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.subtitle {
+  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+  color: hsla(var(--foreground), 0.85);
+  max-width: 600px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.cta {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ctaPrimary,
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition:
+    transform 200ms ease-out,
+    box-shadow 200ms ease-out;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.ctaPrimary {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  box-shadow: vars.$drop-light;
+
+  &:hover {
+    box-shadow: vars.$drop-light-lg;
+  }
+}
+
+.ctaSecondary {
+  background: transparent;
+  color: hsl(var(--foreground));
+  border: 1px solid hsla(var(--foreground), 0.3);
+
+  &:hover {
+    border-color: hsla(var(--foreground), 0.6);
+  }
+}
