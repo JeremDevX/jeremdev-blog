@@ -1,3 +1,5 @@
+@use "../../../styles/variables" as vars;
+
 .container {
   max-width: 1000px;
   margin: 0 auto;
@@ -73,7 +75,7 @@
   }
 }
 
-.childCard {
+%cardBase {
   display: block;
   padding: 1.25rem;
   border-radius: var(--radius);
@@ -85,8 +87,12 @@
 
   &:hover {
     border-color: hsl(var(--primary));
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: vars.$drop-light-lg;
   }
+}
+
+.childCard {
+  @extend %cardBase;
 }
 
 .childName {
@@ -120,19 +126,7 @@
 }
 
 .articleCard {
-  display: block;
-  padding: 1.25rem;
-  border-radius: var(--radius);
-  background: hsl(var(--card));
-  border: 1px solid hsl(var(--border));
-  text-decoration: none;
-  color: inherit;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-
-  &:hover {
-    border-color: hsl(var(--primary));
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
+  @extend %cardBase;
 }
 
 .articleTitle {

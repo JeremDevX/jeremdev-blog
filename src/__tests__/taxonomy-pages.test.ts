@@ -1,17 +1,36 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { taxonomyTree, findTaxonomyNode, getTaxonomyBreadcrumb } from "@/lib/taxonomy";
 import type { TaxonomyNode } from "@/types/taxonomy";
 
-describe("Taxonomy pages - generateStaticParams coverage", () => {
+// Mock Next.js modules so we can import the actual page exports
+vi.mock("next/navigation", () => ({
+  notFound: vi.fn(),
+}));
+vi.mock("next/link", () => ({
+  default: vi.fn(),
+}));
+
+// Mock SCSS module
+vi.mock("../app/topics/[...path]/TaxonomyPage.module.scss", () => ({
+  default: {},
+}));
+
+// Import the actual page exports after mocks are set up
+const {
+  generateStaticParams,
+  generateMetadata,
+} = await import("@/app/topics/[...path]/page");
+
+describe("Taxonomy pages - generateStaticParams (actual export)", () => {
   it("generates params for all Big Topics", () => {
-    const params = generateAllTaxonomyPaths();
+    const params = generateStaticParams();
     for (const bigTopic of taxonomyTree) {
       expect(params).toContainEqual({ path: [bigTopic.slug] });
     }
   });
 
   it("generates params for all Topics (2 segments)", () => {
-    const params = generateAllTaxonomyPaths();
+    const params = generateStaticParams();
     for (const bigTopic of taxonomyTree) {
       for (const topic of bigTopic.children ?? []) {
         expect(params).toContainEqual({ path: [bigTopic.slug, topic.slug] });
@@ -20,7 +39,7 @@ describe("Taxonomy pages - generateStaticParams coverage", () => {
   });
 
   it("generates params for all Subtopics (3 segments)", () => {
-    const params = generateAllTaxonomyPaths();
+    const params = generateStaticParams();
     for (const bigTopic of taxonomyTree) {
       for (const topic of bigTopic.children ?? []) {
         for (const subtopic of topic.children ?? []) {
@@ -33,7 +52,7 @@ describe("Taxonomy pages - generateStaticParams coverage", () => {
   });
 
   it("total path count matches all nodes in the tree", () => {
-    const params = generateAllTaxonomyPaths();
+    const params = generateStaticParams();
     let totalNodes = 0;
     function count(nodes: TaxonomyNode[]) {
       for (const n of nodes) {
@@ -43,6 +62,33 @@ describe("Taxonomy pages - generateStaticParams coverage", () => {
     }
     count(taxonomyTree);
     expect(params.length).toBe(totalNodes);
+  });
+});
+
+describe("Taxonomy pages - generateMetadata (actual export)", () => {
+  it("returns proper metadata for a valid Big Topic path", async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ path: ["programming"] }),
+    });
+    expect(metadata.title).toBe("Programming - TechHowlerX");
+    expect(metadata.description).toBeTruthy();
+    expect(metadata.alternates?.canonical).toContain("/topics/programming");
+    expect(metadata.openGraph).toBeDefined();
+  });
+
+  it("returns proper metadata for a valid Topic path", async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ path: ["programming", "css"] }),
+    });
+    expect(metadata.title).toBe("CSS - TechHowlerX");
+    expect(metadata.alternates?.canonical).toContain("/topics/programming/css");
+  });
+
+  it("returns 'Not Found' title for invalid path", async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ path: ["nonexistent"] }),
+    });
+    expect(metadata.title).toBe("Not Found");
   });
 });
 
@@ -129,19 +175,3 @@ describe("Taxonomy pages - Big Topics overview data", () => {
     checkSlugs(taxonomyTree);
   });
 });
-
-// Helper that mirrors the generateStaticParams logic
-function generateAllTaxonomyPaths(): { path: string[] }[] {
-  const paths: { path: string[] }[] = [];
-
-  function walk(nodes: TaxonomyNode[], prefix: string[]) {
-    for (const node of nodes) {
-      const current = [...prefix, node.slug];
-      paths.push({ path: current });
-      if (node.children) walk(node.children, current);
-    }
-  }
-
-  walk(taxonomyTree, []);
-  return paths;
-}

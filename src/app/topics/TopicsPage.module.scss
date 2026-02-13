@@ -1,3 +1,5 @@
+@use "../../styles/variables" as vars;
+
 .container {
   max-width: 1000px;
   margin: 0 auto;
@@ -38,7 +40,7 @@
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 
   &:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: vars.$drop-glow;
   }
 }
 
