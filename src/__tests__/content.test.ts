@@ -48,6 +48,26 @@ describe("content loading utilities", () => {
       const article = await getArticleBySlug("nonexistent-slug");
       expect(article).toBeUndefined();
     });
+
+    it("loads vpn-anonymity-explained with correct frontmatter", async () => {
+      const article = await getArticleBySlug("vpn-anonymity-explained");
+      expect(article).toBeDefined();
+      expect(article!.title).toBe("Why a VPN doesn't really make you Anonymous");
+      expect(article!.category).toBe("networking-security/privacy/vpn-anonymity");
+      expect(article!.date).toBe("2024-10-15");
+      expect(article!.published).toBe(true);
+      expect(article!.content).toContain("What is a VPN?");
+    });
+
+    it("loads importance-of-semantics-in-html with correct frontmatter", async () => {
+      const article = await getArticleBySlug("importance-of-semantics-in-html");
+      expect(article).toBeDefined();
+      expect(article!.title).toBe("The Importance of Semantics in HTML");
+      expect(article!.category).toBe("programming/html/semantics");
+      expect(article!.date).toBe("2024-10-15");
+      expect(article!.published).toBe(true);
+      expect(article!.content).toContain("What is a Tag in HTML?");
+    });
   });
 
   describe("getArticlesByCategory", () => {
