@@ -7,9 +7,11 @@ interface CategoryGroupProps {
 }
 
 export default function CategoryGroup({ category }: CategoryGroupProps) {
+  const categoryId = `category-${category.name.toLowerCase().replace(/\s+/g, "-")}`;
+
   return (
-    <section className={styles.section} aria-labelledby={`category-${category.name}`}>
-      <h2 id={`category-${category.name}`} className={styles.heading}>
+    <section className={styles.section} aria-labelledby={categoryId}>
+      <h2 id={categoryId} className={styles.heading}>
         {category.name}
       </h2>
       <div className={styles.grid}>

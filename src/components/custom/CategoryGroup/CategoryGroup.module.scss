@@ -2,19 +2,19 @@
 @use "../../../styles/mixins" as mix;
 
 .section {
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-8);
 }
 
 .heading {
   @include mix.secondary-title;
   color: hsl(var(--accent));
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-6);
 }
 
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: var(--space-6);
   width: 100%;
 
   @media (min-width: 768px) {

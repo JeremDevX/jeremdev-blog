@@ -5,7 +5,7 @@ interface AsideProps {
   asideFor: "tools" | "blog";
 }
 
-export default async function Aside(props: AsideProps) {
+export default function Aside(props: AsideProps) {
   const categories = getToolsByCategory();
 
   return (
