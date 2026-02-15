@@ -64,8 +64,8 @@ export default async function IndexPage() {
     <main className={styles.page}>
       <HeroSection />
 
-      <section className={styles.section}>
-        <h2 className={styles.sectionHeading}>Latest Articles</h2>
+      <section className={styles.section} aria-labelledby="latest-articles">
+        <h2 id="latest-articles" className={styles.sectionHeading}>Latest Articles</h2>
         {articles.length > 0 ? (
           <div className={styles.articlesGrid}>
             {articles.map((article) => (
@@ -88,8 +88,8 @@ export default async function IndexPage() {
         )}
       </section>
 
-      <section className={styles.section}>
-        <h2 className={styles.sectionHeading}>Developer Tools</h2>
+      <section className={styles.section} aria-labelledby="developer-tools">
+        <h2 id="developer-tools" className={styles.sectionHeading}>Developer Tools</h2>
         <div className={styles.toolsGrid}>
           {TOOLS.map((tool) => (
             <ContentCard
@@ -104,8 +104,8 @@ export default async function IndexPage() {
         </div>
       </section>
 
-      <section className={styles.contact}>
-        <h2 className={styles.contactTitle}>You have a suggestion?</h2>
+      <section className={styles.contact} aria-labelledby="contact">
+        <h2 id="contact" className={styles.contactTitle}>You have a suggestion?</h2>
         <p>Don&apos;t hesitate to contact me!</p>
         <div className={styles.contactSocials}>
           <Link

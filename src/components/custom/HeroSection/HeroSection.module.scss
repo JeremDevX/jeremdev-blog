@@ -21,7 +21,7 @@
 
 .heading {
   @include mix.main-title;
-  color: hsl(var(--foreground));
+  @include mix.gradient-text;
   font-size: clamp(2.5rem, 5vw, 3.5rem);
 }
 
