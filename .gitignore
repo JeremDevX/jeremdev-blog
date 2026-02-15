@@ -38,6 +38,9 @@ next-env.d.ts
 # templates
 .templates
 
+# generated search index
+/public/search-index.json
+
 
 _bmad
 _bmad-output

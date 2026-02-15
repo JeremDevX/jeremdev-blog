@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import SearchInput from "./Search";
+import SearchInput from "@/components/custom/Search";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";

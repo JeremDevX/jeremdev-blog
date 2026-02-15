@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "tsx scripts/generate-search-index.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -15,6 +16,7 @@
     "@radix-ui/react-icons": "^1.3.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "fuse.js": "^7.1.0",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.563.0",
     "next": "^16.1.6",
@@ -29,6 +31,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
+    "@types/mdx": "^2.0.13",
     "@types/node": "^25.2.3",
     "@types/react": "^19.2.13",
     "@types/react-dom": "^19.2.3",
@@ -39,8 +42,8 @@
     "sass": "^1.97.3",
     "sass-embedded": "^1.97.3",
     "tailwindcss": "^4.1.18",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "@types/mdx": "^2.0.13",
     "vitest": "^4.0.18"
   }
 }
