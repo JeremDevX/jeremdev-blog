@@ -1,71 +1,49 @@
-import path from "path";
-import { promises as fs } from "fs";
 import { NextResponse } from "next/server";
-import { Category, Tool } from "@/components/custom/AsideToolsList";
+import { getToolsByCategory } from "@/lib/tools";
+import type { ToolMeta } from "@/types/tools";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const toolName = searchParams.get("name");
 
-  try {
-    const toolsFilePath = path.join(
-      process.cwd(),
-      "public",
-      "data",
-      "tools-list.json"
-    );
-    const toolsData = await fs.readFile(toolsFilePath, "utf8");
+  const categories = getToolsByCategory();
 
-    // Check if JSON file is empty
-    if (!toolsData) {
+  // If a tool name is provided in the query, search for the specific tool by partial match
+  if (toolName && toolName.length >= 3) {
+    const foundTools: { name: string; url: string; desc: string; icon: string }[] = [];
+    for (const category of categories) {
+      for (const tool of category.tools) {
+        if (tool.name.toLowerCase().includes(toolName.toLowerCase())) {
+          foundTools.push({
+            name: tool.name,
+            url: tool.slug,
+            desc: tool.description,
+            icon: tool.icon,
+          });
+        }
+      }
+    }
+
+    if (foundTools.length > 0) {
+      return NextResponse.json(foundTools, { status: 200 });
+    } else {
       return NextResponse.json(
-        { error: "The tools-list.json file is empty." },
-        { status: 500 }
+        { error: `No tools found matching "${toolName}".` },
+        { status: 404 },
       );
     }
-
-    const fetchedToolsCategories = JSON.parse(toolsData).categories;
-
-    // If a tool name is provided in the query, search for the specific tool by partial match
-    if (toolName && toolName.length >= 3) {
-      const foundTools = searchToolsByPartialName(
-        fetchedToolsCategories,
-        toolName
-      );
-      if (foundTools.length > 0) {
-        return NextResponse.json(foundTools, { status: 200 });
-      } else {
-        return NextResponse.json(
-          { error: `No tools found matching "${toolName}".` },
-          { status: 404 }
-        );
-      }
-    }
-
-    // Return all categories if no tool name is specified or search term is too short
-    return NextResponse.json(fetchedToolsCategories, { status: 200 });
-  } catch (error) {
-    console.error("Error reading the JSON file:", error);
-    return NextResponse.json(
-      { error: "Error reading the JSON file." },
-      { status: 500 }
-    );
   }
-}
 
-// Function to search for tools by partial name match
+  // Return all categories in the format the AsideToolsList expects
+  const result = categories.map((cat) => ({
+    name: cat.name,
+    tools: cat.tools.map((tool: ToolMeta) => ({
+      name: tool.name,
+      url: tool.slug,
+      desc: tool.description,
+      icon: tool.icon,
+    })),
+  }));
 
-function searchToolsByPartialName(
-  categories: Category[],
-  toolName: string
-): Tool[] {
-  const matchingTools: Tool[] = [];
-  for (const category of categories) {
-    for (const tool of category.tools) {
-      if (tool.name.toLowerCase().includes(toolName.toLowerCase())) {
-        matchingTools.push(tool);
-      }
-    }
-  }
-  return matchingTools;
+  return NextResponse.json(result, { status: 200 });
 }

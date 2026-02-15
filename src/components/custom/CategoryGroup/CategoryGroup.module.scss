@@ -1,0 +1,27 @@
+@use "../../../styles/variables" as vars;
+@use "../../../styles/mixins" as mix;
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.heading {
+  @include mix.secondary-title;
+  color: hsl(var(--accent));
+  margin-bottom: 1.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

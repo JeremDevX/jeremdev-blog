@@ -4,44 +4,8 @@ import { Mail } from "lucide-react";
 import HeroSection from "@/components/custom/HeroSection";
 import ContentCard from "@/components/custom/ContentCard";
 import { getLatestArticles } from "@/lib/content";
+import { getAllTools } from "@/lib/tools";
 import styles from "./HomePage.module.scss";
-
-const TOOLS = [
-  {
-    name: "Contrast Checker",
-    slug: "/tools/accessibility/contrast-checker",
-    description:
-      "Check the contrast ratio between two colors and verify WCAG compliance.",
-    category: "Accessibility",
-  },
-  {
-    name: "Border Radius Generator",
-    slug: "/tools/css/border-radius",
-    description:
-      "Generate CSS border-radius values with a visual live preview.",
-    category: "CSS",
-  },
-  {
-    name: "Box Shadow Generator",
-    slug: "/tools/css/box-shadow",
-    description:
-      "Generate CSS box-shadow values with controls for offset, blur, spread, and color.",
-    category: "CSS",
-  },
-  {
-    name: "Slug Generator",
-    slug: "/tools/code/slug-generator",
-    description: "Generate URL-friendly slugs from any text input.",
-    category: "Development",
-  },
-  {
-    name: "Word Counter",
-    slug: "/tools/text/word-counter",
-    description:
-      "Count words and characters with platform-specific length recommendations.",
-    category: "Content",
-  },
-];
 
 export const metadata: Metadata = {
   title: "TechHowlerX - Tech Blog & Dev Tools",
@@ -59,6 +23,7 @@ export const metadata: Metadata = {
 
 export default async function IndexPage() {
   const articles = await getLatestArticles(6);
+  const tools = getAllTools();
 
   return (
     <main className={styles.page}>
@@ -91,7 +56,7 @@ export default async function IndexPage() {
       <section className={styles.section} aria-labelledby="developer-tools">
         <h2 id="developer-tools" className={styles.sectionHeading}>Developer Tools</h2>
         <div className={styles.toolsGrid}>
-          {TOOLS.map((tool) => (
+          {tools.map((tool) => (
             <ContentCard
               key={tool.slug}
               type="tool"

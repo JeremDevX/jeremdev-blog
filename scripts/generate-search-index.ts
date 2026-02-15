@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import matter from "gray-matter";
+import { getAllTools } from "../src/lib/tools";
 
 export interface SearchIndexEntry {
   title: string;
@@ -11,47 +12,6 @@ export interface SearchIndexEntry {
 }
 
 const ARTICLES_DIR = path.join(process.cwd(), "content/articles");
-
-export const TOOLS_FOR_INDEX: SearchIndexEntry[] = [
-  {
-    title: "Contrast Checker",
-    slug: "/tools/accessibility/contrast-checker",
-    resume:
-      "Check the contrast ratio between two colors and verify WCAG compliance.",
-    category: "Accessibility",
-    type: "tool",
-  },
-  {
-    title: "Border Radius Generator",
-    slug: "/tools/css/border-radius",
-    resume: "Generate CSS border-radius values with a visual live preview.",
-    category: "CSS",
-    type: "tool",
-  },
-  {
-    title: "Box Shadow Generator",
-    slug: "/tools/css/box-shadow",
-    resume:
-      "Generate CSS box-shadow values with controls for offset, blur, spread, and color.",
-    category: "CSS",
-    type: "tool",
-  },
-  {
-    title: "Slug Generator",
-    slug: "/tools/code/slug-generator",
-    resume: "Generate URL-friendly slugs from any text input.",
-    category: "Development",
-    type: "tool",
-  },
-  {
-    title: "Word Counter",
-    slug: "/tools/text/word-counter",
-    resume:
-      "Count words and characters with platform-specific length recommendations.",
-    category: "Content",
-    type: "tool",
-  },
-];
 
 /**
  * Reads articles from the filesystem and returns search index entries.
@@ -93,9 +53,20 @@ export async function getArticlesForIndex(): Promise<SearchIndexEntry[]> {
   return entries;
 }
 
+export function getToolsForIndex(): SearchIndexEntry[] {
+  return getAllTools().map((tool) => ({
+    title: tool.name,
+    slug: tool.slug,
+    resume: tool.description,
+    category: tool.category,
+    type: "tool" as const,
+  }));
+}
+
 export async function generateSearchIndex(): Promise<SearchIndexEntry[]> {
   const articles = await getArticlesForIndex();
-  return [...articles, ...TOOLS_FOR_INDEX];
+  const tools = getToolsForIndex();
+  return [...articles, ...tools];
 }
 
 async function main() {
@@ -105,8 +76,9 @@ async function main() {
   await fs.writeFile(outputPath, JSON.stringify(searchIndex, null, 2), "utf-8");
 
   const articleCount = searchIndex.filter((e) => e.type === "article").length;
+  const toolCount = searchIndex.filter((e) => e.type === "tool").length;
   console.log(
-    `Generated search index with ${articleCount} articles and ${TOOLS_FOR_INDEX.length} tools`,
+    `Generated search index with ${articleCount} articles and ${toolCount} tools`,
   );
 }
 

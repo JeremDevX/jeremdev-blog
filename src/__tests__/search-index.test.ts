@@ -4,7 +4,7 @@ import path from "path";
 import {
   getArticlesForIndex,
   generateSearchIndex,
-  TOOLS_FOR_INDEX,
+  getToolsForIndex,
   type SearchIndexEntry,
 } from "../../scripts/generate-search-index";
 
@@ -35,13 +35,14 @@ describe("Search Index Generation", () => {
     vi.clearAllMocks();
   });
 
-  describe("TOOLS_FOR_INDEX", () => {
+  describe("getToolsForIndex", () => {
     it("contains exactly 5 tools", () => {
-      expect(TOOLS_FOR_INDEX).toHaveLength(5);
+      const tools = getToolsForIndex();
+      expect(tools).toHaveLength(5);
     });
 
     it("every tool has all required SearchIndexEntry fields", () => {
-      for (const tool of TOOLS_FOR_INDEX) {
+      for (const tool of getToolsForIndex()) {
         expect(tool).toHaveProperty("title");
         expect(tool).toHaveProperty("slug");
         expect(tool).toHaveProperty("resume");
@@ -51,13 +52,13 @@ describe("Search Index Generation", () => {
     });
 
     it("all tool slugs start with /tools/", () => {
-      for (const tool of TOOLS_FOR_INDEX) {
+      for (const tool of getToolsForIndex()) {
         expect(tool.slug).toMatch(/^\/tools\//);
       }
     });
 
     it("no tool has an empty title or resume", () => {
-      for (const tool of TOOLS_FOR_INDEX) {
+      for (const tool of getToolsForIndex()) {
         expect(tool.title.length).toBeGreaterThan(0);
         expect(tool.resume.length).toBeGreaterThan(0);
       }
