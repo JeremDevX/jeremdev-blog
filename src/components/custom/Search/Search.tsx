@@ -5,7 +5,6 @@ import { Search } from "lucide-react";
 import { useDebounceValue } from "usehooks-ts";
 import { useRouter } from "next/navigation";
 import Fuse, { type FuseResult } from "fuse.js";
-import { handleEnterKeyDown } from "@/utils/handleKeyDown";
 import styles from "./Search.module.scss";
 
 interface SearchIndexEntry {
@@ -19,15 +18,14 @@ interface SearchIndexEntry {
 export default function SearchInput() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<FuseResult<SearchIndexEntry>[]>(
-    [],
-  );
+  const [results, setResults] = useState<FuseResult<SearchIndexEntry>[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const searchIndexRef = useRef<SearchIndexEntry[] | null>(null);
   const fuseRef = useRef<Fuse<SearchIndexEntry> | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   const [debouncedQuery] = useDebounceValue(query, 300);
@@ -52,6 +50,7 @@ export default function SearchInput() {
       setQuery("");
       setResults([]);
       setSelectedIndex(0);
+      setHasError(false);
     }
   }, [isOpen]);
 
@@ -60,8 +59,12 @@ export default function SearchInput() {
     if (!isOpen || searchIndexRef.current) return;
 
     setIsLoading(true);
+    setHasError(false);
     fetch("/search-index.json")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then((data: SearchIndexEntry[]) => {
         searchIndexRef.current = data;
         fuseRef.current = new Fuse(data, {
@@ -78,6 +81,7 @@ export default function SearchInput() {
       })
       .catch(() => {
         setIsLoading(false);
+        setHasError(true);
       });
   }, [isOpen]);
 
@@ -98,13 +102,35 @@ export default function SearchInput() {
     setIsOpen(false);
   }, []);
 
-  // Handle escape key and click outside
+  // Handle escape key and focus trap
   useEffect(() => {
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         closeOverlay();
+        return;
+      }
+
+      // Focus trap: keep Tab within the overlay
+      if (e.key === "Tab" && containerRef.current) {
+        const focusableElements = containerRef.current.querySelectorAll<HTMLElement>(
+          'input, button, [tabindex]:not([tabindex="-1"])',
+        );
+        const firstEl = focusableElements[0];
+        const lastEl = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstEl) {
+            e.preventDefault();
+            lastEl?.focus();
+          }
+        } else {
+          if (document.activeElement === lastEl) {
+            e.preventDefault();
+            firstEl?.focus();
+          }
+        }
       }
     };
     document.addEventListener("keydown", handleKeyDown);
@@ -140,23 +166,25 @@ export default function SearchInput() {
   };
 
   const truncate = (text: string, max: number) =>
-    text.length > max ? text.slice(0, max) + "…" : text;
+    text.length > max ? text.slice(0, max) + "\u2026" : text;
 
   const isMac =
     typeof navigator !== "undefined" && navigator.platform?.includes("Mac");
+
+  const activeDescendantId =
+    results.length > 0 ? `search-result-${selectedIndex}` : undefined;
 
   return (
     <div className={styles.search}>
       <button
         className={styles.trigger}
         onClick={() => setIsOpen(true)}
-        onKeyDown={(e) => handleEnterKeyDown(e, () => setIsOpen(true))}
         aria-label="Search"
         type="button"
       >
         <Search className={styles.triggerIcon} />
         <span className={styles.shortcutHint}>
-          {isMac ? "⌘K" : "Ctrl+K"}
+          {isMac ? "\u2318K" : "Ctrl+K"}
         </span>
       </button>
 
@@ -168,7 +196,7 @@ export default function SearchInput() {
           aria-modal="true"
           aria-label="Search"
         >
-          <div className={styles.container} ref={overlayRef}>
+          <div className={styles.container} ref={containerRef}>
             <div className={styles.inputWrapper}>
               <Search className={styles.inputIcon} />
               <input
@@ -180,15 +208,30 @@ export default function SearchInput() {
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleInputKeyDown}
                 aria-label="Search query"
+                role="combobox"
+                aria-expanded={results.length > 0}
+                aria-controls="search-results-listbox"
+                aria-activedescendant={activeDescendantId}
               />
             </div>
 
-            <div className={styles.resultsList} role="listbox">
+            <div
+              className={styles.resultsList}
+              role="listbox"
+              id="search-results-listbox"
+            >
               {isLoading && (
                 <p className={styles.message}>Loading search...</p>
               )}
 
+              {hasError && (
+                <p className={styles.message}>
+                  Search is temporarily unavailable. Please try again later.
+                </p>
+              )}
+
               {!isLoading &&
+                !hasError &&
                 debouncedQuery.length >= 3 &&
                 results.length === 0 && (
                   <p className={styles.message}>
@@ -198,6 +241,7 @@ export default function SearchInput() {
                 )}
 
               {!isLoading &&
+                !hasError &&
                 debouncedQuery.length < 3 &&
                 query.length > 0 && (
                   <p className={styles.message}>
@@ -208,6 +252,7 @@ export default function SearchInput() {
               {results.map((result, index) => (
                 <button
                   key={result.item.slug}
+                  id={`search-result-${index}`}
                   className={`${styles.resultRow} ${
                     index === selectedIndex ? styles.resultRowSelected : ""
                   }`}
