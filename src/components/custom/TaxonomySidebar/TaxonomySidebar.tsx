@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Wrench } from "lucide-react";
@@ -124,12 +125,15 @@ function ItemList({
 export default function TaxonomySidebar({ articles, tools }: TaxonomySidebarProps) {
   const pathname = usePathname();
   const defaultOpenItems = getDefaultOpenItems(pathname, articles, tools);
-  const tree = buildSidebarTree(taxonomyTree, articles, tools);
+  const tree = useMemo(
+    () => buildSidebarTree(taxonomyTree, articles, tools),
+    [articles, tools]
+  );
   const branchesWithContent = tree.filter(hasContent);
 
   return (
     <nav className={styles.sidebar} aria-label="Taxonomy navigation">
-      <Accordion type="multiple" defaultValue={defaultOpenItems}>
+      <Accordion type="multiple" defaultValue={defaultOpenItems} key={pathname}>
         {branchesWithContent.map((bigTopic, index) => (
           <div key={bigTopic.node.slug}>
             <AccordionItem

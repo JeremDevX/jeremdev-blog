@@ -154,6 +154,11 @@
   color: hsl(var(--primary));
   background: hsl(var(--primary) / 0.08);
   font-weight: 500;
+
+  &:hover {
+    color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.12);
+  }
 }
 
 .wrenchIcon {
