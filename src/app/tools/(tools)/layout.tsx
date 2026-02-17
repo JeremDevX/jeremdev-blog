@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import "../../globals.css";
-import Aside from "@/components/custom/Aside";
+import TaxonomySidebarServer from "@/components/custom/TaxonomySidebar/TaxonomySidebarServer";
 import Link from "next/link";
 import ArrowTopOfPage from "@/components/custom/ArrowTopOfPage";
 
@@ -16,7 +15,7 @@ export default function PostLayout({
 }>) {
   return (
     <div className="tool">
-      <Aside asideFor="tools" />
+      <TaxonomySidebarServer />
       <main className="tool__container article-padding">
         <Link href="/tools" className="tool__back">
           ← Back to tools
