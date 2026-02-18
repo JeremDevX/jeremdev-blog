@@ -1,9 +1,7 @@
 "use client";
 
-import Button from "@/components/custom/Button";
-import NotificationPopup from "@/components/custom/CopyPopup";
-import { handleCopy } from "@/utils/handleCopy";
-import { useRef, useState } from "react";
+import ToolOutput from "@/components/custom/ToolOutput";
+import { useState } from "react";
 
 export default function BoxSahdow() {
   const [horizontalPosition, setHorizontalPosition] = useState("5");
@@ -14,9 +12,7 @@ export default function BoxSahdow() {
   const [shadowColor, setShadowColor] = useState("#FFFFFF");
   const [backgroundColor, setBackgroundColor] = useState("#000000");
   const [insetShadow, setInsetShadow] = useState(true);
-  const shapeRef = useRef<HTMLDivElement | null>(null);
-  const [isCopied, setIsCopied] = useState(false);
-  const [failedToCopy, setFailedToCopy] = useState(false);
+  const boxShadowValue = `${horizontalPosition}px ${verticalPosition}px ${blur}px ${spread}px ${shadowColor}${insetShadow ? " inset" : ""}`;
 
   const inputRange = [
     {
@@ -81,20 +77,6 @@ export default function BoxSahdow() {
     },
   ];
 
-  const handleCopyBoxShadow = () => {
-    handleCopy({
-      ref: shapeRef,
-      getValue: (ref) =>
-        `box-shadow: ${(ref.current as HTMLElement).style.boxShadow};`,
-      onSuccess: () => {
-        setIsCopied(true);
-      },
-      onError: () => {
-        setFailedToCopy(true);
-      },
-    });
-  };
-
   return (
     <div className="tool__main">
       <h1 className="tool__main-title">Box Shadow Tool</h1>
@@ -158,33 +140,15 @@ export default function BoxSahdow() {
           <div
             className="box-shadow__shape"
             style={{
-              boxShadow: `${horizontalPosition}px ${verticalPosition}px ${blur}px ${spread}px ${shadowColor} ${insetShadow ? "inset" : ""}`,
+              boxShadow: boxShadowValue,
               backgroundColor: `${shapeColor}`,
             }}
-            ref={shapeRef}
           ></div>
         </div>
       </div>
-      <div className="box-shadow__values">
-        <span className="box-shadow__css">
-          box-shadow : {shadowColor} {horizontalPosition}px {verticalPosition}px{" "}
-          {blur}px {spread}px {insetShadow ? "inset" : ""}
-        </span>
-        <Button onClick={handleCopyBoxShadow}>Copy</Button>
-      </div>
-      <NotificationPopup
-        message="Box Shadow copied!"
-        isVisible={isCopied}
-        onClose={() => setIsCopied(false)}
-        duration={2000}
-        className="copy-success"
-      />
-      <NotificationPopup
-        message="An error occured."
-        isVisible={failedToCopy}
-        onClose={() => setFailedToCopy(false)}
-        duration={2000}
-        className="copy-error"
+      <ToolOutput
+        className="box-shadow__values"
+        output={`box-shadow: ${boxShadowValue};`}
       />
       <div className="tool__desc">
         <h2 className="tool__desc-title">box shadow</h2>

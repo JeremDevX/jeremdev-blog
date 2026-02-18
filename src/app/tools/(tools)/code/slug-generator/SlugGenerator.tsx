@@ -1,16 +1,11 @@
 "use client";
 
-import Button from "@/components/custom/Button";
-import NotificationPopup from "@/components/custom/CopyPopup";
-import { handleCopy } from "@/utils/handleCopy";
-import { useEffect, useRef, useState } from "react";
+import ToolOutput from "@/components/custom/ToolOutput";
+import { useEffect, useState } from "react";
 
 export default function SlugGenerator() {
   const [inputValue, setInputValue] = useState("");
   const [outputValue, setOutputValue] = useState("");
-  const outputRef = useRef<HTMLInputElement>(null);
-  const [isCopied, setIsCopied] = useState(false);
-  const [failedToCopy, setFailedToCopy] = useState(false);
 
   useEffect(() => {
     const slug = inputValue
@@ -24,19 +19,6 @@ export default function SlugGenerator() {
 
     setOutputValue(slug);
   }, [inputValue]);
-
-  const handleCopyInput = () => {
-    handleCopy({
-      ref: outputRef,
-      getValue: (ref) => ref.current?.value ?? "",
-      onSuccess: () => {
-        setIsCopied(true);
-      },
-      onError: () => {
-        setFailedToCopy(true);
-      },
-    });
-  };
 
   return (
     <div className="tool__main">
@@ -54,33 +36,10 @@ export default function SlugGenerator() {
             onChange={(e) => setInputValue(e.target.value)}
           />
         </label>
-        <label htmlFor="output" className="slug-gen__input semi-bold">
-          Generated Slug
-          <input
-            type="text"
-            id="output"
-            disabled
-            className="slug-gen__input--disabled"
-            value={outputValue}
-            ref={outputRef}
-          />
-        </label>
-        <Button onClick={handleCopyInput} disabled={outputValue.length === 0}>
-          Copy Slug
-        </Button>
-        <NotificationPopup
-          message="Slug copied!"
-          isVisible={isCopied}
-          onClose={() => setIsCopied(false)}
-          duration={2000}
-          className="copy-success"
-        />
-        <NotificationPopup
-          message="An error occurred."
-          isVisible={failedToCopy}
-          onClose={() => setFailedToCopy(false)}
-          duration={2000}
-          className="copy-error"
+        <ToolOutput
+          className="slug-gen__output"
+          output={outputValue || "-"}
+          valueToCopy={outputValue}
         />
       </div>
       <div className="tool__desc">

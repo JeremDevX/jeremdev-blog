@@ -1,8 +1,6 @@
 "use client";
 
-import Button from "@/components/custom/Button";
-import NotificationPopup from "@/components/custom/CopyPopup";
-import { handleCopy } from "@/utils/handleCopy";
+import ToolOutput from "@/components/custom/ToolOutput";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function BorderRadius() {
@@ -20,8 +18,6 @@ export default function BorderRadius() {
   const [toggleCustomSize, setToggleCustomSize] = useState(false);
   const squareRef = useRef<HTMLDivElement | null>(null);
   const [dragging, setDragging] = useState<null | string>(null);
-  const [isCopied, setIsCopied] = useState(false);
-  const [failedToCopy, setFailedToCopy] = useState(false);
 
   const handleMouseDown = (corner: string) => {
     setDragging(corner);
@@ -68,10 +64,13 @@ export default function BorderRadius() {
     };
   }, [dragging, handleMouseMove]);
 
+  const borderRadiusValue = `${100 - Number(borderRadius.topRight)}% ${borderRadius.topRight}% ${100 - Number(borderRadius.bottomLeft)}% ${borderRadius.bottomLeft}% / ${borderRadius.topLeft}% ${100 - Number(borderRadius.bottomRight)}% ${borderRadius.bottomRight}% ${100 - Number(borderRadius.topLeft)}%`;
+  const borderRadiusCssValue = `border-radius: ${borderRadiusValue};`;
+
   const squareStyle = {
     width: `${squareSize.width}px`,
     height: `${squareSize.height}px`,
-    borderRadius: `${100 - Number(borderRadius.topRight)}% ${borderRadius.topRight}% ${100 - Number(borderRadius.bottomLeft)}% ${borderRadius.bottomLeft}% / ${borderRadius.topLeft}% ${100 - Number(borderRadius.bottomRight)}% ${borderRadius.bottomRight}% ${100 - Number(borderRadius.topLeft)}%`,
+    borderRadius: borderRadiusValue,
   };
   const squareBorder = {
     width: `${Number(squareSize.width) + 4}px`,
@@ -125,20 +124,6 @@ export default function BorderRadius() {
         setBorderRadius({ ...borderRadius, bottomLeft: e.target.value }),
     },
   ];
-
-  const handleCopyBorderRadius = () => {
-    handleCopy({
-      ref: squareRef,
-      getValue: (ref) =>
-        `border-radius: ${(ref.current as HTMLElement).style.borderRadius}`,
-      onSuccess: () => {
-        setIsCopied(true);
-      },
-      onError: () => {
-        setFailedToCopy(true);
-      },
-    });
-  };
 
   const handleCustomSize = () => {
     setToggleCustomSize(!toggleCustomSize);
@@ -275,30 +260,7 @@ export default function BorderRadius() {
           {!toggleSlides ? "Use Sliders" : "Direct Control"}
         </button>
       </div>
-      <div className="border-radius__box">
-        <span className="border-radius__value">{`border-radius : ${100 - Number(borderRadius.topRight)}% ${borderRadius.topRight}% ${100 - Number(borderRadius.bottomLeft)}% ${borderRadius.bottomLeft}% / ${borderRadius.topLeft}% ${100 - Number(borderRadius.bottomRight)}% ${borderRadius.bottomRight}% ${100 - Number(borderRadius.topLeft)}%`}</span>
-        <Button
-          className="border-radius__copy"
-          onClick={handleCopyBorderRadius}
-          aria-label="Click to copy the CSS border-radius value"
-        >
-          Copy
-        </Button>
-      </div>
-      <NotificationPopup
-        message="Border Radius copied!"
-        isVisible={isCopied}
-        onClose={() => setIsCopied(false)}
-        duration={2000}
-        className="copy-success"
-      />
-      <NotificationPopup
-        message="An error occurred."
-        isVisible={failedToCopy}
-        onClose={() => setFailedToCopy(false)}
-        duration={2000}
-        className="copy-error"
-      />
+      <ToolOutput className="border-radius__box" output={borderRadiusCssValue} />
       <div className="tool__desc">
         <h2 className="tool__desc-title">Border Radius Tool</h2>
 
