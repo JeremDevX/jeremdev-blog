@@ -4,12 +4,8 @@ import { useMemo, useState } from "react";
 import styles from "./WordCounter.module.scss";
 
 export function countWords(text: string): number {
-  const words = text
-    .replace(/[^a-zA-Z0-9 ]/g, " ")
-    .trim()
-    .split(/\s+/)
-    .filter((word) => word.length > 0);
-  return words.length;
+  const words = text.match(/[\p{L}\p{N}]+(?:['’-][\p{L}\p{N}]+)*/gu);
+  return words?.length ?? 0;
 }
 
 export function formatCharacterCount(value: number): string {
@@ -32,10 +28,10 @@ export default function WordCounter() {
 Characters: ${formattedCharacters}`;
 
   return (
-    <div className="tool__main" data-testid="word-counter-tool">
-      <h1 className="tool__main-title">Word Counter Tool</h1>
+    <div className={styles.toolMain} data-testid="word-counter-tool">
+      <h1 className={styles.toolMainTitle}>Word Counter Tool</h1>
       <div className={styles.tool}>
-        <label htmlFor="word-counter" className="semi-bold">
+        <label htmlFor="word-counter" className={styles.semiBold}>
           Write or paste your text:
         </label>
         <div className={styles.container}>
@@ -57,16 +53,16 @@ Characters: ${formattedCharacters}`;
         output={outputSummary}
         valueToCopy={`Words: ${wordCount}\nCharacters: ${numberOfCharacters}`}
       />
-      <div className="tool__desc">
-        <h2 className="tool__desc-title">Length Recommendations</h2>
-        <h3 className="tool__desc-med-title">Why this tool?</h3>
-        <p className="tool__desc-text">
+      <div className={styles.description}>
+        <h2 className={styles.descriptionTitle}>Length Recommendations</h2>
+        <h3 className={styles.descriptionMedTitle}>Why this tool?</h3>
+        <p className={styles.descriptionText}>
           This tool helps you track word and character counts to ensure your
           content meets recommended or required length guidelines, optimizing
           readability and visibility across platforms like personnal blogs,
           social media, or email.
         </p>
-        <h3 className="tool__desc-med-title">Recommandations Table</h3>
+        <h3 className={styles.descriptionMedTitle}>Recommandations Table</h3>
         <div className={styles.tableContainer}>
           <table className={styles.table}>
             <caption>
@@ -99,7 +95,7 @@ Characters: ${formattedCharacters}`;
                 >
                   {wordCount} / 1,000 - 2,500 words
                 </td>
-                <td className={`${styles.tableType} italic`}>
+                <td className={`${styles.tableType} ${styles.italic}`}>
                   Recommended*
                 </td>
               </tr>
@@ -116,7 +112,7 @@ Characters: ${formattedCharacters}`;
                 >
                   {formattedCharacters} / 150 - 160 characters
                 </td>
-                <td className={`${styles.tableType} italic`}>Limit**</td>
+                <td className={`${styles.tableType} ${styles.italic}`}>Limit**</td>
               </tr>
               <tr>
                 <td className={styles.tableUseCase}>Title Tag</td>
@@ -129,7 +125,7 @@ Characters: ${formattedCharacters}`;
                 >
                   {formattedCharacters} / 50 - 60 characters
                 </td>
-                <td className={`${styles.tableType} italic`}>Limit**</td>
+                <td className={`${styles.tableType} ${styles.italic}`}>Limit**</td>
               </tr>
               <tr>
                 <td className={styles.tableUseCase}>
@@ -144,7 +140,7 @@ Characters: ${formattedCharacters}`;
                 >
                   {formattedCharacters} / 280 characters
                 </td>
-                <td className={`${styles.tableType} italic`}>Limit</td>
+                <td className={`${styles.tableType} ${styles.italic}`}>Limit</td>
               </tr>
               <tr>
                 <td className={styles.tableUseCase}>
@@ -159,7 +155,7 @@ Characters: ${formattedCharacters}`;
                 >
                   {formattedCharacters} / 2,200 characters
                 </td>
-                <td className={`${styles.tableType} italic`}>Limit</td>
+                <td className={`${styles.tableType} ${styles.italic}`}>Limit</td>
               </tr>
               <tr>
                 <td className={styles.tableUseCase}>LinkedIn Post</td>
@@ -172,7 +168,7 @@ Characters: ${formattedCharacters}`;
                 >
                   {formattedCharacters} / 3,000 characters
                 </td>
-                <td className={`${styles.tableType} italic`}>Limit</td>
+                <td className={`${styles.tableType} ${styles.italic}`}>Limit</td>
               </tr>
               <tr>
                 <td className={styles.tableUseCase}>Facebook Post</td>
@@ -185,7 +181,7 @@ Characters: ${formattedCharacters}`;
                 >
                   {formattedCharacters} / 63,206 characters
                 </td>
-                <td className={`${styles.tableType} italic`}>Limit</td>
+                <td className={`${styles.tableType} ${styles.italic}`}>Limit</td>
               </tr>
               <tr>
                 <td className={styles.tableUseCase}>
@@ -200,7 +196,7 @@ Characters: ${formattedCharacters}`;
                 >
                   {formattedCharacters} / 40 - 60 characters
                 </td>
-                <td className={`${styles.tableType} italic`}>Limit**</td>
+                <td className={`${styles.tableType} ${styles.italic}`}>Limit**</td>
               </tr>
               <tr>
                 <td className={styles.tableUseCase}>
@@ -215,7 +211,7 @@ Characters: ${formattedCharacters}`;
                 >
                   {wordCount} / 50 - 125 words
                 </td>
-                <td className={`${styles.tableType} italic`}>
+                <td className={`${styles.tableType} ${styles.italic}`}>
                   Recommended*
                 </td>
               </tr>
@@ -232,14 +228,14 @@ Characters: ${formattedCharacters}`;
                 >
                   {wordCount} / 250 - 500 words
                 </td>
-                <td className={`${styles.tableType} italic`}>
+                <td className={`${styles.tableType} ${styles.italic}`}>
                   Recommended*
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p className="tool__desc-nb">
+        <p className={styles.descriptionNote}>
           * The recommendations provided are not absolute rules but general
           guidelines for achieving optimal content length across various types.
           <br />

@@ -108,8 +108,8 @@ export default function BorderRadius() {
   };
 
   return (
-    <div className="tool__main" data-testid="border-radius-tool">
-      <h1 className="tool__main-title">Border Radius Tool</h1>
+    <div className={styles.toolMain} data-testid="border-radius-tool">
+      <h1 className={styles.toolMainTitle}>Border Radius Tool</h1>
       <div className={styles.toolLayout}>
         <div className={styles.controls}>
           <section className={styles.controlSection}>
@@ -165,7 +165,7 @@ export default function BorderRadius() {
           <div style={squareStyle} className={styles.preview} />
         </div>
         <button
-          className={`${styles.button} semi-bold`}
+          className={`${styles.button} ${styles.semiBold}`}
           onClick={handleCustomSizeToggle}
           title="Click to change the size of the square or restore the default size"
           aria-label="Click to change the size of the square or restore the default size"
@@ -175,12 +175,12 @@ export default function BorderRadius() {
         </button>
       </div>
       <ToolOutput className={styles.output} output={borderRadiusCssValue} />
-      <div className="tool__desc">
-        <h2 className="tool__desc-title">Border Radius Tool</h2>
+      <div className={styles.description}>
+        <h2 className={styles.descriptionTitle}>Border Radius Tool</h2>
 
-        <h3 className="tool__desc-med-title">Why this tool?</h3>
-        <p className="tool__desc-text">
-          The <code className="tool__desc-code">border-radius</code> CSS
+        <h3 className={styles.descriptionMedTitle}>Why this tool?</h3>
+        <p className={styles.descriptionText}>
+          The <code className={styles.descriptionCode}>border-radius</code> CSS
           property is one of the most widely used tools for giving shape to
           containers by rounding their edges. Usually, this property is applied
           in a simple way, using only one or two values, which creates classic
@@ -189,25 +189,26 @@ export default function BorderRadius() {
           unique touch to your website&apos;s design.
         </p>
 
-        <h3 className="tool__desc-med-title">How to use the tool</h3>
-        <p className="tool__desc-text">
+        <h3 className={styles.descriptionMedTitle}>How to use the tool</h3>
+        <p className={styles.descriptionText}>
           By default, the central shape is a 150px by 150px square, but you can
           customize its size by clicking on
-          <b className="highlight"> “Custom Size”</b> to adjust the width and
+          <b className={styles.highlight}> “Custom Size”</b> to adjust the width and
           height within a range of 50 to 250px.
         </p>
-        <p className="tool__desc-text">
+        <p className={styles.descriptionText}>
           To modify the radius, click on any corner of the square and drag it to
           increase or decrease the radius value, making it easy to shape each
-          corner to your preference. If you prefer more precise control, press
-          <b className="highlight"> “Use Sliders”</b> to adjust each corner’s
-          radius value individually via a slider.
+          corner to your preference. If you prefer more precise control, use
+          the
+          <b className={styles.highlight}> sliders below</b> to adjust each
+          corner&apos;s radius value individually.
         </p>
 
-        <p className="tool__desc-nb">
+        <p className={styles.descriptionNote}>
           * CSS property values are displayed below in real time, and you can
           retrieve them easily by clicking the
-          <b className="highlight"> “Copy”</b> button.
+          <b className={styles.highlight}> “Copy”</b> button.
         </p>
       </div>
     </div>

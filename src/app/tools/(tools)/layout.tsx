@@ -1,5 +1,6 @@
 import TaxonomySidebarServer from "@/components/custom/TaxonomySidebar/TaxonomySidebarServer";
 import Link from "next/link";
+import styles from "./layout.module.scss";
 
 export default function PostLayout({
   children,
@@ -7,11 +8,11 @@ export default function PostLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="tool">
+    <div className={styles.root}>
       <TaxonomySidebarServer />
-      <main className="tool__container article-padding">
+      <main className={`${styles.main} article-padding`}>
         {children}
-        <Link href="/tools" className="tool__back">
+        <Link href="/tools" className={styles.backLink}>
           View all tools
         </Link>
       </main>

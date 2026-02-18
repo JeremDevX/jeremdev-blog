@@ -1,0 +1,28 @@
+.root {
+  width: 100%;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.backLink {
+  width: fit-content;
+  margin-top: 2rem;
+  font-size: clamp(1rem, 2.5vw, 1.125rem);
+  font-weight: 600;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@media (max-width: 1024px) {
+  .backLink {
+    margin: 1rem 0 0 1rem;
+  }
+}

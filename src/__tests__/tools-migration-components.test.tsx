@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, it, expect, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import ContrastChecker, {
@@ -8,7 +10,9 @@ import BoxShadow from "@/app/tools/(tools)/css/box-shadow/BoxShadow";
 import SlugGenerator, {
   normalizeSlug,
 } from "@/app/tools/(tools)/code/slug-generator/SlugGenerator";
-import WordCounter from "@/app/tools/(tools)/text/word-counter/WordCounter";
+import WordCounter, {
+  countWords,
+} from "@/app/tools/(tools)/text/word-counter/WordCounter";
 
 vi.mock("next/link", () => ({
   default: ({
@@ -115,6 +119,10 @@ describe("Tool migrations", () => {
   });
 
   describe("WordCounter", () => {
+    it("counts unicode words correctly", () => {
+      expect(countWords("café déjà vu")).toBe(3);
+    });
+
     it("keeps real-time count updates and recommendation highlighting", () => {
       render(<WordCounter />);
 
@@ -130,6 +138,32 @@ describe("Tool migrations", () => {
       expect(xPostCountCell.className).toContain("tableCountGreen");
 
       expect(screen.getByRole("table")).toBeTruthy();
+    });
+  });
+
+  describe("Migration invariants", () => {
+    it("does not rely on legacy tool global class names", () => {
+      const filesToCheck = [
+        "src/app/tools/(tools)/accessibility/contrast-checker/ContrastChecker.tsx",
+        "src/app/tools/(tools)/css/border-radius/BorderRadius.tsx",
+        "src/app/tools/(tools)/css/box-shadow/BoxShadow.tsx",
+        "src/app/tools/(tools)/code/slug-generator/SlugGenerator.tsx",
+        "src/app/tools/(tools)/text/word-counter/WordCounter.tsx",
+      ];
+
+      for (const filePath of filesToCheck) {
+        const content = readFileSync(path.resolve(process.cwd(), filePath), "utf8");
+        expect(content).not.toContain('className="tool__');
+        expect(content).not.toContain('className="ul-list"');
+      }
+    });
+
+    it("removes legacy tool page global stylesheet import", () => {
+      const mainScss = readFileSync(
+        path.resolve(process.cwd(), "src/styles/main.scss"),
+        "utf8",
+      );
+      expect(mainScss).not.toContain('@use "./pages/toolPage";');
     });
   });
 });

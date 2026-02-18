@@ -99,8 +99,8 @@ WCAG AAA (Large text): ${ratio >= 4.5 ? "Pass" : "Fail"}`
     : "Provide valid foreground and background colors to generate WCAG results.";
 
   return (
-    <div className="tool__main" data-testid="contrast-checker-tool">
-      <h1 className="tool__main-title">Contrast Checker Tool</h1>
+    <div className={styles.toolMain} data-testid="contrast-checker-tool">
+      <h1 className={styles.toolMainTitle}>Contrast Checker Tool</h1>
       <div className={styles.pickerGrid}>
         <fieldset className={styles.pickerCard}>
           <legend className={styles.pickerTitle}>Foreground color</legend>
@@ -232,132 +232,132 @@ WCAG AAA (Large text): ${ratio >= 4.5 ? "Pass" : "Fail"}`
         })}
       </div>
       <ToolOutput className={styles.output} output={toolOutput} />
-      <div className="tool__desc">
-        <h2 className="tool__desc-title">What is Contrast Ratio?</h2>
-        <h3 className="tool__desc-med-title">Definition:</h3>
-        <p className="tool__desc-text">
+      <div className={styles.description}>
+        <h2 className={styles.descriptionTitle}>What is Contrast Ratio?</h2>
+        <h3 className={styles.descriptionMedTitle}>Definition:</h3>
+        <p className={styles.descriptionText}>
           Contrast ratio is the result of a calculation between the foreground
           color (usually text) and the background color. It&apos;s essential for
           determining whether the contrast between two colors is sufficient for
           the text to be easily legible by all users, including those with
           visual impairments.
         </p>
-        <h3 className="tool__desc-med-title">How does it work?</h3>
-        <p className="tool__desc-text">
+        <h3 className={styles.descriptionMedTitle}>How does it work?</h3>
+        <p className={styles.descriptionText}>
           To calculate this ratio, we first need the relative luminance of the
           two colors being compared. This involves transforming each{" "}
-          <b className="highlight">RGB</b> color component into a luminance
+          <b className={styles.highlight}>RGB</b> color component into a luminance
           value.
         </p>
         <br />
-        <p className="tool__desc-text">
+        <p className={styles.descriptionText}>
           We use the following formulas to achieve this:
         </p>
-        <ul className="ul-list">
+        <ul className={styles.list}>
           <li>
-            If <b className="highlight">RsRGB</b> ≤{" "}
-            <b className="highlight">0.03928</b> then{" "}
-            <b className="highlight">R</b> = <b className="highlight">RsRGB</b>{" "}
-            / <b className="highlight">12.92</b> else{" "}
-            <b className="highlight">R</b> = ((
-            <b className="highlight">RsRGB</b> +{" "}
-            <b className="highlight">0.055</b>) /{" "}
-            <b className="highlight">1.055</b>) ^{" "}
-            <b className="highlight">2.4</b>
+            If <b className={styles.highlight}>RsRGB</b> ≤{" "}
+            <b className={styles.highlight}>0.03928</b> then{" "}
+            <b className={styles.highlight}>R</b> = <b className={styles.highlight}>RsRGB</b>{" "}
+            / <b className={styles.highlight}>12.92</b> else{" "}
+            <b className={styles.highlight}>R</b> = ((
+            <b className={styles.highlight}>RsRGB</b> +{" "}
+            <b className={styles.highlight}>0.055</b>) /{" "}
+            <b className={styles.highlight}>1.055</b>) ^{" "}
+            <b className={styles.highlight}>2.4</b>
           </li>
           <li>
-            If <b className="highlight">GsRGB</b> ≤{" "}
-            <b className="highlight">0.03928</b> then{" "}
-            <b className="highlight">G</b> = <b className="highlight">GsRGB</b>{" "}
-            / <b className="highlight">12.92</b> else{" "}
-            <b className="highlight">G</b> = ((
-            <b className="highlight">GsRGB</b> +{" "}
-            <b className="highlight">0.055</b>) /{" "}
-            <b className="highlight">1.055</b>) ^{" "}
-            <b className="highlight">2.4</b>
+            If <b className={styles.highlight}>GsRGB</b> ≤{" "}
+            <b className={styles.highlight}>0.03928</b> then{" "}
+            <b className={styles.highlight}>G</b> = <b className={styles.highlight}>GsRGB</b>{" "}
+            / <b className={styles.highlight}>12.92</b> else{" "}
+            <b className={styles.highlight}>G</b> = ((
+            <b className={styles.highlight}>GsRGB</b> +{" "}
+            <b className={styles.highlight}>0.055</b>) /{" "}
+            <b className={styles.highlight}>1.055</b>) ^{" "}
+            <b className={styles.highlight}>2.4</b>
           </li>
           <li>
-            If <b className="highlight">BsRGB</b> ≤{" "}
-            <b className="highlight">0.03928</b> then{" "}
-            <b className="highlight">B</b> = <b className="highlight">BsRGB</b>{" "}
-            / <b className="highlight">12.92</b> else{" "}
-            <b className="highlight">B</b> = ((
-            <b className="highlight">BsRGB</b> +{" "}
-            <b className="highlight">0.055</b>) /{" "}
-            <b className="highlight">1.055</b>) ^{" "}
-            <b className="highlight">2.4</b>
+            If <b className={styles.highlight}>BsRGB</b> ≤{" "}
+            <b className={styles.highlight}>0.03928</b> then{" "}
+            <b className={styles.highlight}>B</b> = <b className={styles.highlight}>BsRGB</b>{" "}
+            / <b className={styles.highlight}>12.92</b> else{" "}
+            <b className={styles.highlight}>B</b> = ((
+            <b className={styles.highlight}>BsRGB</b> +{" "}
+            <b className={styles.highlight}>0.055</b>) /{" "}
+            <b className={styles.highlight}>1.055</b>) ^{" "}
+            <b className={styles.highlight}>2.4</b>
           </li>
         </ul>
-        <p className="tool__desc-text">
+        <p className={styles.descriptionText}>
           Once the relative luminance values of both colors are obtained, we
           sort them by brightness:
         </p>
-        <ul className="ul-list">
+        <ul className={styles.list}>
           <li>
-            <b className="highlight">L1</b> = the lighter color
+            <b className={styles.highlight}>L1</b> = the lighter color
           </li>
           <li>
-            <b className="highlight">L2</b> = the darker color
+            <b className={styles.highlight}>L2</b> = the darker color
           </li>
         </ul>
-        <p className="tool__desc-text">
+        <p className={styles.descriptionText}>
           We then perform the following calculation:
         </p>
-        <ul className="ul-list">
+        <ul className={styles.list}>
           <li>
-            (<b className="highlight">L1</b> + <b className="highlight">0.05</b>
-            ) / (<b className="highlight">L2</b> +{" "}
-            <b className="highlight">0.05</b>)
+            (<b className={styles.highlight}>L1</b> + <b className={styles.highlight}>0.05</b>
+            ) / (<b className={styles.highlight}>L2</b> +{" "}
+            <b className={styles.highlight}>0.05</b>)
           </li>
         </ul>
-        <p className="tool__desc-text">
-          Which gives us a ratio between <b className="highlight">1:1</b>{" "}
-          (lowest contrast) and <b className="highlight">21:1</b> (highest
+        <p className={styles.descriptionText}>
+          Which gives us a ratio between <b className={styles.highlight}>1:1</b>{" "}
+          (lowest contrast) and <b className={styles.highlight}>21:1</b> (highest
           contrast).
         </p>
 
-        <h3 className="tool__desc-med-title">What is it for?</h3>
-        <p className="tool__desc-text">
+        <h3 className={styles.descriptionMedTitle}>What is it for?</h3>
+        <p className={styles.descriptionText}>
           The contrast ratio is a key metric for web accessibility, ensuring
           that website text is readable by everyone, including users with visual
           limitations. Depending on the text size, weight, and contrast ratio,
           we can evaluate if a text element meets the standards for readability.
         </p>
-        <p className="tool__desc-text">
+        <p className={styles.descriptionText}>
           According to WCAG standards, the minimum acceptable values for
           accessible text are:
         </p>
-        <h4 className="tool__desc-minor-title">WCAG AA :</h4>
-        <ul className="ul-list">
+        <h4 className={styles.descriptionMinorTitle}>WCAG AA :</h4>
+        <ul className={styles.list}>
           <li>
-            Normal text: <b className="highlight">4.5:1</b>
+            Normal text: <b className={styles.highlight}>4.5:1</b>
           </li>
           <li>
-            Large text: <b className="highlight">3:1</b>
-          </li>
-        </ul>
-        <h4 className="tool__desc-minor-title">WCAG AAA :</h4>
-        <ul className="ul-list">
-          <li>
-            Normal text: <b className="highlight">7:1</b>
-          </li>
-          <li>
-            Large text: <b className="highlight">4.5:1</b>
+            Large text: <b className={styles.highlight}>3:1</b>
           </li>
         </ul>
-        <p className="tool__desc-nb">
+        <h4 className={styles.descriptionMinorTitle}>WCAG AAA :</h4>
+        <ul className={styles.list}>
+          <li>
+            Normal text: <b className={styles.highlight}>7:1</b>
+          </li>
+          <li>
+            Large text: <b className={styles.highlight}>4.5:1</b>
+          </li>
+        </ul>
+        <p className={styles.descriptionNote}>
           * Normal text = font size &lt; 18pt / 24px. <br />
           ** Large text = font size ≥ 18pt / 24px or 14pt / 18px if <b>bold</b>.
         </p>
-        <p className="tool__desc-text">Sources:</p>
-        <ul className="ul-list">
+        <p className={styles.descriptionText}>Sources:</p>
+        <ul className={styles.list}>
           <li>
             <Link
               href={"https://www.w3.org/WAI/GL/wiki/Relative_luminance"}
               aria-label="Learn more about relative luminance"
               rel="noopener noreferrer"
               target="_blank"
-              className="tool__desc-link"
+              className={styles.descriptionLink}
             >
               Relative luminance
             </Link>
@@ -368,7 +368,7 @@ WCAG AAA (Large text): ${ratio >= 4.5 ? "Pass" : "Fail"}`
               aria-label="Learn more about contrast ratio"
               rel="noopener noreferrer"
               target="_blank"
-              className="tool__desc-link"
+              className={styles.descriptionLink}
             >
               Contrast ratio
             </Link>
@@ -381,7 +381,7 @@ WCAG AAA (Large text): ${ratio >= 4.5 ? "Pass" : "Fail"}`
               aria-label="Learn more about WCAG contrast minimum"
               rel="noopener noreferrer"
               target="_blank"
-              className="tool__desc-link"
+              className={styles.descriptionLink}
             >
               WCAG contrast minimum (Level AA)
             </Link>
@@ -394,7 +394,7 @@ WCAG AAA (Large text): ${ratio >= 4.5 ? "Pass" : "Fail"}`
               aria-label="Learn more about WCAG contrast enhanced"
               rel="noopener noreferrer"
               target="_blank"
-              className="tool__desc-link"
+              className={styles.descriptionLink}
             >
               WCAG contrast enhanced (Level AAA)
             </Link>

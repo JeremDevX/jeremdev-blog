@@ -106,8 +106,8 @@ export default function BoxShadow() {
   ];
 
   return (
-    <div className="tool__main" data-testid="box-shadow-tool">
-      <h1 className="tool__main-title">Box Shadow Tool</h1>
+    <div className={styles.toolMain} data-testid="box-shadow-tool">
+      <h1 className={styles.toolMainTitle}>Box Shadow Tool</h1>
       <div className={styles.container}>
         <div className={styles.inputs}>
           <div className={styles.slides}>
@@ -170,10 +170,14 @@ export default function BoxShadow() {
         className={styles.output}
         output={`box-shadow: ${boxShadowValue};`}
       />
-      <div className="tool__desc">
-        <h2 className="tool__desc-title">box shadow</h2>
-        <h3 className="tool__desc-med-title">Why this tool</h3>
-        <p className="tool__desc-text">Sample text</p>
+      <div className={styles.description}>
+        <h2 className={styles.descriptionTitle}>Box Shadow Tool</h2>
+        <h3 className={styles.descriptionMedTitle}>Why this tool?</h3>
+        <p className={styles.descriptionText}>
+          This generator helps you craft a CSS <code className={styles.descriptionCode}>box-shadow</code>
+          value visually. Tune offset, blur, spread, and colors while seeing the
+          preview update in real time, then copy the generated CSS instantly.
+        </p>
       </div>
     </div>
   );
