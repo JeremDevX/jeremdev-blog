@@ -3,6 +3,7 @@ import { League_Spartan } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/custom/Navbar";
 import Footer from "@/components/custom/Footer";
+import ArrowTopOfPage from "@/components/custom/ArrowTopOfPage";
 import "../styles/main.scss";
 
 export const metadata: Metadata = {
@@ -38,12 +39,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="">
-      <body className={`body ${leagueSpartan.className}`}>
+      <body
+        className={`body ${leagueSpartan.className}`}
+        style={{ paddingTop: "5rem" }}
+      >
         <header className="header">
           <Navbar />
         </header>
         {children}
         <Footer />
+        <ArrowTopOfPage />
         <div id="portal-root"></div>
       </body>
     </html>

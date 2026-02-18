@@ -1,0 +1,266 @@
+@use "../../../styles/variables" as vars;
+@use "../../../styles/mixins" as mix;
+@use "../../../styles/keyframes";
+
+// ============================================================================
+// NAVBAR CONTAINER — Fixed navigation with glass morphism
+// ============================================================================
+
+.navbar {
+  @include mix.flex-c-c-row;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 5rem;
+  z-index: 30;
+  background-color: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur-strong));
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+  border-bottom: none;
+  overflow-y: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient-divider);
+  }
+}
+
+// ============================================================================
+// NAVBAR INNER CONTAINER
+// ============================================================================
+
+.container {
+  @include mix.flex-e-c-row;
+
+  position: relative;
+
+  max-width: vars.$max-layout-width;
+  width: 100%;
+  padding: 0 2rem;
+  gap: 2rem;
+  height: 100%;
+}
+
+// ============================================================================
+// LOGO SECTION — Responsive variants
+// ============================================================================
+
+.logo {
+  @include mix.flex-c-c-row;
+
+  position: absolute;
+  left: 0rem;
+
+  height: 4rem;
+  width: fit-content;
+  border-radius: 1rem;
+
+  @media (max-width: 375px) {
+    left: -2rem;
+  }
+
+  @media (min-width: 640px) {
+    left: -0.5rem;
+  }
+}
+
+.logoLarge {
+  display: block;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.logoMedium {
+  display: none;
+
+  @media (max-width: 768px) and (min-width: 376px) {
+    display: block;
+  }
+}
+
+.logoSmall {
+  display: none;
+  height: 100%;
+
+  @media (max-width: 375px) {
+    display: flex;
+  }
+}
+
+// ============================================================================
+// NAVIGATION LINKS — Desktop only
+// ============================================================================
+
+.navLinks {
+  display: flex;
+  gap: 2rem;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.navLink {
+  font-weight: 600;
+  position: relative;
+  color: hsl(var(--muted-foreground));
+  transition: color var(--transition-fast);
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--gradient-accent);
+    border-radius: 2px;
+    transition:
+      width var(--transition-base),
+      left var(--transition-base);
+  }
+
+  &:hover {
+    color: hsl(var(--foreground));
+
+    &::after {
+      width: 100%;
+      left: 0;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 4px;
+    border-radius: 4px;
+    color: hsl(var(--foreground));
+  }
+}
+
+.navLinkActive {
+  color: hsl(var(--primary));
+
+  &::after {
+    width: 100%;
+    left: 0;
+  }
+}
+
+// ============================================================================
+// SEARCH ICON SECTION
+// ============================================================================
+
+.searchIcon {
+  @media (max-width: 768px) {
+    margin-right: -1rem;
+  }
+}
+
+// ============================================================================
+// HAMBURGER MENU ICON — Mobile only
+// ============================================================================
+
+.hamburger {
+  @include mix.flex-c-e-col;
+
+  height: auto;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 4px;
+    border-radius: 4px;
+    padding: 0.125rem;
+  }
+}
+
+.hamburgerLine {
+  width: 1.5rem;
+  height: 0.125rem;
+  background-color: hsl(var(--foreground));
+  margin: 0.25rem 0;
+  transition: all ease 300ms;
+}
+
+.hamburgerLineTop {
+  transform: translateY(0.625rem) rotate(45deg);
+}
+
+.hamburgerLineMiddle {
+  opacity: 0;
+}
+
+.hamburgerLineBottom {
+  transform: translateY(-0.625rem) rotate(-45deg);
+}
+
+// ============================================================================
+// MOBILE DRAWER CONTENT (Sheet overlay)
+// ============================================================================
+
+.drawerContent {
+  @include mix.flex-c-c-col;
+
+  max-width: 800px;
+  margin: 2rem auto 0 auto;
+  width: 100%;
+}
+
+.drawerCategory {
+  @include mix.flex-c-c-col;
+  width: 100%;
+  padding: 0.75rem;
+  gap: 1rem;
+}
+
+.drawerCategoryTitle {
+  max-width: 10rem;
+  width: 33%;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0;
+  border-radius: var(--radius);
+  text-align: center;
+  font-weight: 600;
+  @include mix.glass-card;
+  background: var(--gradient-subtle);
+}
+
+.drawerLink {
+  text-align: left;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid hsla(212, 40%, 21%, 0.5);
+  width: 50%;
+  transition:
+    color var(--transition-fast),
+    padding-left var(--transition-fast);
+
+  &:hover {
+    color: hsl(var(--primary));
+    padding-left: 0.25rem;
+  }
+
+  &:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 4px;
+    border-radius: 4px;
+    padding-left: 0.25rem;
+  }
+
+  @media (max-width: 425px) {
+    width: 66%;
+  }
+}
+
+.drawerLinkActive {
+  color: hsl(var(--primary));
+}
