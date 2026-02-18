@@ -1,96 +1,193 @@
 "use client";
 
+import ToolOutput from "@/components/custom/ToolOutput";
 import { getContrastRatio } from "@/utils/getContrastRatio";
 import Link from "next/link";
 import { useState } from "react";
+import styles from "./ContrastChecker.module.scss";
 
-function ColorPicker({
-  label,
-  colorValue,
-  setColorValue,
-  idColor,
-  idHex,
-}: {
-  label: string;
-  colorValue: string;
-  idColor: string;
-  idHex: string;
-  setColorValue: (value: string) => void;
-}) {
-  return (
-    <div className="contrast-check__color-picker">
-      <p>{label}</p>
-      <label className="" htmlFor={idColor}>
-        Select color :
-        <input
-          type="color"
-          value={colorValue}
-          id={idColor}
-          onChange={(e) => setColorValue(e.target.value)}
-        />
-      </label>
-      <span>
-        <label htmlFor={idHex}>
-          HEX value :
-          <input
-            type="text"
-            value={colorValue}
-            onChange={(e) => {
-              const value = e.target.value;
-              const sanitizedValue =
-                "#" + value.replace(/[^a-fA-F0-9]/g, "").slice(0, 6);
-              setColorValue(sanitizedValue);
-            }}
-            id={idHex}
-          />
-        </label>
-      </span>
-    </div>
-  );
-}
+const COLOR_INPUT_ERROR =
+  "Use HEX (#RGB or #RRGGBB) or rgb(r, g, b) with values from 0 to 255.";
 
-function getTag(isSuccess: boolean) {
-  return isSuccess ? (
-    <span className="contrast-check__success">Success</span>
-  ) : (
-    <span className="contrast-check__fail">Fail</span>
+export function parseColorInput(rawValue: string): {
+  isValid: boolean;
+  hex: string;
+  message: string;
+} {
+  const value = rawValue.trim();
+  if (!value) {
+    return { isValid: false, hex: "", message: COLOR_INPUT_ERROR };
+  }
+
+  const hexMatch = value.match(/^#?([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$/);
+  if (hexMatch) {
+    const hex = hexMatch[1].length === 3
+      ? hexMatch[1]
+          .split("")
+          .map((char) => char + char)
+          .join("")
+      : hexMatch[1];
+    return { isValid: true, hex: `#${hex.toUpperCase()}`, message: "" };
+  }
+
+  const rgbMatch = value.match(
+    /^rgb\(\s*(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})\s*\)$/i,
   );
+  if (!rgbMatch) {
+    return { isValid: false, hex: "", message: COLOR_INPUT_ERROR };
+  }
+
+  const rgbValues = rgbMatch.slice(1).map(Number);
+  const hasInvalidChannel = rgbValues.some(
+    (channel) => Number.isNaN(channel) || channel < 0 || channel > 255,
+  );
+  if (hasInvalidChannel) {
+    return { isValid: false, hex: "", message: COLOR_INPUT_ERROR };
+  }
+
+  const hexValue = rgbValues
+    .map((channel) => channel.toString(16).padStart(2, "0"))
+    .join("")
+    .toUpperCase();
+
+  return { isValid: true, hex: `#${hexValue}`, message: "" };
 }
 
 export default function ContrastChecker() {
-  const [firstColorValue, setFirstColorValue] = useState("#ffffff");
-  const [secondColorValue, setSecondColorValue] = useState("#000000");
+  const [foregroundInput, setForegroundInput] = useState("#FFFFFF");
+  const [backgroundInput, setBackgroundInput] = useState("#000000");
 
-  const ratio = getContrastRatio(firstColorValue, secondColorValue);
+  const foreground = parseColorInput(foregroundInput);
+  const background = parseColorInput(backgroundInput);
+  const hasValidColors = foreground.isValid && background.isValid;
+  const ratio = hasValidColors
+    ? getContrastRatio(foreground.hex, background.hex)
+    : null;
 
   const sampleTextStyle = {
-    color: firstColorValue,
-    backgroundColor: secondColorValue,
+    color: foreground.isValid ? foreground.hex : "#FFFFFF",
+    backgroundColor: background.isValid ? background.hex : "#000000",
   };
 
-  return (
-    <div className="tool__main">
-      <h1 className="tool__main-title">Contrast Checker Tool</h1>
-      <div className="contrast-check">
-        <ColorPicker
-          label="Foreground"
-          colorValue={firstColorValue}
-          setColorValue={setFirstColorValue}
-          idColor="input-foreground-color"
-          idHex="input-foreground-hex"
-        />
+  const wcagChecks = ratio === null
+    ? []
+    : [
+        {
+          title: "WCAG AA",
+          rows: [
+            { label: "Normal text (4.5:1)", pass: ratio >= 4.5 },
+            { label: "Large text (3:1)", pass: ratio >= 3 },
+          ],
+        },
+        {
+          title: "WCAG AAA",
+          rows: [
+            { label: "Normal text (7:1)", pass: ratio >= 7 },
+            { label: "Large text (4.5:1)", pass: ratio >= 4.5 },
+          ],
+        },
+      ];
 
-        <ColorPicker
-          label="Background"
-          colorValue={secondColorValue}
-          setColorValue={setSecondColorValue}
-          idColor="input-background-color"
-          idHex="input-background-hex"
-        />
+  const toolOutput = hasValidColors && ratio !== null
+    ? `Foreground: ${foreground.hex}
+Background: ${background.hex}
+Contrast ratio: ${ratio.toFixed(2)}:1
+WCAG AA (Normal text): ${ratio >= 4.5 ? "Pass" : "Fail"}
+WCAG AA (Large text): ${ratio >= 3 ? "Pass" : "Fail"}
+WCAG AAA (Normal text): ${ratio >= 7 ? "Pass" : "Fail"}
+WCAG AAA (Large text): ${ratio >= 4.5 ? "Pass" : "Fail"}`
+    : "Provide valid foreground and background colors to generate WCAG results.";
+
+  return (
+    <div className="tool__main" data-testid="contrast-checker-tool">
+      <h1 className="tool__main-title">Contrast Checker Tool</h1>
+      <div className={styles.pickerGrid}>
+        <fieldset className={styles.pickerCard}>
+          <legend className={styles.pickerTitle}>Foreground color</legend>
+          <label className={styles.controlRow} htmlFor="input-foreground-color">
+            <span className={styles.controlLabel}>Select color</span>
+            <input
+              type="color"
+              value={foreground.isValid ? foreground.hex : "#FFFFFF"}
+              id="input-foreground-color"
+              onChange={(event) => setForegroundInput(event.target.value)}
+            />
+          </label>
+          <label className={styles.controlRow} htmlFor="input-foreground-value">
+            <span className={styles.controlLabel}>HEX or RGB value</span>
+            <input
+              type="text"
+              value={foregroundInput}
+              onChange={(event) => setForegroundInput(event.target.value)}
+              id="input-foreground-value"
+              className={
+                foreground.isValid
+                  ? styles.colorInput
+                  : `${styles.colorInput} ${styles.colorInputInvalid}`
+              }
+              aria-invalid={!foreground.isValid}
+              aria-describedby={
+                foreground.isValid
+                  ? "foreground-helper"
+                  : "foreground-helper foreground-error"
+              }
+            />
+          </label>
+          <p id="foreground-helper" className={styles.helperText}>
+            Accepted values: `#1A2B3C`, `#ABC`, `rgb(26, 43, 60)`.
+          </p>
+          {!foreground.isValid ? (
+            <p id="foreground-error" className={styles.errorText} role="alert">
+              {foreground.message}
+            </p>
+          ) : null}
+        </fieldset>
+
+        <fieldset className={styles.pickerCard}>
+          <legend className={styles.pickerTitle}>Background color</legend>
+          <label className={styles.controlRow} htmlFor="input-background-color">
+            <span className={styles.controlLabel}>Select color</span>
+            <input
+              type="color"
+              value={background.isValid ? background.hex : "#000000"}
+              id="input-background-color"
+              onChange={(event) => setBackgroundInput(event.target.value)}
+            />
+          </label>
+          <label className={styles.controlRow} htmlFor="input-background-value">
+            <span className={styles.controlLabel}>HEX or RGB value</span>
+            <input
+              type="text"
+              value={backgroundInput}
+              onChange={(event) => setBackgroundInput(event.target.value)}
+              id="input-background-value"
+              className={
+                background.isValid
+                  ? styles.colorInput
+                  : `${styles.colorInput} ${styles.colorInputInvalid}`
+              }
+              aria-invalid={!background.isValid}
+              aria-describedby={
+                background.isValid
+                  ? "background-helper"
+                  : "background-helper background-error"
+              }
+            />
+          </label>
+          <p id="background-helper" className={styles.helperText}>
+            Accepted values: `#1A2B3C`, `#ABC`, `rgb(26, 43, 60)`.
+          </p>
+          {!background.isValid ? (
+            <p id="background-error" className={styles.errorText} role="alert">
+              {background.message}
+            </p>
+          ) : null}
+        </fieldset>
       </div>
 
-      <div className="contrast-check__sample">
+      <div className={styles.previewCard}>
         <p
+          className={styles.previewText}
           style={sampleTextStyle}
           title="Sample text color testing"
           aria-label="Sample text color testing"
@@ -98,36 +195,43 @@ export default function ContrastChecker() {
           SAMPLE TEXT COLOR TESTING
         </p>
       </div>
-      <p className="contrast-check__ratio">
-        Contrast ratio :
-        <span className="contrast-check__ratio--number">
-          {ratio.toFixed(2)}:1
+      <p className={styles.ratio} role="status" aria-live="polite">
+        Contrast ratio:
+        <span className={styles.ratioValue}>
+          {ratio === null ? " -- " : ` ${ratio.toFixed(2)}:1`}
         </span>
       </p>
-      <div className="contrast-check__tests">
-        <div
-          className={`contrast-check__wcag ${
-            ratio >= 4.5
-              ? "contrast-check__wcag--good"
-              : "contrast-check__wcag--bad"
-          }`}
-        >
-          <h3 className="contrast-check__wcag-norm">WCAG AA</h3>
-          <p>Normal text : {getTag(ratio >= 4.5)}</p>
-          <p>Large text : {getTag(ratio >= 3)}</p>
-        </div>
-        <div
-          className={`contrast-check__wcag ${
-            ratio >= 7
-              ? "contrast-check__wcag--good"
-              : "contrast-check__wcag--bad"
-          }`}
-        >
-          <h3 className="contrast-check__wcag-norm">WCAG AAA</h3>
-          <p>Normal text : {getTag(ratio >= 7)}</p>
-          <p>Large text : {getTag(ratio >= 4.5)}</p>
-        </div>
+      <div className={styles.resultsGrid}>
+        {ratio === null ? (
+          <p className={styles.statusMessage} role="status" aria-live="polite">
+            Enter valid foreground and background colors to view WCAG pass/fail
+            indicators.
+          </p>
+        ) : null}
+        {wcagChecks.map((wcagLevel) => {
+          const levelPass = wcagLevel.rows.every((row) => row.pass);
+          return (
+            <section
+              key={wcagLevel.title}
+              className={`${styles.wcagCard} ${levelPass ? styles.wcagPass : styles.wcagFail}`}
+              aria-label={`${wcagLevel.title} results`}
+            >
+              <h3 className={styles.wcagTitle}>{wcagLevel.title}</h3>
+              {wcagLevel.rows.map((row) => (
+                <p key={row.label} className={styles.wcagRow}>
+                  <span>{row.label}</span>
+                  <span
+                    className={`${styles.statusBadge} ${row.pass ? styles.statusPass : styles.statusFail}`}
+                  >
+                    {row.pass ? "Pass" : "Fail"}
+                  </span>
+                </p>
+              ))}
+            </section>
+          );
+        })}
       </div>
+      <ToolOutput className={styles.output} output={toolOutput} />
       <div className="tool__desc">
         <h2 className="tool__desc-title">What is Contrast Ratio?</h2>
         <h3 className="tool__desc-med-title">Definition:</h3>

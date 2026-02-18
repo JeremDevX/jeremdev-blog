@@ -1,70 +1,39 @@
 "use client";
 
 import ToolOutput from "@/components/custom/ToolOutput";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import styles from "./BorderRadius.module.scss";
+
+type BorderRadiusState = {
+  topLeft: number;
+  topRight: number;
+  bottomRight: number;
+  bottomLeft: number;
+};
+
+type SquareSizeState = {
+  width: number;
+  height: number;
+};
+
+export function buildBorderRadiusValue(borderRadius: BorderRadiusState): string {
+  return `${100 - borderRadius.topRight}% ${borderRadius.topRight}% ${100 - borderRadius.bottomLeft}% ${borderRadius.bottomLeft}% / ${borderRadius.topLeft}% ${100 - borderRadius.bottomRight}% ${borderRadius.bottomRight}% ${100 - borderRadius.topLeft}%`;
+}
 
 export default function BorderRadius() {
-  const [squareSize, setSquareSize] = useState({
-    width: "150",
-    height: "150",
+  const [squareSize, setSquareSize] = useState<SquareSizeState>({
+    width: 150,
+    height: 150,
   });
-  const [borderRadius, setBorderRadius] = useState({
-    topLeft: "0",
-    topRight: "0",
-    bottomLeft: "0",
-    bottomRight: "0",
+  const [borderRadius, setBorderRadius] = useState<BorderRadiusState>({
+    topLeft: 0,
+    topRight: 0,
+    bottomRight: 0,
+    bottomLeft: 0,
   });
-  const [toggleSlides, setToggleSlides] = useState(false);
-  const [toggleCustomSize, setToggleCustomSize] = useState(false);
-  const squareRef = useRef<HTMLDivElement | null>(null);
-  const [dragging, setDragging] = useState<null | string>(null);
+  const [showSizeControls, setShowSizeControls] = useState(false);
 
-  const handleMouseDown = (corner: string) => {
-    setDragging(corner);
-  };
-
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
-      if (dragging && squareRef.current) {
-        const rect = squareRef.current.getBoundingClientRect();
-        let percentage;
-
-        if (dragging === "topLeft") {
-          percentage = ((e.clientY - rect.top) / rect.height) * 100;
-        } else if (dragging === "bottomLeft") {
-          percentage = ((e.clientX - rect.left) / rect.width) * 100;
-        } else if (dragging === "bottomRight") {
-          percentage = ((rect.bottom - e.clientY) / rect.height) * 100;
-        } else {
-          percentage = ((rect.right - e.clientX) / rect.width) * 100;
-        }
-
-        const clampedPercentage = Math.max(0, Math.min(100, percentage));
-
-        setBorderRadius((prev) => ({
-          ...prev,
-          [dragging]: clampedPercentage.toFixed(0),
-        }));
-      }
-    },
-    [dragging],
-  );
-
-  const handleMouseUp = () => {
-    setDragging(null);
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [dragging, handleMouseMove]);
-
-  const borderRadiusValue = `${100 - Number(borderRadius.topRight)}% ${borderRadius.topRight}% ${100 - Number(borderRadius.bottomLeft)}% ${borderRadius.bottomLeft}% / ${borderRadius.topLeft}% ${100 - Number(borderRadius.bottomRight)}% ${borderRadius.bottomRight}% ${100 - Number(borderRadius.topLeft)}%`;
+  const borderRadiusValue = buildBorderRadiusValue(borderRadius);
   const borderRadiusCssValue = `border-radius: ${borderRadiusValue};`;
 
   const squareStyle = {
@@ -72,195 +41,140 @@ export default function BorderRadius() {
     height: `${squareSize.height}px`,
     borderRadius: borderRadiusValue,
   };
-  const squareBorder = {
-    width: `${Number(squareSize.width) + 4}px`,
-    height: `${Number(squareSize.height) + 4}px`,
-  };
 
-  const squareSizeInputs = [
+  const squareSizeInputs: Array<{
+    name: string;
+    id: keyof SquareSizeState;
+    value: number;
+  }> = [
     {
       name: "Width",
       id: "width",
       value: squareSize.width,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        setSquareSize({ ...squareSize, width: e.target.value }),
     },
     {
       name: "Height",
       id: "height",
       value: squareSize.height,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        setSquareSize({ ...squareSize, height: e.target.value }),
     },
   ];
 
-  const inputRanges = [
+  const inputRanges: Array<{
+    name: string;
+    id: keyof BorderRadiusState;
+    value: number;
+  }> = [
     {
-      name: "Top-Left",
-      id: "top-left",
+      name: "Top Left",
+      id: "topLeft",
       value: borderRadius.topLeft,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        setBorderRadius({ ...borderRadius, topLeft: e.target.value }),
     },
     {
-      name: "Top-Right",
-      id: "top-right",
+      name: "Top Right",
+      id: "topRight",
       value: borderRadius.topRight,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        setBorderRadius({ ...borderRadius, topRight: e.target.value }),
     },
     {
-      name: "Bottom-Right",
-      id: "bottom-right",
+      name: "Bottom Right",
+      id: "bottomRight",
       value: borderRadius.bottomRight,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        setBorderRadius({ ...borderRadius, bottomRight: e.target.value }),
     },
     {
-      name: "Bottom-Left",
-      id: "bottom-left",
+      name: "Bottom Left",
+      id: "bottomLeft",
       value: borderRadius.bottomLeft,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        setBorderRadius({ ...borderRadius, bottomLeft: e.target.value }),
     },
   ];
 
-  const handleCustomSize = () => {
-    setToggleCustomSize(!toggleCustomSize);
-    if (toggleCustomSize) {
-      setSquareSize({ width: "150", height: "150" });
+  const handleSizeChange = (id: keyof SquareSizeState, value: number) => {
+    setSquareSize((previousValue) => ({
+      ...previousValue,
+      [id]: value,
+    }));
+  };
+
+  const handleCornerChange = (id: keyof BorderRadiusState, value: number) => {
+    setBorderRadius((previousValue) => ({
+      ...previousValue,
+      [id]: value,
+    }));
+  };
+
+  const handleCustomSizeToggle = () => {
+    setShowSizeControls((previousValue) => !previousValue);
+    if (showSizeControls) {
+      setSquareSize({ width: 150, height: 150 });
     }
   };
+
   return (
-    <div className="tool__main">
+    <div className="tool__main" data-testid="border-radius-tool">
       <h1 className="tool__main-title">Border Radius Tool</h1>
-      <div
-        className={`border-radius__tool ${toggleCustomSize || toggleSlides ? "border-radius__tool--mobile" : ""}`}
-      >
-        <div
-          style={squareBorder}
-          className={`border-radius__square-border ${!toggleSlides && "border-radius__square-border--manual"}`}
-        >
-          <div
-            style={squareStyle}
-            className="border-radius__square"
-            ref={squareRef}
-          />
-          {!toggleSlides && (
-            <>
-              <div
-                className="border-radius__square-drag border-radius__square-drag--green"
-                style={{
-                  top: `${borderRadius.topLeft}%`,
-                  left: 0,
-                  transform: "translate(-50%, -50%)",
-                }}
-                onMouseDown={() => handleMouseDown("topLeft")}
-                title="Drag to the bottom to increase the border radius"
-                aria-label="Drag to the bottom to increase the border radius"
-              />
-              <div
-                className="border-radius__square-drag border-radius__square-drag--red"
-                style={{
-                  top: 0,
-                  right: `${borderRadius.topRight}%`,
-                  transform: "translate(50%, -50%)",
-                }}
-                onMouseDown={() => handleMouseDown("topRight")}
-                title="Drag to the left to increase the border radius"
-                aria-label="Drag to the left to increase the border radius"
-              />
-              <div
-                className="border-radius__square-drag border-radius__square-drag--blue"
-                style={{
-                  bottom: 0,
-                  left: `${borderRadius.bottomLeft}%`,
-                  transform: "translate(-50%, 50%)",
-                }}
-                onMouseDown={() => handleMouseDown("bottomLeft")}
-                title="Drag to the right to increase the border radius"
-                aria-label="Drag to the right to increase the border radius"
-              />
-              <div
-                className="border-radius__square-drag border-radius__square-drag--yellow"
-                style={{
-                  bottom: `${borderRadius.bottomRight}%`,
-                  right: 0,
-                  transform: "translate(50%, 50%)",
-                }}
-                onMouseDown={() => handleMouseDown("bottomRight")}
-                title="Drag to the top to increase the border radius"
-                aria-label="Drag to the top to increase the border radius"
-              />
-            </>
-          )}
-        </div>
-        {toggleCustomSize && (
-          <div
-            className={`border-radius__square-sliders border-radius__square-sliders--size ${toggleSlides && "border-radius__square-sliders--size-mobile"}`}
-          >
-            {squareSizeInputs.map((input) => (
-              <label
-                htmlFor={input.id}
-                key={input.id}
-                className="border-radius__label"
-              >
-                {input.name} : {input.value}px
-                <input
-                  type="range"
-                  min={50}
-                  max={250}
-                  id={input.id}
-                  value={input.value}
-                  onChange={input.onChange}
-                  className="border-radius__slide"
-                />
-              </label>
-            ))}
-          </div>
-        )}
-        <button
-          className="border-radius__button border-radius__button--size semi-bold"
-          onClick={handleCustomSize}
-          title="Click to change the size of the square or restore the default size"
-          aria-label="Click to change the size of the square or restore the default size"
-        >
-          {!toggleCustomSize ? "Custom size" : "Default size"}
-        </button>
-        {toggleSlides && (
-          <div
-            className={`border-radius__square-sliders border-radius__square-sliders--control ${toggleCustomSize && "border-radius__square-sliders--control-mobile"}`}
-          >
+      <div className={styles.toolLayout}>
+        <div className={styles.controls}>
+          <section className={styles.controlSection}>
+            <h2 className={styles.sectionTitle}>Corner controls</h2>
             {inputRanges.map((inputRange) => (
               <label
-                htmlFor={inputRange.id}
+                htmlFor={`border-radius-${inputRange.id}`}
                 key={inputRange.id}
-                className="border-radius__label"
+                className={styles.label}
               >
-                {inputRange.name} : {inputRange.value}%
+                {inputRange.name}: {inputRange.value}%
                 <input
                   type="range"
                   min={0}
                   max={100}
-                  id={inputRange.id}
+                  id={`border-radius-${inputRange.id}`}
                   value={inputRange.value}
-                  onChange={inputRange.onChange}
-                  className="border-radius__slide"
+                  onChange={(event) =>
+                    handleCornerChange(inputRange.id, Number(event.target.value))
+                  }
+                  className={styles.slide}
                 />
               </label>
             ))}
-          </div>
-        )}
+          </section>
+          {showSizeControls ? (
+            <section className={styles.controlSection}>
+              <h2 className={styles.sectionTitle}>Square size</h2>
+              {squareSizeInputs.map((input) => (
+                <label
+                  htmlFor={`border-radius-${input.id}`}
+                  key={input.id}
+                  className={styles.label}
+                >
+                  {input.name}: {input.value}px
+                  <input
+                    type="range"
+                    min={50}
+                    max={250}
+                    id={`border-radius-${input.id}`}
+                    value={input.value}
+                    onChange={(event) =>
+                      handleSizeChange(input.id, Number(event.target.value))
+                    }
+                    className={styles.slide}
+                  />
+                </label>
+              ))}
+            </section>
+          ) : null}
+        </div>
+        <div className={styles.previewWrapper}>
+          <div style={squareStyle} className={styles.preview} />
+        </div>
         <button
-          className="border-radius__button border-radius__button--control semi-bold"
-          onClick={() => setToggleSlides(!toggleSlides)}
-          title="Click to switch between using slides and direct control"
-          aria-label="Click to switch between using slides and direct control"
+          className={`${styles.button} semi-bold`}
+          onClick={handleCustomSizeToggle}
+          title="Click to change the size of the square or restore the default size"
+          aria-label="Click to change the size of the square or restore the default size"
+          aria-pressed={showSizeControls}
         >
-          {!toggleSlides ? "Use Sliders" : "Direct Control"}
+          {!showSizeControls ? "Custom size" : "Default size"}
         </button>
       </div>
-      <ToolOutput className="border-radius__box" output={borderRadiusCssValue} />
+      <ToolOutput className={styles.output} output={borderRadiusCssValue} />
       <div className="tool__desc">
         <h2 className="tool__desc-title">Border Radius Tool</h2>
 

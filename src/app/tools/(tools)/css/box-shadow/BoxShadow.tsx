@@ -2,17 +2,45 @@
 
 import ToolOutput from "@/components/custom/ToolOutput";
 import { useState } from "react";
+import styles from "./BoxShadow.module.scss";
 
-export default function BoxSahdow() {
-  const [horizontalPosition, setHorizontalPosition] = useState("5");
-  const [verticalPosition, setVerticalPosition] = useState("5");
-  const [spread, setSpread] = useState("5");
-  const [blur, setBlur] = useState("5");
+type BoxShadowState = {
+  offsetX: number;
+  offsetY: number;
+  blur: number;
+  spread: number;
+  color: string;
+  inset: boolean;
+};
+
+export function buildBoxShadowValue({
+  offsetX,
+  offsetY,
+  blur,
+  spread,
+  color,
+  inset,
+}: BoxShadowState): string {
+  return `${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}${inset ? " inset" : ""}`;
+}
+
+export default function BoxShadow() {
+  const [offsetX, setOffsetX] = useState(5);
+  const [offsetY, setOffsetY] = useState(5);
+  const [spread, setSpread] = useState(5);
+  const [blur, setBlur] = useState(5);
   const [shapeColor, setShapeColor] = useState("#115097");
   const [shadowColor, setShadowColor] = useState("#FFFFFF");
   const [backgroundColor, setBackgroundColor] = useState("#000000");
   const [insetShadow, setInsetShadow] = useState(true);
-  const boxShadowValue = `${horizontalPosition}px ${verticalPosition}px ${blur}px ${spread}px ${shadowColor}${insetShadow ? " inset" : ""}`;
+  const boxShadowValue = buildBoxShadowValue({
+    offsetX,
+    offsetY,
+    blur,
+    spread,
+    color: shadowColor,
+    inset: insetShadow,
+  });
 
   const inputRange = [
     {
@@ -20,18 +48,18 @@ export default function BoxSahdow() {
       id: "offsetX",
       min: -25,
       max: 25,
-      value: horizontalPosition,
+      value: offsetX,
       onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        setHorizontalPosition(e.target.value),
+        setOffsetX(Number(e.target.value)),
     },
     {
       name: "Offset Y",
       id: "offsetY",
       min: -25,
       max: 25,
-      value: verticalPosition,
+      value: offsetY,
       onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        setVerticalPosition(e.target.value),
+        setOffsetY(Number(e.target.value)),
     },
     {
       name: "Blur",
@@ -40,7 +68,7 @@ export default function BoxSahdow() {
       max: 32,
       value: blur,
       onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        setBlur(e.target.value),
+        setBlur(Number(e.target.value)),
     },
     {
       name: "Spread",
@@ -49,7 +77,7 @@ export default function BoxSahdow() {
       max: 32,
       value: spread,
       onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        setSpread(e.target.value),
+        setSpread(Number(e.target.value)),
     },
   ];
 
@@ -78,17 +106,13 @@ export default function BoxSahdow() {
   ];
 
   return (
-    <div className="tool__main">
+    <div className="tool__main" data-testid="box-shadow-tool">
       <h1 className="tool__main-title">Box Shadow Tool</h1>
-      <div className="box-shadow">
-        <div className="box-shadow__inputs">
-          <div className="box-shadow__slides">
+      <div className={styles.container}>
+        <div className={styles.inputs}>
+          <div className={styles.slides}>
             {inputRange.map((input) => (
-              <label
-                key={input.id}
-                htmlFor={input.id}
-                className="box-shadow__label"
-              >
+              <label key={input.id} htmlFor={input.id} className={styles.label}>
                 {input.name} : {input.value}px
                 <input
                   type="range"
@@ -97,57 +121,53 @@ export default function BoxSahdow() {
                   max={input.max}
                   value={input.value}
                   onChange={input.onChange}
-                  className="box-shadow__input"
+                  className={styles.input}
                 />
               </label>
             ))}
             {inputColor.map((input) => (
-              <label
-                htmlFor={input.id}
-                key={input.id}
-                className="box-shadow__label"
-              >
+              <label htmlFor={input.id} key={input.id} className={styles.label}>
                 {input.name} :
                 <input
                   type="color"
                   id={input.id}
                   value={input.value}
                   onChange={input.onChange}
-                  className="box-shadow__input"
+                  className={styles.input}
                 />
               </label>
             ))}
-            <label htmlFor="inset" className="box-shadow__label">
+            <label htmlFor="inset" className={styles.label}>
               Inset :
-              <span className="box-shadow__input">
+              <span className={styles.input}>
                 <input
                   type="checkbox"
                   id="inset"
+                  checked={insetShadow}
                   onChange={(e) => {
                     setInsetShadow(e.target.checked);
                   }}
-                  className="box-shadow__input box-shadow__input--checkbox"
+                  className={`${styles.input} ${styles.checkbox}`}
                 />
               </span>
             </label>
           </div>
-          <div className="box-shadow__colors"></div>
         </div>
         <div
-          className="box-shadow__container"
+          className={styles.previewContainer}
           style={{ backgroundColor: `${backgroundColor}` }}
         >
           <div
-            className="box-shadow__shape"
+            className={styles.previewShape}
             style={{
               boxShadow: boxShadowValue,
               backgroundColor: `${shapeColor}`,
             }}
-          ></div>
+          />
         </div>
       </div>
       <ToolOutput
-        className="box-shadow__values"
+        className={styles.output}
         output={`box-shadow: ${boxShadowValue};`}
       />
       <div className="tool__desc">

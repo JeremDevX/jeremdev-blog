@@ -28,10 +28,3 @@
 @use "./pages/toolPage";
 @use "./pages/studio";
 @use "./pages/notFound";
-
-//Specific styles import
-@use "../app/tools/(tools)/text/word-counter/wordCounter";
-@use "../app/tools/(tools)/css/border-radius/borderRadius";
-@use "../app/tools/(tools)/code/slug-generator/slugGenerator";
-@use "../app/tools/(tools)/accessibility/contrast-checker/contrastChecker";
-@use "../app/tools/(tools)/css/box-shadow/boxShadow";

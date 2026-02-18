@@ -1,0 +1,141 @@
+.tool {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  position: relative;
+  width: 67%;
+}
+
+.input {
+  width: 100%;
+  height: 18rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--background));
+  border: 2px solid hsl(var(--secondary));
+  resize: none;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+}
+
+.inputCharacters {
+  position: absolute;
+  bottom: 1.75rem;
+  right: 0.5rem;
+  opacity: 0.5;
+  font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+}
+
+.output {
+  width: 100%;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: linear-gradient(
+      180deg,
+      hsla(212, 80%, 32%, 0.14),
+      hsla(212, 49%, 9%, 0.82)
+    ),
+    hsl(var(--card));
+  box-shadow: inset 0 0 0 1px hsla(212, 80%, 69%, 0.08);
+}
+
+.table {
+  width: 100%;
+  min-width: 42rem;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.table caption {
+  caption-side: top;
+  text-align: left;
+  padding: 0.875rem 1rem 0.5rem;
+  font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+  color: hsl(var(--muted-foreground));
+}
+
+.tableHead,
+.tableUseCase,
+.tableCount,
+.tableType {
+  padding: 0.7rem 0.9rem;
+  font-size: clamp(0.78rem, 2.5vw, 1rem);
+  border-bottom: 1px solid hsla(212, 30%, 30%, 0.75);
+}
+
+.tableHead {
+  background-color: hsla(212, 80%, 32%, 0.24);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-weight: 700;
+  text-align: center;
+}
+
+.tableUseCase {
+  text-align: left;
+  font-weight: 600;
+}
+
+.tableCount {
+  text-align: center;
+  font-weight: 700;
+}
+
+.tableCountRed {
+  color: hsl(var(--destructive));
+  background-color: hsla(24, 100%, 61%, 0.08);
+}
+
+.tableCountGreen {
+  color: #55d68b;
+  background-color: hsla(145, 63%, 45%, 0.1);
+}
+
+.tableType {
+  text-align: center;
+  font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+  color: hsl(var(--muted-foreground));
+}
+
+.table tbody tr:nth-child(odd) td {
+  background-color: hsla(212, 49%, 12%, 0.55);
+}
+
+.table tbody tr:nth-child(even) td {
+  background-color: hsla(212, 49%, 10%, 0.55);
+}
+
+@media (max-width: 1024px) {
+  .container {
+    width: 92%;
+  }
+}
+
+@media (max-width: 768px) {
+  .tableHead,
+  .tableUseCase,
+  .tableCount,
+  .tableType {
+    padding: 0.55rem 0.65rem;
+    font-size: 0.8rem;
+  }
+
+  .table {
+    min-width: 35rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .table {
+    min-width: 32rem;
+  }
+}

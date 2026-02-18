@@ -2,42 +2,46 @@
 
 import ToolOutput from "@/components/custom/ToolOutput";
 import { useEffect, useState } from "react";
+import styles from "./SlugGenerator.module.scss";
+
+export function normalizeSlug(input: string): string {
+  return input
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\s']/g, "-")
+    .replace(/[^a-z0-9-]/g, "")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 export default function SlugGenerator() {
   const [inputValue, setInputValue] = useState("");
   const [outputValue, setOutputValue] = useState("");
 
   useEffect(() => {
-    const slug = inputValue
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[\s']/g, "-")
-      .replace(/[^a-z0-9-]/g, "")
-      .replace(/-+/g, "-")
-      .replace(/^-+|-+$/g, "");
-
-    setOutputValue(slug);
+    setOutputValue(normalizeSlug(inputValue));
   }, [inputValue]);
 
   return (
-    <div className="tool__main">
+    <div className="tool__main" data-testid="slug-generator-tool">
       <h1 className="tool__main-title">Slug Generator Tool</h1>
 
-      <div className="slug-gen">
-        <label htmlFor="input" className="slug-gen__input semi-bold">
+      <div className={styles.container}>
+        <label htmlFor="slug-input" className={`${styles.input} semi-bold`}>
           Write or paste your text here
           <input
             type="text"
-            id="input"
+            id="slug-input"
             autoComplete="off"
             value={inputValue}
             placeholder="Write or paste your text here..."
             onChange={(e) => setInputValue(e.target.value)}
+            className={styles.inputField}
           />
         </label>
         <ToolOutput
-          className="slug-gen__output"
+          className={styles.output}
           output={outputValue || "-"}
           valueToCopy={outputValue}
         />

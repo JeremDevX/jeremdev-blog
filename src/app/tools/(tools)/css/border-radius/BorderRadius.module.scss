@@ -1,0 +1,79 @@
+.toolLayout {
+  width: 100%;
+  min-height: 24rem;
+  display: grid;
+  grid-template-columns: minmax(16rem, 1fr) minmax(16rem, 1fr);
+  gap: 1rem;
+  border: 2px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  background-color: hsl(var(--card));
+  padding: 1rem;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.controlSection {
+  border: 1px solid hsl(var(--secondary));
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+.sectionTitle {
+  font-size: clamp(0.95rem, 2.5vw, 1.125rem);
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+  margin-bottom: 0.75rem;
+}
+
+.slide {
+  width: 100%;
+}
+
+.previewWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed hsl(var(--foreground));
+  border-radius: 0.5rem;
+  min-height: 16rem;
+}
+
+.preview {
+  background-image: var(--gradient);
+}
+
+.button {
+  width: fit-content;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid hsl(var(--primary));
+  background-color: hsl(var(--secondary));
+  color: hsl(var(--foreground));
+}
+
+.button:hover {
+  color: hsl(var(--primary-foreground));
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--secondary));
+}
+
+.output {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .toolLayout {
+    grid-template-columns: 1fr;
+  }
+}
