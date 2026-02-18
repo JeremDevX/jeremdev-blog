@@ -1,25 +1,13 @@
 import type { MetadataRoute } from "next";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://techhowlerx.com";
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: [
-        "/",
-        "/blog/",
-        "/blog/posts/",
-        "/blog/categories/",
-        "/blog/posts/*",
-        "/tools/",
-        "/tools/*",
-      ],
-      disallow: [
-        "/private/",
-        "/studio/",
-        "/studio/admin/",
-        "/about",
-        "termsofuse",
-      ],
+      allow: "/",
     },
+    sitemap: `${siteUrl}/sitemap.xml`,
   };
 }

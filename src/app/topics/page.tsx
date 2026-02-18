@@ -3,20 +3,17 @@ import Link from "next/link";
 import { taxonomyTree } from "@/lib/taxonomy";
 import styles from "./TopicsPage.module.scss";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://techhowlerx.com";
-
 export const metadata: Metadata = {
-  title: "Topics - TechHowlerX",
+  title: "Topics",
   description:
     "Browse articles organized by topic: Programming, Accessibility, Tools & Utilities, and more.",
   alternates: {
-    canonical: `${siteUrl}/topics`,
+    canonical: "/topics",
   },
   openGraph: {
     title: "Topics",
     description:
       "Browse articles organized by topic: Programming, Accessibility, Tools & Utilities, and more.",
-    url: `${siteUrl}/topics`,
     type: "website",
   },
 };

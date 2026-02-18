@@ -4,15 +4,17 @@ import CategoryGroup from "@/components/custom/CategoryGroup";
 import styles from "./ToolsIndex.module.scss";
 
 export const metadata: Metadata = {
-  title: "Developer Tools | TechHowlerX",
+  title: "Developer Tools",
   description:
     "Browse all developer tools organized by category — CSS generators, accessibility checkers, and more.",
+  alternates: {
+    canonical: "/tools",
+  },
   openGraph: {
-    title: "Developer Tools | TechHowlerX",
+    title: "Developer Tools",
     description:
       "Browse all developer tools organized by category — CSS generators, accessibility checkers, and more.",
     type: "website",
-    siteName: "TechHowlerX",
   },
 };
 

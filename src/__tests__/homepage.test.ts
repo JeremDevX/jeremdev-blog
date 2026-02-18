@@ -98,14 +98,13 @@ describe("Homepage metadata", () => {
     const { metadata } = await import("@/app/page");
 
     expect(metadata).toBeDefined();
-    expect(metadata.title).toBe("TechHowlerX - Tech Blog & Dev Tools");
+    expect(metadata.title).toBe("Tech Blog & Dev Tools");
     expect(metadata.description).toContain("TechHowlerX");
     expect(metadata.openGraph).toBeDefined();
     expect(metadata.openGraph!.title).toBe(
-      "TechHowlerX - Tech Blog & Dev Tools"
+      "Tech Blog & Dev Tools"
     );
     expect(metadata.openGraph!.type).toBe("website");
-    expect(metadata.openGraph!.siteName).toBe("TechHowlerX");
   });
 
   it("metadata description is non-empty and meaningful", async () => {

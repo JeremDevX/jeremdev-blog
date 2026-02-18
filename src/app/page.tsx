@@ -8,16 +8,14 @@ import { getAllTools } from "@/lib/tools";
 import styles from "./HomePage.module.scss";
 
 export const metadata: Metadata = {
-  title: "TechHowlerX - Tech Blog & Dev Tools",
+  title: "Tech Blog & Dev Tools",
   description:
     "TechHowlerX: A blog and a collection of dev tools. Explore tech and programming articles, plus practical tools to support your development process!",
-  keywords: "tech, programming, blog, dev tools, utility tools",
   openGraph: {
-    title: "TechHowlerX - Tech Blog & Dev Tools",
+    title: "Tech Blog & Dev Tools",
     description:
       "Explore tech and programming articles, plus practical developer tools to support your development process.",
     type: "website",
-    siteName: "TechHowlerX",
   },
 };
 

@@ -2,9 +2,16 @@ import { Metadata } from "next";
 import SlugGenerator from "./SlugGenerator";
 
 export const metadata: Metadata = {
-  title: "TechHowlerX - Slug Generator Tool",
+  title: "Slug Generator",
   description: "Generate a normalized slug for your URLs from a given text.",
-  keywords: "slug, generator, slug generator, text, normalize",
+  alternates: {
+    canonical: "/tools/code/slug-generator",
+  },
+  openGraph: {
+    title: "Slug Generator",
+    description: "Generate a normalized slug for your URLs from a given text.",
+    type: "website",
+  },
 };
 
 export default function SlugGeneratorPage() {
