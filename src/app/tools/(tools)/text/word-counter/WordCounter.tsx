@@ -59,10 +59,10 @@ Characters: ${formattedCharacters}`;
         <p className={styles.descriptionText}>
           This tool helps you track word and character counts to ensure your
           content meets recommended or required length guidelines, optimizing
-          readability and visibility across platforms like personnal blogs,
+          readability and visibility across platforms like personal blogs,
           social media, or email.
         </p>
-        <h3 className={styles.descriptionMedTitle}>Recommandations Table</h3>
+        <h3 className={styles.descriptionMedTitle}>Recommendations Table</h3>
         <div className={styles.tableContainer}>
           <table className={styles.table}>
             <caption>

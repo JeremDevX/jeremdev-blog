@@ -174,9 +174,41 @@ export default function BoxShadow() {
         <h2 className={styles.descriptionTitle}>Box Shadow Tool</h2>
         <h3 className={styles.descriptionMedTitle}>Why this tool?</h3>
         <p className={styles.descriptionText}>
-          This generator helps you craft a CSS <code className={styles.descriptionCode}>box-shadow</code>
-          value visually. Tune offset, blur, spread, and colors while seeing the
-          preview update in real time, then copy the generated CSS instantly.
+          This generator helps you craft a CSS{" "}
+          <code className={styles.descriptionCode}>box-shadow</code> value
+          visually. You can test depth and readability quickly, then copy
+          production-ready CSS in one click.
+        </p>
+        <h3 className={styles.descriptionMedTitle}>How to use it</h3>
+        <p className={styles.descriptionText}>
+          Start with geometry controls ({`Offset X`}, {`Offset Y`},{" "}
+          {`Blur`}, and {`Spread`}), then choose shape, shadow, and background
+          colors. Toggle <code className={styles.descriptionCode}>Inset</code>{" "}
+          to switch between an external shadow and an inner shadow. The preview
+          updates instantly as you adjust values.
+        </p>
+        <h3 className={styles.descriptionMedTitle}>Quick tips</h3>
+        <ul className={styles.list}>
+          <li>
+            <code className={styles.descriptionCode}>Blur</code> controls edge
+            softness.
+          </li>
+          <li>
+            <code className={styles.descriptionCode}>Spread</code> controls how
+            large the shadow grows before blur.
+          </li>
+          <li>
+            Negative offsets move the shadow up/left, positive offsets move it
+            down/right.
+          </li>
+          <li>
+            Use <code className={styles.descriptionCode}>Inset</code> for
+            pressed or carved effects.
+          </li>
+        </ul>
+        <p className={styles.descriptionNote}>
+          No perfect shadow exists in isolation: always validate with your real
+          background and nearby UI elements.
         </p>
       </div>
     </div>

@@ -191,24 +191,21 @@ export default function BorderRadius() {
 
         <h3 className={styles.descriptionMedTitle}>How to use the tool</h3>
         <p className={styles.descriptionText}>
-          By default, the central shape is a 150px by 150px square, but you can
-          customize its size by clicking on
-          <b className={styles.highlight}> “Custom Size”</b> to adjust the width and
-          height within a range of 50 to 250px.
+          By default, the preview shape is a 150px by 150px square. Click{" "}
+          <b className={styles.highlight}>“Custom size”</b> to reveal width and
+          height sliders and adapt the preview between 50px and 250px.
         </p>
         <p className={styles.descriptionText}>
-          To modify the radius, click on any corner of the square and drag it to
-          increase or decrease the radius value, making it easy to shape each
-          corner to your preference. If you prefer more precise control, use
-          the
-          <b className={styles.highlight}> sliders below</b> to adjust each
-          corner&apos;s radius value individually.
+          Use the four corner sliders to control each corner independently from
+          0% to 100%. The preview and generated CSS update in real time, so you
+          can iterate fast and copy the exact value when the shape matches your
+          design.
         </p>
 
         <p className={styles.descriptionNote}>
-          * CSS property values are displayed below in real time, and you can
-          retrieve them easily by clicking the
-          <b className={styles.highlight}> “Copy”</b> button.
+          * Generated values use full{" "}
+          <code className={styles.descriptionCode}>border-radius</code>{" "}
+          shorthand, useful for organic shapes beyond simple rounded corners.
         </p>
       </div>
     </div>

@@ -157,8 +157,7 @@ export default function SlugGenerator() {
             &quot;
             <br />
             <span className={styles.italic}>
-              (Users may think the page content is outdated if they see this in
-              2025)
+              (Can look outdated as soon as the year changes)
             </span>
           </li>
         </ul>
