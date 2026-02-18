@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import type { ComponentType } from "react";
 import type { MDXProps } from "mdx/types";
 import Breadcrumb from "@/components/custom/Breadcrumb";
@@ -77,9 +76,6 @@ export default async function ArticlePage({ params }: Props) {
   return (
     <article className={styles.container}>
       <Breadcrumb path={breadcrumbPath} />
-      <Link href="/blog" className={styles.backLink}>
-        &larr; Back to blog
-      </Link>
 
       <header>
         <h1 className={styles.title}>{article.title}</h1>

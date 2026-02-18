@@ -3,20 +3,7 @@
 .container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-.backLink {
-  display: inline-block;
-  color: hsl(var(--muted-foreground));
-  margin-bottom: 1.5rem;
-  font-size: 0.875rem;
-  transition: color var(--transition-fast);
-  text-decoration: none;
-
-  &:hover {
-    color: hsl(var(--primary));
-  }
+  padding: 1rem 1rem 2.5rem;
 }
 
 .title {
@@ -128,7 +115,7 @@
 
 @media (max-width: 640px) {
   .container {
-    padding: 1.5rem 0.75rem;
+    padding: 0.75rem 0.75rem 2rem;
   }
 
   .meta {
