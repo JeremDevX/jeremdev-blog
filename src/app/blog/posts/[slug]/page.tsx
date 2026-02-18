@@ -4,8 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ComponentType } from "react";
 import type { MDXProps } from "mdx/types";
+import Breadcrumb from "@/components/custom/Breadcrumb";
 import { getArticleBySlug } from "@/lib/content";
 import { compileMDX } from "@/lib/mdx";
+import { getTaxonomyBreadcrumb } from "@/lib/taxonomy";
 import { formatDate } from "@/lib/utils";
 import styles from "./ArticlePage.module.scss";
 
@@ -60,8 +62,21 @@ export default async function ArticlePage({ params }: Props) {
     console.error(`Failed to compile MDX for "${article.slug}":`, error);
   }
 
+  const taxonomyBreadcrumb = getTaxonomyBreadcrumb(article.category);
+  const breadcrumbPath = [
+    ...taxonomyBreadcrumb.map((crumb, index) => ({
+      name: crumb.name,
+      href: `/topics/${taxonomyBreadcrumb
+        .slice(0, index + 1)
+        .map((item) => item.slug)
+        .join("/")}`,
+    })),
+    { name: article.title },
+  ];
+
   return (
     <article className={styles.container}>
+      <Breadcrumb path={breadcrumbPath} />
       <Link href="/blog" className={styles.backLink}>
         &larr; Back to blog
       </Link>
@@ -71,7 +86,9 @@ export default async function ArticlePage({ params }: Props) {
         <div className={styles.meta}>
           <time dateTime={article.date}>{formatDate(article.date)}</time>
           <span aria-hidden="true">·</span>
-          <span className={styles.category}>{formatCategory(article.category)}</span>
+          <span className={styles.category}>
+            {formatCategory(article.category)}
+          </span>
         </div>
       </header>
 

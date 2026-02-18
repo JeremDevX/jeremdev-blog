@@ -1,0 +1,52 @@
+@use "../../../styles/variables" as vars;
+
+.breadcrumb {
+  margin-bottom: var(--space-6);
+  font-size: 0.85rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.breadcrumbList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumbItem {
+  display: inline-flex;
+  align-items: center;
+}
+
+.breadcrumbLink {
+  color: hsl(var(--muted-foreground));
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.breadcrumbLink:hover {
+  color: hsl(var(--primary));
+}
+
+.breadcrumbCurrent {
+  color: hsl(var(--foreground));
+  font-weight: 500;
+}
+
+.breadcrumbSeparator {
+  color: hsl(var(--muted-foreground));
+  margin: 0 var(--space-2);
+}
+
+.breadcrumbEllipsis {
+  color: hsl(var(--muted-foreground));
+}
+
+@media (max-width: 639px) {
+  .breadcrumb {
+    font-size: 0.8rem;
+  }
+}

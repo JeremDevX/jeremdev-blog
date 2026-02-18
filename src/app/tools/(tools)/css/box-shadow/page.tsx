@@ -1,5 +1,7 @@
 import BoxShadow from "./BoxShadow";
 import type { Metadata } from "next";
+import Breadcrumb from "@/components/custom/Breadcrumb";
+import { getToolBySlug } from "@/lib/tools";
 
 export const metadata: Metadata = {
   title: "Box Shadow Generator",
@@ -17,8 +19,23 @@ export const metadata: Metadata = {
 };
 
 export default function BoxShadowPage() {
+  const tool = getToolBySlug("/tools/css/box-shadow");
+  const breadcrumbPath = tool
+    ? [
+        { name: "Tools", href: "/tools" },
+        {
+          name: tool.category,
+          href: `/tools#category-${tool.category
+            .toLowerCase()
+            .replace(/\s+/g, "-")}`,
+        },
+        { name: tool.name },
+      ]
+    : [{ name: "Tools", href: "/tools" }, { name: "Box Shadow Generator" }];
+
   return (
     <>
+      <Breadcrumb path={breadcrumbPath} />
       <BoxShadow />
     </>
   );

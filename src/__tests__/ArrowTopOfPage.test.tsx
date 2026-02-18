@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import ArrowTopOfPage from "./ArrowTopOfPage";
+import ArrowTopOfPage from "@/components/custom/ArrowTopOfPage";
 
 // Mock Button component
-vi.mock("./Button", () => ({
+vi.mock("@/components/ui/button", () => ({
   default: ({ children, onClick, className, ...props }: any) => (
     <button onClick={onClick} className={className} {...props}>
       {children}

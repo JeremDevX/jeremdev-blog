@@ -37,7 +37,7 @@ export default function ArrowTopOfPage() {
     <Button
       onClick={scrollToTop}
       className="arrow-top"
-      aria-label="Scroll to top"
+      ariaLabel="Scroll to top"
     >
       Back to Top
       <ArrowUpToLine size={36} className="arrow-top__icon" />

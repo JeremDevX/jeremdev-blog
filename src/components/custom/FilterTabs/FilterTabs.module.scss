@@ -1,0 +1,55 @@
+@use "../../../styles/variables" as vars;
+
+.filterTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.tab {
+  border: 0;
+  border-radius: var(--radius);
+  padding: var(--space-3) var(--space-6);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: transparent;
+  transition:
+    opacity 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.tab--active {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-weight: 600;
+}
+
+.tab--inactive {
+  background: hsl(var(--secondary));
+  color: hsl(var(--muted-foreground));
+}
+
+.tab--inactive:hover {
+  opacity: 0.85;
+}
+
+.tab:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+@media (max-width: 639px) {
+  .filterTabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tab {
+    width: 100%;
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+  }
+}

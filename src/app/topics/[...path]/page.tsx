@@ -1,15 +1,51 @@
 import { Metadata } from "next";
+import { Suspense, useMemo } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { taxonomyTree, findTaxonomyNode, getTaxonomyBreadcrumb } from "@/lib/taxonomy";
+import {
+  taxonomyTree,
+  findTaxonomyNode,
+  getTaxonomyBreadcrumb,
+} from "@/lib/taxonomy";
 import { getArticlesByCategory } from "@/lib/content";
-import { formatDate } from "@/lib/utils";
+import { getAllTools } from "@/lib/tools";
+import Breadcrumb from "@/components/custom/Breadcrumb";
+import TaxonomyContent from "./TaxonomyContent";
 import type { TaxonomyNode } from "@/types/taxonomy";
+import type { ToolMeta } from "@/types/tools";
 import styles from "./TaxonomyPage.module.scss";
 
 type Props = {
   params: Promise<{ path: string[] }>;
 };
+
+const TOOL_CATEGORY_BY_PATH: Record<string, string> = {
+  "css-tools": "CSS",
+  "code-tools": "Development",
+  "text-tools": "Content",
+};
+
+function getToolsForTaxonomyPath(
+  taxonomyPath: string,
+  tools: ToolMeta[],
+): ToolMeta[] {
+  if (taxonomyPath === "tools") {
+    return tools;
+  }
+
+  if (taxonomyPath.startsWith("tools/")) {
+    const segment = taxonomyPath.split("/")[1];
+    const category = TOOL_CATEGORY_BY_PATH[segment];
+    if (!category) return [];
+    return tools.filter((tool) => tool.category === category);
+  }
+
+  if (taxonomyPath.startsWith("accessibility")) {
+    return tools.filter((tool) => tool.category === "Accessibility");
+  }
+
+  return [];
+}
 
 export function generateStaticParams() {
   const paths: { path: string[] }[] = [];
@@ -62,36 +98,42 @@ export default async function TaxonomyPage({ params }: Props) {
   }
 
   const breadcrumb = getTaxonomyBreadcrumb(taxonomyPath);
+  const breadcrumbPath = [
+    { name: "Topics", href: "/topics" },
+    ...breadcrumb.map((crumb, index) => ({
+      name: crumb.name,
+      href: `/topics/${breadcrumb
+        .slice(0, index + 1)
+        .map((item) => item.slug)
+        .join("/")}`,
+    })),
+  ];
   const articles = await getArticlesByCategory(taxonomyPath);
+  const tools = getToolsForTaxonomyPath(taxonomyPath, getAllTools());
   const children = node.children ?? [];
+
+  const contentItems = [
+    ...articles.map((article) => ({
+      type: "article" as const,
+      title: article.title,
+      description: article.resume,
+      href: `/blog/posts/${article.slug}`,
+      date: article.date,
+      category: article.category,
+      coverImage: article.coverImage,
+    })),
+    ...tools.map((tool) => ({
+      type: "tool" as const,
+      title: tool.name,
+      description: tool.description,
+      href: tool.slug,
+      category: tool.category,
+    })),
+  ];
 
   return (
     <main className={styles.container}>
-      <nav aria-label="Breadcrumb" className={styles.breadcrumb}>
-        <ol>
-          <li>
-            <Link href="/topics">Topics</Link>
-          </li>
-          {breadcrumb.map((crumb, index) => {
-            const crumbPath = breadcrumb
-              .slice(0, index + 1)
-              .map((c) => c.slug)
-              .join("/");
-            const isLast = index === breadcrumb.length - 1;
-
-            return (
-              <li key={crumb.slug}>
-                <span aria-hidden="true"> &gt; </span>
-                {isLast ? (
-                  <span aria-current="page">{crumb.name}</span>
-                ) : (
-                  <Link href={`/topics/${crumbPath}`}>{crumb.name}</Link>
-                )}
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
+      <Breadcrumb path={breadcrumbPath} />
 
       <h1 className={styles.heading}>{node.name}</h1>
       <p className={styles.description}>{node.description}</p>
@@ -116,27 +158,11 @@ export default async function TaxonomyPage({ params }: Props) {
         </section>
       )}
 
-      <section className={styles.articlesSection}>
-        <h2 className={styles.sectionTitle}>Articles</h2>
-        {articles.length > 0 ? (
-          <div className={styles.articlesGrid}>
-            {articles.map((article) => (
-              <Link
-                key={article.slug}
-                href={`/blog/posts/${article.slug}`}
-                className={styles.articleCard}
-              >
-                <h3 className={styles.articleTitle}>{article.title}</h3>
-                <time className={styles.articleDate} dateTime={article.date}>
-                  {formatDate(article.date)}
-                </time>
-                <p className={styles.articleResume}>{article.resume}</p>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <p className={styles.emptyState}>No articles in this topic yet.</p>
-        )}
+      <section className={styles.contentSection}>
+        <h2 className={styles.sectionTitle}>Content</h2>
+        <Suspense fallback={<div />}>
+          <TaxonomyContent items={contentItems} />
+        </Suspense>
       </section>
     </main>
   );

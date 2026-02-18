@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { formatDate } from "@/lib/utils";
@@ -43,9 +45,7 @@ export default function ContentCard({
             >
               {type === "article" ? "Article" : "Tool"}
             </span>
-            {category && (
-              <span className={styles.category}>{category}</span>
-            )}
+            {category && <span className={styles.category}>{category}</span>}
           </div>
           <h3 className={styles.title}>{title}</h3>
           <p className={styles.description}>{description}</p>

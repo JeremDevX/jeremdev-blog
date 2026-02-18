@@ -1,5 +1,7 @@
 import ContrastChecker from "./ContrastChecker";
 import type { Metadata } from "next";
+import Breadcrumb from "@/components/custom/Breadcrumb";
+import { getToolBySlug } from "@/lib/tools";
 
 export const metadata: Metadata = {
   title: "Contrast Checker",
@@ -17,8 +19,23 @@ export const metadata: Metadata = {
 };
 
 export default function ContrastCheckerPage() {
+  const tool = getToolBySlug("/tools/accessibility/contrast-checker");
+  const breadcrumbPath = tool
+    ? [
+        { name: "Tools", href: "/tools" },
+        {
+          name: tool.category,
+          href: `/tools#category-${tool.category
+            .toLowerCase()
+            .replace(/\s+/g, "-")}`,
+        },
+        { name: tool.name },
+      ]
+    : [{ name: "Tools", href: "/tools" }, { name: "Contrast Checker" }];
+
   return (
     <>
+      <Breadcrumb path={breadcrumbPath} />
       <ContrastChecker />
     </>
   );

@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import fs from "fs/promises";
 import path from "path";
 import {
   getArticlesForIndex,
@@ -9,7 +8,12 @@ import {
 } from "../../scripts/generate-search-index";
 
 // Mock fs/promises to avoid reading the real filesystem
-vi.mock("fs/promises");
+vi.mock("fs/promises", () => ({
+  default: {
+    readdir: vi.fn(),
+    readFile: vi.fn(),
+  },
+}));
 
 // Mock gray-matter to return controlled frontmatter
 vi.mock("gray-matter", () => ({
@@ -29,6 +33,9 @@ vi.mock("gray-matter", () => ({
     return { data, content };
   },
 }));
+
+// Import the mocked fs after vi.mock
+import fs from "fs/promises";
 
 describe("Search Index Generation", () => {
   beforeEach(() => {
@@ -170,9 +177,9 @@ describe("Search Index Generation", () => {
 
   describe("SearchIndexEntry schema compliance", () => {
     it("every entry type is either article or tool", async () => {
-      vi.mocked(fs.readdir).mockResolvedValue([
-        "a.mdx",
-      ] as unknown as Awaited<ReturnType<typeof fs.readdir>>);
+      vi.mocked(fs.readdir).mockResolvedValue(["a.mdx"] as unknown as Awaited<
+        ReturnType<typeof fs.readdir>
+      >);
       vi.mocked(fs.readFile).mockResolvedValue(
         `title: A\nslug: a\nresume: R\ncategory: C\npublished: true`,
       );

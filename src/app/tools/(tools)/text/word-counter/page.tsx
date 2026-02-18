@@ -1,5 +1,7 @@
 import WordCounter from "./WordCounter";
 import type { Metadata } from "next";
+import Breadcrumb from "@/components/custom/Breadcrumb";
+import { getToolBySlug } from "@/lib/tools";
 
 export const metadata: Metadata = {
   title: "Word Counter",
@@ -17,5 +19,24 @@ export const metadata: Metadata = {
 };
 
 export default function WordCounterPage() {
-  return <WordCounter />;
+  const tool = getToolBySlug("/tools/text/word-counter");
+  const breadcrumbPath = tool
+    ? [
+        { name: "Tools", href: "/tools" },
+        {
+          name: tool.category,
+          href: `/tools#category-${tool.category
+            .toLowerCase()
+            .replace(/\s+/g, "-")}`,
+        },
+        { name: tool.name },
+      ]
+    : [{ name: "Tools", href: "/tools" }, { name: "Word Counter" }];
+
+  return (
+    <>
+      <Breadcrumb path={breadcrumbPath} />
+      <WordCounter />
+    </>
+  );
 }
