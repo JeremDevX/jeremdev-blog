@@ -1,15 +1,7 @@
+import { findTaxonomyNode } from "@/lib/taxonomy";
 import type { TaxonomyNode } from "@/types/taxonomy";
 import type { ArticleMeta } from "@/types/content";
 import type { ToolMeta } from "@/types/tools";
-
-// Maps tool URL slugs to taxonomy paths
-export const TOOL_TAXONOMY_MAP: Record<string, string> = {
-  "/tools/accessibility/contrast-checker": "accessibility/standards/color-contrast",
-  "/tools/css/border-radius": "tools/css-tools/border-radius",
-  "/tools/css/box-shadow": "tools/css-tools/box-shadow",
-  "/tools/code/slug-generator": "tools/code-tools/slug-generator",
-  "/tools/text/word-counter": "tools/text-tools/word-counter",
-};
 
 export interface SidebarItem {
   type: "article" | "tool";
@@ -31,7 +23,7 @@ export function buildSidebarTree(
   nodes: TaxonomyNode[],
   articles: ArticleMeta[],
   tools: ToolMeta[],
-  parentPath: string[] = []
+  parentPath: string[] = [],
 ): SidebarBranch[] {
   return nodes.map((node) => {
     const currentPath = buildTaxonomyPath(parentPath, node.slug);
@@ -50,7 +42,7 @@ export function buildSidebarTree(
 
     // Find tools matching this taxonomy node
     const matchingTools: SidebarItem[] = tools
-      .filter((t) => TOOL_TAXONOMY_MAP[t.slug] === currentPath)
+      .filter((t) => t.taxonomyPaths.includes(currentPath))
       .map((t) => ({
         type: "tool" as const,
         name: t.name,
@@ -59,41 +51,51 @@ export function buildSidebarTree(
 
     // Sort items alphabetically
     const items = [...matchingArticles, ...matchingTools].sort((a, b) =>
-      a.name.localeCompare(b.name)
+      a.name.localeCompare(b.name),
     );
 
     return { node, items, children };
   });
 }
 
+function buildOpenPathsFromTaxonomyPath(path: string): string[] {
+  if (!path) return [];
+
+  const segments = path.split("/");
+  const openItems: string[] = [];
+
+  for (let i = 0; i < segments.length; i++) {
+    const candidate = segments.slice(0, i + 1).join("/");
+    if (!findTaxonomyNode(candidate)) {
+      return [];
+    }
+    openItems.push(candidate);
+  }
+
+  return openItems;
+}
+
 export function getDefaultOpenItems(
   pathname: string,
   articles: ArticleMeta[],
-  tools: ToolMeta[]
+  tools: ToolMeta[],
 ): string[] {
   // Check if pathname matches a tool page
   const tool = tools.find((t) => t.slug === pathname);
   if (tool) {
-    const taxonomyPath = TOOL_TAXONOMY_MAP[tool.slug];
-    if (taxonomyPath) {
-      const segments = taxonomyPath.split("/");
-      const openItems: string[] = [];
-      for (let i = 0; i < segments.length; i++) {
-        openItems.push(segments.slice(0, i + 1).join("/"));
+    const openItems = new Set<string>();
+    for (const taxonomyPath of tool.taxonomyPaths) {
+      for (const branchPath of buildOpenPathsFromTaxonomyPath(taxonomyPath)) {
+        openItems.add(branchPath);
       }
-      return openItems;
     }
+    return [...openItems];
   }
 
   // Check if pathname matches an article page
   const article = articles.find((a) => `/blog/posts/${a.slug}` === pathname);
   if (article) {
-    const segments = article.category.split("/");
-    const openItems: string[] = [];
-    for (let i = 0; i < segments.length; i++) {
-      openItems.push(segments.slice(0, i + 1).join("/"));
-    }
-    return openItems;
+    return buildOpenPathsFromTaxonomyPath(article.category);
   }
 
   return [];

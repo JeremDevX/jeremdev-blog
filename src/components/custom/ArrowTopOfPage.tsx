@@ -40,7 +40,7 @@ export default function ArrowTopOfPage() {
       ariaLabel="Scroll to top"
     >
       Back to Top
-      <ArrowUpToLine size={36} className="arrow-top__icon" />
+      <ArrowUpToLine size={20} className="arrow-top__icon" />
     </Button>
   );
 }

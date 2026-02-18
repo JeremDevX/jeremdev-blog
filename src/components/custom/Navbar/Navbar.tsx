@@ -4,15 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import SearchInput from "@/components/custom/Search/Search";
+import SearchInput, { SEARCH_OPEN_EVENT } from "@/components/custom/Search/Search";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetClose,
 } from "@/components/ui/sheet";
-import { Menu, X } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import styles from "./Navbar.module.scss";
 
 // Navigation links configuration
@@ -23,28 +22,6 @@ const navLinks = [
   { label: "About", href: "/about" },
 ];
 
-// Mobile drawer links organized by category
-const mobileMenuLinks = [
-  {
-    category: "Blog",
-    links: [
-      { label: "Blog", href: "/blog" },
-      { label: "Topics", href: "/topics" },
-    ],
-  },
-  {
-    category: "Dev tools",
-    links: [{ label: "Tools", href: "/tools" }],
-  },
-  {
-    category: "Other",
-    links: [
-      { label: "About", href: "/about" },
-      { label: "Terms of Use", href: "/termsofuse" },
-    ],
-  },
-];
-
 export default function Navbar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const pathname = usePathname();
@@ -52,6 +29,11 @@ export default function Navbar() {
   // Close drawer handler
   const handleCloseDrawer = () => {
     setIsDrawerOpen(false);
+  };
+
+  const handleOpenSearchFromDrawer = () => {
+    setIsDrawerOpen(false);
+    window.dispatchEvent(new Event(SEARCH_OPEN_EVENT));
   };
 
   // Check if link is active
@@ -124,39 +106,32 @@ export default function Navbar() {
 
       {/* Mobile Drawer using shadcn/ui Sheet */}
       <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-        <SheetContent side="left" className="w-full sm:max-w-md">
-          <SheetHeader>
+        <SheetContent side="left" className={styles.drawerSheetContent}>
+          <SheetHeader className={styles.drawerHeader}>
             <SheetTitle>Navigation</SheetTitle>
-            <SheetClose asChild>
-              <button
-                aria-label="Close navigation menu"
-                className="absolute right-4 top-4"
-              >
-                <X size={24} />
-              </button>
-            </SheetClose>
           </SheetHeader>
 
           <div className={styles.drawerContent}>
-            {mobileMenuLinks.map((category) => (
-              <div key={category.category} className={styles.drawerCategory}>
-                <p className={styles.drawerCategoryTitle}>
-                  {category.category}
-                </p>
-                {category.links.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`${styles.drawerLink} ${
-                      isLinkActive(link.href) ? styles.drawerLinkActive : ""
-                    }`}
-                    onClick={handleCloseDrawer}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`${styles.drawerLink} ${
+                  isLinkActive(link.href) ? styles.drawerLinkActive : ""
+                }`}
+                onClick={handleCloseDrawer}
+              >
+                {link.label}
+              </Link>
             ))}
+            <button
+              type="button"
+              className={styles.drawerSearch}
+              onClick={handleOpenSearchFromDrawer}
+            >
+              <Search size={16} aria-hidden="true" />
+              Search
+            </button>
           </div>
         </SheetContent>
       </Sheet>

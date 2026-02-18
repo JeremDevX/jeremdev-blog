@@ -70,7 +70,7 @@ describe("Taxonomy pages - generateMetadata (actual export)", () => {
     const metadata = await generateMetadata({
       params: Promise.resolve({ path: ["programming"] }),
     });
-    expect(metadata.title).toBe("Programming - TechHowlerX");
+    expect(metadata.title).toBe("Programming");
     expect(metadata.description).toBeTruthy();
     expect(metadata.alternates?.canonical).toContain("/topics/programming");
     expect(metadata.openGraph).toBeDefined();
@@ -80,7 +80,7 @@ describe("Taxonomy pages - generateMetadata (actual export)", () => {
     const metadata = await generateMetadata({
       params: Promise.resolve({ path: ["programming", "css"] }),
     });
-    expect(metadata.title).toBe("CSS - TechHowlerX");
+    expect(metadata.title).toBe("CSS");
     expect(metadata.alternates?.canonical).toContain("/topics/programming/css");
   });
 

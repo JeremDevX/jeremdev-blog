@@ -15,6 +15,8 @@ interface SearchIndexEntry {
   type: "article" | "tool";
 }
 
+export const SEARCH_OPEN_EVENT = "techhowlerx:search-open";
+
 export default function SearchInput() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -41,6 +43,12 @@ export default function SearchInput() {
     };
     document.addEventListener("keydown", handleGlobalKeyDown);
     return () => document.removeEventListener("keydown", handleGlobalKeyDown);
+  }, []);
+
+  useEffect(() => {
+    const openSearch = () => setIsOpen(true);
+    window.addEventListener(SEARCH_OPEN_EVENT, openSearch);
+    return () => window.removeEventListener(SEARCH_OPEN_EVENT, openSearch);
   }, []);
 
   // Focus input when overlay opens

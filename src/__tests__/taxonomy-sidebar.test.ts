@@ -4,7 +4,6 @@ import {
   buildSidebarTree,
   getDefaultOpenItems,
   hasContent,
-  TOOL_TAXONOMY_MAP,
 } from "@/components/custom/TaxonomySidebar/sidebar-utils";
 import { taxonomyTree } from "@/lib/taxonomy";
 import { getAllTools } from "@/lib/tools";
@@ -32,30 +31,32 @@ const mockHtmlArticle: ArticleMeta = {
 const mockTools = getAllTools();
 
 describe("TaxonomySidebar Utils", () => {
-  describe("TOOL_TAXONOMY_MAP", () => {
-    it("maps all 5 tools to taxonomy paths", () => {
-      expect(Object.keys(TOOL_TAXONOMY_MAP)).toHaveLength(5);
-    });
-
-    it("maps every tool slug from the catalog", () => {
+  describe("tool taxonomy paths", () => {
+    it("contains taxonomy paths for all tools from the catalog", () => {
       for (const tool of mockTools) {
-        expect(TOOL_TAXONOMY_MAP[tool.slug]).toBeDefined();
+        expect(tool.taxonomyPaths.length).toBeGreaterThan(0);
       }
     });
 
     it("maps contrast checker to accessibility taxonomy", () => {
-      expect(TOOL_TAXONOMY_MAP["/tools/accessibility/contrast-checker"]).toBe(
-        "accessibility/standards/color-contrast"
+      const contrastChecker = mockTools.find(
+        (tool) => tool.slug === "/tools/accessibility/contrast-checker",
+      );
+      expect(contrastChecker).toBeDefined();
+      expect(contrastChecker?.taxonomyPaths).toContain(
+        "accessibility/standards/color-contrast",
       );
     });
 
     it("maps CSS tools to tools/css-tools taxonomy", () => {
-      expect(TOOL_TAXONOMY_MAP["/tools/css/border-radius"]).toBe(
-        "tools/css-tools/border-radius"
+      const borderRadius = mockTools.find(
+        (tool) => tool.slug === "/tools/css/border-radius",
       );
-      expect(TOOL_TAXONOMY_MAP["/tools/css/box-shadow"]).toBe(
-        "tools/css-tools/box-shadow"
+      const boxShadow = mockTools.find(
+        (tool) => tool.slug === "/tools/css/box-shadow",
       );
+      expect(borderRadius?.taxonomyPaths).toContain("tools/css-tools/border-radius");
+      expect(boxShadow?.taxonomyPaths).toContain("tools/css-tools/box-shadow");
     });
   });
 
@@ -177,7 +178,7 @@ describe("TaxonomySidebar Utils", () => {
       ]);
     });
 
-    it("returns empty array for tool not in taxonomy map", () => {
+    it("returns empty array for tool with unknown taxonomy paths", () => {
       const unmappedTool: ToolMeta = {
         name: "Unknown Tool",
         slug: "/tools/unknown/thing",

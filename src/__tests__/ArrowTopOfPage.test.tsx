@@ -137,7 +137,7 @@ describe("ArrowTopOfPage", () => {
       await waitFor(() => {
         const icon = screen.getByTestId("arrow-icon");
         expect(icon).toBeTruthy();
-        expect(icon.getAttribute("data-size")).toBe("36");
+        expect(icon.getAttribute("data-size")).toBe("20");
       });
     });
   });

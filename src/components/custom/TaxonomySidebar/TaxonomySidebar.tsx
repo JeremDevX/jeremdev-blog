@@ -26,6 +26,7 @@ import styles from "./TaxonomySidebar.module.scss";
 interface TaxonomySidebarProps {
   articles: ArticleMeta[];
   tools: ToolMeta[];
+  mode?: "desktop" | "mobile";
 }
 
 function TopicBranch({
@@ -126,6 +127,7 @@ function ItemList({
 export default function TaxonomySidebar({
   articles,
   tools,
+  mode = "desktop",
 }: TaxonomySidebarProps) {
   const pathname = usePathname();
   const defaultOpenItems = getDefaultOpenItems(pathname, articles, tools);
@@ -134,9 +136,13 @@ export default function TaxonomySidebar({
     [articles, tools],
   );
   const branchesWithContent = tree.filter(hasContent);
+  const isMobileMode = mode === "mobile";
 
   return (
-    <nav className={styles.sidebar} aria-label="Taxonomy navigation">
+    <nav
+      className={`${styles.sidebar} ${isMobileMode ? styles.sidebarMobile : ""}`}
+      aria-label="Taxonomy navigation"
+    >
       <Accordion type="multiple" defaultValue={defaultOpenItems} key={pathname}>
         {branchesWithContent.map((bigTopic, index) => (
           <div key={bigTopic.node.slug}>

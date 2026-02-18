@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://techhowlerx.com";
 
   return {
-    title: `${node.name} - TechHowlerX`,
+    title: node.name,
     description: node.description,
     alternates: {
       canonical: `${siteUrl}/topics/${taxonomyPath}`,

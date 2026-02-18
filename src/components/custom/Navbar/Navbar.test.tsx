@@ -25,6 +25,7 @@ vi.mock("next/navigation", () => ({
 // Mock Search component
 vi.mock("@/components/custom/Search/Search", () => ({
   default: () => <div data-testid="search-component">Search</div>,
+  SEARCH_OPEN_EVENT: "techhowlerx:search-open",
 }));
 
 // Mock Sheet component
@@ -49,15 +50,16 @@ vi.mock("@/components/ui/sheet", () => ({
   SheetTitle: ({ children }: any) => (
     <h2 data-testid="sheet-title">{children}</h2>
   ),
-  SheetClose: ({ children, asChild }: any) => (
-    <div data-testid="sheet-close">{children}</div>
-  ),
 }));
 
 // Mock lucide-react icons
 vi.mock("lucide-react", () => ({
   Menu: () => <div data-testid="menu-icon">Menu</div>,
-  X: () => <div data-testid="close-icon">X</div>,
+  Search: () => (
+    <div data-testid="search-icon" aria-hidden="true">
+      SearchIcon
+    </div>
+  ),
 }));
 
 // Mock SCSS module
@@ -74,11 +76,12 @@ vi.mock("./Navbar.module.scss", () => ({
     navLinkActive: "navLinkActive",
     searchIcon: "searchIcon",
     hamburger: "hamburger",
+    drawerSheetContent: "drawerSheetContent",
+    drawerHeader: "drawerHeader",
     drawerContent: "drawerContent",
-    drawerCategory: "drawerCategory",
-    drawerCategoryTitle: "drawerCategoryTitle",
     drawerLink: "drawerLink",
     drawerLinkActive: "drawerLinkActive",
+    drawerSearch: "drawerSearch",
   },
 }));
 
@@ -181,7 +184,7 @@ describe("Navbar", () => {
       });
     });
 
-    it("renders mobile menu categories", async () => {
+    it("renders mobile drawer links and search access", async () => {
       render(<Navbar />);
       const hamburgerButton = screen.getByRole("button", {
         name: /toggle navigation menu/i,
@@ -190,10 +193,29 @@ describe("Navbar", () => {
       fireEvent.click(hamburgerButton);
 
       await waitFor(() => {
-        // Check for category titles that only appear in mobile drawer
-        expect(screen.getByText("Dev tools")).toBeTruthy();
-        expect(screen.getByText("Other")).toBeTruthy();
+        expect(screen.getAllByRole("link", { name: /^home$/i }).length).toBeGreaterThan(0);
+        expect(screen.getAllByRole("link", { name: /^blog$/i }).length).toBeGreaterThan(0);
+        expect(screen.getAllByRole("link", { name: /^tools$/i }).length).toBeGreaterThan(0);
+        expect(screen.getAllByRole("link", { name: /^about$/i }).length).toBeGreaterThan(0);
+        expect(screen.getByRole("button", { name: /search/i })).toBeTruthy();
       });
+    });
+
+    it("dispatches the search open event from mobile drawer", async () => {
+      const dispatchSpy = vi.spyOn(window, "dispatchEvent");
+      render(<Navbar />);
+      fireEvent.click(
+        screen.getByRole("button", { name: /toggle navigation menu/i }),
+      );
+
+      await waitFor(() => {
+        expect(screen.getByRole("button", { name: /search/i })).toBeTruthy();
+      });
+
+      fireEvent.click(screen.getByRole("button", { name: /search/i }));
+      expect(dispatchSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ type: "techhowlerx:search-open" }),
+      );
     });
 
     it("closes drawer when link is clicked", async () => {

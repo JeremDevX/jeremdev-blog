@@ -12,9 +12,35 @@ type TaxonomyContentProps = {
   items: ContentCardProps[];
 };
 
+function resolveInitialFilter(): FilterTabsFilter {
+  if (typeof window === "undefined") return "all";
+
+  const filter = new URLSearchParams(window.location.search).get("filter");
+  if (filter === "articles" || filter === "tools") {
+    return filter;
+  }
+  return "all";
+}
+
+function filterItemsByType(
+  items: ContentCardProps[],
+  filter: FilterTabsFilter,
+): ContentCardProps[] {
+  if (filter === "articles") {
+    return items.filter((item) => item.type === "article");
+  }
+  if (filter === "tools") {
+    return items.filter((item) => item.type === "tool");
+  }
+  return items;
+}
+
 export default function TaxonomyContent({ items }: TaxonomyContentProps) {
-  const [filteredItems, setFilteredItems] = useState(items);
-  const [activeFilter, setActiveFilter] = useState<FilterTabsFilter>("all");
+  const initialFilter = resolveInitialFilter();
+  const [filteredItems, setFilteredItems] = useState(
+    filterItemsByType(items, initialFilter),
+  );
+  const [activeFilter, setActiveFilter] = useState<FilterTabsFilter>(initialFilter);
 
   const emptyMessage =
     activeFilter === "articles"

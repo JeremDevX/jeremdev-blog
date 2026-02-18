@@ -7,6 +7,7 @@
     "prebuild": "tsx scripts/generate-search-index.ts",
     "build": "next build",
     "start": "next start",
+    "test": "vitest run",
     "lint": "eslint . --max-warnings=0",
     "prepare": "husky"
   },

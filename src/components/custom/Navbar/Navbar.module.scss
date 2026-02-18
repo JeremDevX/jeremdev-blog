@@ -63,7 +63,7 @@
   width: fit-content;
   border-radius: 1rem;
 
-  @media (max-width: 375px) {
+  @media (max-width: 424px) {
     left: -2rem;
   }
 
@@ -75,7 +75,7 @@
 .logoLarge {
   display: block;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     display: none;
   }
 }
@@ -83,7 +83,7 @@
 .logoMedium {
   display: none;
 
-  @media (max-width: 768px) and (min-width: 376px) {
+  @media (max-width: 767px) and (min-width: 425px) {
     display: block;
   }
 }
@@ -92,7 +92,7 @@
   display: none;
   height: 100%;
 
-  @media (max-width: 375px) {
+  @media (max-width: 424px) {
     display: flex;
   }
 }
@@ -105,7 +105,7 @@
   display: flex;
   gap: 2rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     display: none;
   }
 }
@@ -161,7 +161,7 @@
 // ============================================================================
 
 .searchIcon {
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     margin-right: -1rem;
   }
 }
@@ -171,10 +171,19 @@
 // ============================================================================
 
 .hamburger {
-  @include mix.flex-c-e-col;
+  display: none;
+  align-items: center;
+  justify-content: center;
 
   height: auto;
   cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  padding: 0.125rem;
+
+  @media (max-width: 767px) {
+    display: inline-flex;
+  }
 
   &:focus-visible {
     outline: 2px solid hsl(var(--primary));
@@ -184,83 +193,90 @@
   }
 }
 
-.hamburgerLine {
-  width: 1.5rem;
-  height: 0.125rem;
-  background-color: hsl(var(--foreground));
-  margin: 0.25rem 0;
-  transition: all ease 300ms;
-}
-
-.hamburgerLineTop {
-  transform: translateY(0.625rem) rotate(45deg);
-}
-
-.hamburgerLineMiddle {
-  opacity: 0;
-}
-
-.hamburgerLineBottom {
-  transform: translateY(-0.625rem) rotate(-45deg);
-}
-
 // ============================================================================
 // MOBILE DRAWER CONTENT (Sheet overlay)
 // ============================================================================
 
+.drawerSheetContent {
+  @media (max-width: 767px) {
+    width: 100%;
+    max-width: 24rem;
+  }
+}
+
+.drawerHeader {
+  padding-right: var(--space-8);
+}
+
 .drawerContent {
-  @include mix.flex-c-c-col;
-
-  max-width: 800px;
-  margin: 2rem auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
   width: 100%;
-}
-
-.drawerCategory {
-  @include mix.flex-c-c-col;
-  width: 100%;
-  padding: 0.75rem;
-  gap: 1rem;
-}
-
-.drawerCategoryTitle {
-  max-width: 10rem;
-  width: 33%;
-  margin-top: 0.5rem;
-  padding: 0.25rem 0;
-  border-radius: var(--radius);
-  text-align: center;
-  font-weight: 600;
-  @include mix.glass-card;
-  background: var(--gradient-subtle);
 }
 
 .drawerLink {
   text-align: left;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid hsla(212, 40%, 21%, 0.5);
-  width: 50%;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid transparent;
+  color: hsl(var(--foreground));
   transition:
     color var(--transition-fast),
-    padding-left var(--transition-fast);
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
 
   &:hover {
     color: hsl(var(--primary));
-    padding-left: 0.25rem;
+    background-color: hsl(var(--muted) / 0.35);
+    border-color: hsl(var(--border));
   }
 
   &:focus-visible {
     outline: 2px solid hsl(var(--primary));
     outline-offset: 4px;
-    border-radius: 4px;
-    padding-left: 0.25rem;
-  }
-
-  @media (max-width: 425px) {
-    width: 66%;
+    border-radius: var(--radius);
   }
 }
 
 .drawerLinkActive {
   color: hsl(var(--primary));
+  background-color: hsl(var(--primary) / 0.08);
+  border-color: hsl(var(--primary) / 0.3);
+}
+
+.drawerSearch {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  margin-top: var(--space-2);
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background-color: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+
+  &:hover {
+    background-color: hsl(var(--primary));
+    border-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  &:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+  }
 }
