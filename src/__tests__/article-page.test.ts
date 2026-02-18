@@ -45,6 +45,14 @@ describe("article page integration", () => {
       const formatted = formatDate(data.date);
       expect(formatted).toBe("February 12, 2026");
     });
+
+    it("resolves related tool metadata for bridgecallout fake demo article", async () => {
+      const article = await getArticleBySlug("bridgecallout-fake-demo");
+      expect(article).toBeDefined();
+      expect(article?.resolvedRelatedTools).toBeDefined();
+      expect(article?.resolvedRelatedTools).toHaveLength(1);
+      expect(article?.resolvedRelatedTools?.[0].slug).toBe("/tools/css/border-radius");
+    });
   });
 
   describe("missing article handling", () => {

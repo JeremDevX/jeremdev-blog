@@ -1,3 +1,5 @@
+import type { ToolMeta } from "./tools";
+
 export interface Frontmatter {
   title: string;
   slug: string;
@@ -17,4 +19,5 @@ export interface ArticleMeta extends Frontmatter {
 
 export interface Article extends ArticleMeta {
   content: string; // raw MDX source (to be passed to compileMDX())
+  resolvedRelatedTools?: ToolMeta[];
 }

@@ -3,7 +3,8 @@ import path from "path";
 import matter from "gray-matter";
 import type { Frontmatter, ArticleMeta, Article } from "@/types/content";
 import { findTaxonomyNode } from "@/lib/taxonomy";
-import { getAllTools } from "@/lib/tools";
+import type { ToolMeta } from "@/types/tools";
+import { getAllTools, getToolBySlug } from "@/lib/tools";
 
 const ARTICLES_DIR = path.join(process.cwd(), "content/articles");
 
@@ -40,6 +41,46 @@ function getToolSlugAliases(): Set<string> {
 }
 
 const TOOL_SLUG_ALIASES = getToolSlugAliases();
+
+function resolveToolSlugAlias(toolSlug: string): string {
+  if (toolSlug.startsWith("/tools/")) {
+    return toolSlug;
+  }
+
+  const normalizedToolSlug = toolSlug.replace(/^\/+/, "");
+  const prefixedSlug = `/tools/${normalizedToolSlug}`;
+  if (getToolBySlug(prefixedSlug)) {
+    return prefixedSlug;
+  }
+
+  const aliasMatch = getAllTools().find((tool) => {
+    const leafSlug = tool.slug.split("/").filter(Boolean).at(-1);
+    return leafSlug === normalizedToolSlug;
+  });
+
+  return aliasMatch?.slug ?? toolSlug;
+}
+
+export function resolveRelatedTools(relatedTools?: string[]): ToolMeta[] {
+  if (!relatedTools?.length) {
+    return [];
+  }
+
+  const resolvedTools: ToolMeta[] = [];
+  const seenTools = new Set<string>();
+
+  for (const relatedToolSlug of relatedTools) {
+    const tool = getToolBySlug(resolveToolSlugAlias(relatedToolSlug));
+    if (!tool || seenTools.has(tool.slug)) {
+      continue;
+    }
+
+    seenTools.add(tool.slug);
+    resolvedTools.push(tool);
+  }
+
+  return resolvedTools;
+}
 
 function validateFrontmatter(data: Record<string, unknown>, filePath: string): Frontmatter {
   for (const field of REQUIRED_FRONTMATTER_FIELDS) {
@@ -190,7 +231,11 @@ export async function getArticleBySlug(
   for (const file of files) {
     const result = await readArticleFile(file);
     if (result && result.meta.slug === slug && result.meta.published) {
-      return { ...result.meta, content: result.content };
+      return {
+        ...result.meta,
+        content: result.content,
+        resolvedRelatedTools: resolveRelatedTools(result.meta.relatedTools),
+      };
     }
   }
 

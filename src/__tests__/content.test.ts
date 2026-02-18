@@ -7,6 +7,7 @@ import {
   getFeaturedArticles,
   getLatestArticles,
   clearArticleCache,
+  resolveRelatedTools,
 } from "@/lib/content";
 
 describe("content loading utilities", () => {
@@ -191,6 +192,35 @@ Content`);
       expect(warnSpy).toHaveBeenCalledWith(
         '[content] Invalid relatedTools slug "unknown-tool" in article "related-tools"'
       );
+    });
+  });
+
+  describe("resolveRelatedTools", () => {
+    it("resolves valid tool slugs and leaf aliases", () => {
+      const resolved = resolveRelatedTools([
+        "contrast-checker",
+        "/tools/css/border-radius",
+      ]);
+
+      expect(resolved).toHaveLength(2);
+      expect(resolved[0].slug).toBe("/tools/accessibility/contrast-checker");
+      expect(resolved[1].slug).toBe("/tools/css/border-radius");
+    });
+
+    it("ignores invalid and duplicate tool slugs", () => {
+      const resolved = resolveRelatedTools([
+        "unknown-tool",
+        "/tools/css/border-radius",
+        "border-radius",
+      ]);
+
+      expect(resolved).toHaveLength(1);
+      expect(resolved[0].slug).toBe("/tools/css/border-radius");
+    });
+
+    it("returns an empty array when no related tools are provided", () => {
+      expect(resolveRelatedTools()).toEqual([]);
+      expect(resolveRelatedTools([])).toEqual([]);
     });
   });
 });

@@ -4,6 +4,7 @@ import Image from "next/image";
 import type { ComponentType } from "react";
 import type { MDXProps } from "mdx/types";
 import Breadcrumb from "@/components/custom/Breadcrumb";
+import BridgeCallout from "@/components/custom/BridgeCallout";
 import { getArticleBySlug } from "@/lib/content";
 import { compileMDX } from "@/lib/mdx";
 import { getTaxonomyBreadcrumb } from "@/lib/taxonomy";
@@ -72,6 +73,7 @@ export default async function ArticlePage({ params }: Props) {
     })),
     { name: article.title },
   ];
+  const firstRelatedTool = article.resolvedRelatedTools?.[0];
 
   return (
     <article className={styles.container}>
@@ -108,6 +110,8 @@ export default async function ArticlePage({ params }: Props) {
           </p>
         )}
       </div>
+
+      {firstRelatedTool ? <BridgeCallout tool={firstRelatedTool} /> : null}
     </article>
   );
 }

@@ -1,0 +1,76 @@
+@use "@/styles/mixins" as mixins;
+
+.wrapper {
+  margin: var(--space-8) 0 var(--space-4);
+}
+
+.link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid hsla(var(--primary), 0.22);
+  border-left: 3px solid hsl(var(--primary));
+  border-radius: var(--radius);
+  background: linear-gradient(
+    135deg,
+    hsla(var(--primary), 0.14),
+    hsla(var(--primary), 0.06)
+  );
+  padding: var(--space-4) var(--space-6);
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.link:hover,
+.link:focus-visible {
+  border-color: hsla(var(--primary), 0.45);
+  background: linear-gradient(
+    135deg,
+    hsla(var(--primary), 0.22),
+    hsla(var(--primary), 0.1)
+  );
+  box-shadow: inset 0 0 0 1px hsla(var(--primary), 0.2);
+}
+
+.heading {
+  @include mixins.medium-title;
+  margin: 0 0 var(--space-2);
+}
+
+.toolName {
+  @include mixins.minor-title;
+  margin: 0 0 var(--space-1);
+}
+
+.description {
+  @include mixins.text-small;
+  margin: 0;
+  max-width: 60ch;
+  color: hsl(var(--muted-foreground));
+}
+
+.cta {
+  display: inline-flex;
+  margin-top: var(--space-3);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.link:hover .cta,
+.link:focus-visible .cta {
+  text-decoration-thickness: 2px;
+}
+
+@media (max-width: 640px) {
+  .wrapper {
+    margin-top: var(--space-6);
+  }
+
+  .link {
+    padding: var(--space-4);
+  }
+}
