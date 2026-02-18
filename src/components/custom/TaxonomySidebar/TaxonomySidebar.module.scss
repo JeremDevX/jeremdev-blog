@@ -1,38 +1,51 @@
 @use "../../../styles/variables" as vars;
 @use "../../../styles/mixins" as mix;
 
+// ============================================================================
+// SIDEBAR CONTAINER — Fixed navigation with glass morphism
+// ============================================================================
+
 .sidebar {
+  // Positioning & Layout
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   width: calc(var(--sidebar-size) - 16px);
+  z-index: 10;
+
+  // Visual Style — Glass morphism with enhanced depth
   background-color: var(--glass-bg-strong);
   backdrop-filter: blur(var(--glass-blur-strong));
   -webkit-backdrop-filter: blur(var(--glass-blur-strong));
-  overflow-y: auto;
-  z-index: 10;
+  border-right: 1px solid var(--glass-border);
 
+  // Responsive: Hidden on tablet and mobile
   @media (max-width: 1024px) {
     display: none;
   }
 
+  // Responsive: Tablet/desktop
   @media (min-width: 1024px) {
-    padding: 8px 32px 96px;
+    padding: var(--space-6) var(--space-8) var(--space-12);
     margin-top: 64px;
   }
 
+  // Responsive: Large screens
   @media (min-width: 1440px) {
-    padding: 8px 16px 96px;
-    padding-left: max(32px, calc((100% - var(--max-layout-width) + 64px) / 2));
+    padding: var(--space-6) var(--space-4) var(--space-12);
+    padding-left: max(
+      var(--space-8),
+      calc((100% - var(--max-layout-width) + 64px) / 2)
+    );
     width: calc(
       (100% - (var(--max-layout-width) - 64px)) / 2 + var(--sidebar-size) - 32px
     );
   }
 
-  // Custom scrollbar
+  // Custom scrollbar styling — thin & refined
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
   }
 
   &::-webkit-scrollbar-track {
@@ -40,74 +53,168 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: hsl(var(--muted));
-    border-radius: 2px;
-  }
+    background: hsla(var(--primary), 0.15);
+    border-radius: 3px;
+    transition: background var(--transition-fast);
 
-  &::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--muted-foreground));
+    &:hover {
+      background: hsla(var(--primary), 0.3);
+    }
   }
 }
+
+// ============================================================================
+// BIG TOPIC SECTION — Top-level taxonomy with visual identity
+// ============================================================================
 
 .bigTopicItem {
   border-bottom: none;
+
+  // Subtle separator between sections
+  &:not(:last-child) {
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--glass-border);
+  }
 }
 
 .bigTopicTrigger {
-  padding: var(--space-3) 0;
+  // Box Model for better click target
+  padding: var(--space-2) var(--space-2);
+  margin: 0 calc(-1 * var(--space-2));
+  border-radius: var(--radius);
+
+  // Typography
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: hsl(var(--foreground));
 
   &:hover {
     text-decoration: none;
+    background: hsla(var(--primary), 0.1);
+    color: hsl(var(--foreground));
+  }
+
+  &:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  // Chevron styling
+  [data-state="open"] &::after {
+    transform: rotate(180deg);
+  }
+}
+
+.bigTopicColorDot {
+  // Visual color indicator for category
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-color: var(--topic-color, hsl(var(--primary)));
+  opacity: 0.7;
+  transition: opacity var(--transition-fast);
+
+  [class*="Item"]:hover & {
+    opacity: 1;
   }
 }
 
 .bigTopicName {
+  // Typography — bold, distinctive
   font-family: var(--font-league-spartan), sans-serif;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
   letter-spacing: -0.01em;
-  color: var(--topic-color, hsl(var(--foreground)));
+  color: hsl(var(--foreground));
+  flex: 1;
+
+  // Subtle color tint when available
+  [style*="--topic-color"] & {
+    color: var(--topic-color, hsl(var(--foreground)));
+  }
 }
 
-.divider {
-  height: 1px;
-  background: var(--gradient-divider);
-  margin: var(--space-1) 0;
-}
+// ============================================================================
+// TOPIC SECTION — Secondary hierarchy with subtle visual treatment
+// ============================================================================
 
 .topicItem {
   border-bottom: none;
-  margin-left: var(--space-2);
+  margin-left: 0;
 }
 
 .topicTrigger {
-  padding: var(--space-2) 0;
+  // Box Model — generous padding for visual breathing room
+  padding: var(--space-2) var(--space-2);
+  margin: 0 calc(-1 * var(--space-2));
+  margin-left: var(--space-4);
+  border-radius: var(--radius);
+
+  // Typography
   font-weight: 500;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: hsl(var(--foreground));
+
+  // Interactions
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 
   &:hover {
     text-decoration: none;
+    color: hsl(var(--primary));
+    background: hsla(var(--primary), 0.12);
+  }
+
+  &:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
   }
 }
 
 .topicContent {
-  margin-left: var(--space-2);
+  margin-left: var(--space-4);
 }
 
+// ============================================================================
+// SUBTOPIC SECTION — Semantic content container with refined spacing
+// ============================================================================
+
 .subtopicGroup {
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
 .subtopicLabel {
-  display: block;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: hsl(var(--muted-foreground));
+  // Typography — small label with visual hierarchy
+  @include mix.text-small;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: hsl(var(--primary));
+
+  // Spacing — offset from left edge
+  padding-left: var(--space-4);
+  margin-top: var(--space-1);
   margin-bottom: var(--space-1);
-  padding-left: var(--space-1);
 }
 
+// ============================================================================
+// CONTENT ITEMS — Articles and tools with sophisticated interaction design
+// ============================================================================
+
 .itemList {
+  // Layout
   list-style: none;
   padding: 0;
   margin: 0;
@@ -117,52 +224,116 @@
 }
 
 .itemLink {
+  // Typography — refined sizing with proper rhythm
   @include mix.text-small;
+  font-size: 0.8625rem;
+  line-height: 1.5;
+  font-weight: 400;
 
+  // Box Model — generous padding for improved UX
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  width: calc(100% + var(--space-2));
+  margin-left: calc(-1 * var(--space-2));
   border-radius: var(--radius);
-  color: hsl(var(--muted-foreground));
+
+  // Visual Style — dark mode with colored accents
+  background: hsla(212, 40%, 20.7%, 0.5);
+  border: 1px solid hsla(212, 30%, 24%, 0.6);
+  color: hsl(var(--foreground));
   text-decoration: none;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  width: 100%;
-  transition: background var(--transition-fast), color var(--transition-fast);
+  cursor: pointer;
+
+  // Interactions — smooth, responsive transitions
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
 
   &:hover {
-    background: hsl(var(--muted) / 0.3);
+    background: hsla(var(--primary), 0.2);
     color: hsl(var(--foreground));
+    border-color: hsla(var(--primary), 0.4);
+    transform: translateX(2px);
   }
 
   &:focus-visible {
     outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;
   }
-}
 
-.toolLink {
-  color: hsl(var(--accent));
-
-  &:hover {
-    color: hsl(var(--accent));
+  &:active {
+    transform: scale(0.98);
   }
 }
 
+// ============================================================================
+// STATE VARIANTS — Visual differentiation for content types & selections
+// ============================================================================
+
+// Tool items: Accent color with icon, stronger visual identity
+.toolLink {
+  color: hsl(var(--accent));
+  font-weight: 500;
+  background: hsla(var(--accent), 0.12);
+  border-color: hsla(var(--accent), 0.2);
+
+  &:hover {
+    color: hsl(var(--accent));
+    background: hsla(var(--accent), 0.2);
+    border-color: hsla(var(--accent), 0.4);
+  }
+
+  &:focus-visible {
+    outline-color: hsl(var(--accent));
+  }
+}
+
+// Active/current page indicator — prominent visual feedback
 .activeLink {
   color: hsl(var(--primary));
-  background: hsl(var(--primary) / 0.08);
+  background: hsla(var(--primary), 0.22);
+  border-color: hsla(var(--primary), 0.4);
   font-weight: 500;
 
   &:hover {
     color: hsl(var(--primary));
-    background: hsl(var(--primary) / 0.12);
+    background: hsla(var(--primary), 0.28);
+    border-color: hsla(var(--primary), 0.5);
+    transform: translateX(3px);
+  }
+
+  &:focus-visible {
+    outline-color: hsl(var(--primary));
+  }
+
+  &.toolLink {
+    color: hsl(var(--accent));
+    background: hsla(var(--accent), 0.24);
+    border-color: hsla(var(--accent), 0.4);
+
+    &:hover {
+      background: hsla(var(--accent), 0.3);
+      border-color: hsla(var(--accent), 0.5);
+    }
   }
 }
+
+// ============================================================================
+// ICONS — Visual indicators for content types
+// ============================================================================
 
 .wrenchIcon {
   width: 14px;
   height: 14px;
   flex-shrink: 0;
+  opacity: 0.8;
+  transition: opacity var(--transition-fast);
+
+  .toolLink:hover & {
+    opacity: 1;
+  }
 }

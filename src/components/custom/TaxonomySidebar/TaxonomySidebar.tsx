@@ -39,7 +39,8 @@ function TopicBranch({
 }) {
   const currentPath = buildTaxonomyPath(parentPath, branch.node.slug);
   const childrenWithContent = branch.children.filter(hasContent);
-  const hasNestedContent = childrenWithContent.length > 0 || branch.items.length > 0;
+  const hasNestedContent =
+    childrenWithContent.length > 0 || branch.items.length > 0;
 
   if (!hasNestedContent) return null;
 
@@ -52,7 +53,7 @@ function TopicBranch({
         {childrenWithContent.map((child) => {
           const childPath = buildTaxonomyPath(
             [...parentPath, branch.node.slug],
-            child.node.slug
+            child.node.slug,
           );
           const childHasSubBranches = child.children.some(hasContent);
 
@@ -122,12 +123,15 @@ function ItemList({
   );
 }
 
-export default function TaxonomySidebar({ articles, tools }: TaxonomySidebarProps) {
+export default function TaxonomySidebar({
+  articles,
+  tools,
+}: TaxonomySidebarProps) {
   const pathname = usePathname();
   const defaultOpenItems = getDefaultOpenItems(pathname, articles, tools);
   const tree = useMemo(
     () => buildSidebarTree(taxonomyTree, articles, tools),
-    [articles, tools]
+    [articles, tools],
   );
   const branchesWithContent = tree.filter(hasContent);
 
@@ -141,11 +145,24 @@ export default function TaxonomySidebar({ articles, tools }: TaxonomySidebarProp
               className={styles.bigTopicItem}
             >
               <AccordionTrigger className={styles.bigTopicTrigger}>
+                <div
+                  className={styles.bigTopicColorDot}
+                  style={
+                    bigTopic.node.color
+                      ? ({
+                          backgroundColor: bigTopic.node.color,
+                        } as React.CSSProperties)
+                      : undefined
+                  }
+                  aria-hidden="true"
+                />
                 <span
                   className={styles.bigTopicName}
                   style={
                     bigTopic.node.color
-                      ? { "--topic-color": bigTopic.node.color } as React.CSSProperties
+                      ? ({
+                          "--topic-color": bigTopic.node.color,
+                        } as React.CSSProperties)
                       : undefined
                   }
                 >
@@ -158,7 +175,7 @@ export default function TaxonomySidebar({ articles, tools }: TaxonomySidebarProp
                     <TopicBranch
                       key={buildTaxonomyPath(
                         [bigTopic.node.slug],
-                        topic.node.slug
+                        topic.node.slug,
                       )}
                       branch={topic}
                       pathname={pathname}
@@ -171,9 +188,6 @@ export default function TaxonomySidebar({ articles, tools }: TaxonomySidebarProp
                 )}
               </AccordionContent>
             </AccordionItem>
-            {index < branchesWithContent.length - 1 && (
-              <div className={styles.divider} />
-            )}
           </div>
         ))}
       </Accordion>
