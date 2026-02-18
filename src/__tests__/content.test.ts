@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import fs from "fs/promises";
 import {
   getAllArticles,
   getArticleBySlug,
@@ -72,13 +73,15 @@ describe("content loading utilities", () => {
 
   describe("getArticlesByCategory", () => {
     it("returns an array", async () => {
-      const articles = await getArticlesByCategory("test");
+      const articles = await getArticlesByCategory("programming");
       expect(Array.isArray(articles)).toBe(true);
     });
 
     it("only returns published articles matching category", async () => {
-      // test-mdx-pipeline has category "test" but published: false
-      const articles = await getArticlesByCategory("test");
+      // test-mdx-pipeline has this category but published: false
+      const articles = await getArticlesByCategory(
+        "programming/javascript-typescript/fundamentals"
+      );
       expect(articles).toHaveLength(0);
     });
   });
@@ -124,6 +127,70 @@ describe("content loading utilities", () => {
           new Date(articles[i].date).getTime()
         );
       }
+    });
+  });
+
+  describe("frontmatter validation", () => {
+    it("throws when date is not a valid ISO string", async () => {
+      vi.spyOn(fs, "readdir").mockResolvedValue(["invalid-date.mdx"] as any);
+      vi.spyOn(fs, "readFile").mockResolvedValue(`---
+title: "Invalid Date"
+slug: "invalid-date"
+date: "15/10/2024"
+resume: "Invalid date format"
+category: "programming/css/layout"
+published: true
+---
+Content`);
+
+      await expect(getAllArticles()).rejects.toThrow(
+        /Field "date" must be a valid ISO date string/
+      );
+    });
+
+    it("throws when category does not exist in taxonomy", async () => {
+      vi.spyOn(fs, "readdir").mockResolvedValue(["invalid-category.mdx"] as any);
+      vi.spyOn(fs, "readFile").mockResolvedValue(`---
+title: "Invalid Category"
+slug: "invalid-category"
+date: "2024-10-15"
+resume: "Invalid category path"
+category: "programming/not-real/path"
+published: true
+---
+Content`);
+
+      await expect(getAllArticles()).rejects.toThrow(
+        /Field "category" must reference an existing taxonomy path/
+      );
+    });
+  });
+
+  describe("cross-reference validation", () => {
+    it("warns for invalid relatedTools slugs and accepts known aliases", async () => {
+      vi.spyOn(fs, "readdir").mockResolvedValue(["related-tools.mdx"] as any);
+      vi.spyOn(fs, "readFile").mockResolvedValue(`---
+title: "Related Tools"
+slug: "related-tools"
+date: "2024-10-15"
+resume: "Tool cross-link validation"
+category: "programming/css/layout"
+relatedTools:
+  - "contrast-checker"
+  - "/tools/css/border-radius"
+  - "unknown-tool"
+published: true
+---
+Content`);
+
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+      const articles = await getAllArticles();
+
+      expect(articles).toHaveLength(1);
+      expect(warnSpy).toHaveBeenCalledWith(
+        '[content] Invalid relatedTools slug "unknown-tool" in article "related-tools"'
+      );
     });
   });
 });

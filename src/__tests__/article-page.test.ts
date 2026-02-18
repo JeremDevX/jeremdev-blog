@@ -5,6 +5,7 @@ import matter from "gray-matter";
 import { getArticleBySlug, clearArticleCache } from "@/lib/content";
 import { compileMDX } from "@/lib/mdx";
 import { formatDate } from "@/lib/utils";
+import { generateMetadata } from "@/app/blog/posts/[slug]/page";
 
 const TEST_ARTICLE_PATH = path.join(
   process.cwd(),
@@ -59,33 +60,30 @@ describe("article page integration", () => {
   });
 
   describe("generateMetadata contract", () => {
-    it("article data provides all fields needed for metadata generation", async () => {
-      const { data } = await readTestArticleRaw();
+    it("returns SEO metadata for a published article", async () => {
+      const metadata = await generateMetadata({
+        params: Promise.resolve({ slug: "vpn-anonymity-explained" }),
+      });
 
-      // Verify the article frontmatter has every field generateMetadata relies on
-      expect(data.title).toBeTypeOf("string");
-      expect(data.resume).toBeTypeOf("string");
-      expect(data.date).toBeTypeOf("string");
-      expect(data.title.length).toBeGreaterThan(0);
-      expect(data.resume.length).toBeGreaterThan(0);
-
-      // Verify title format matches what generateMetadata produces
-      const expectedTitle = `${data.title} - TechHowlerX`;
-      expect(expectedTitle).toBe("Test Article Rendering - TechHowlerX");
-
-      // Verify OG publishedTime is a valid date string
-      expect(new Date(data.date).toISOString()).toContain("2026-02-12");
+      expect(metadata.title).toBe("Why a VPN doesn't really make you Anonymous");
+      expect(metadata.description).toContain(
+        "A VPN encrypts your data and hides your IP"
+      );
+      expect(metadata.alternates?.canonical).toBe(
+        "/blog/posts/vpn-anonymity-explained"
+      );
+      expect(metadata.openGraph?.type).toBe("article");
+      expect(metadata.openGraph?.publishedTime).toBe("2024-10-15");
+      expect(metadata.openGraph?.images).toEqual([
+        "/images/articles/vpn-anonymity-cover.webp",
+      ]);
     });
 
-    it("article with coverImage provides OG image data", async () => {
-      const { data } = await readTestArticleRaw();
-      expect(data.coverImage).toBeTypeOf("string");
-      expect(data.coverImage.length).toBeGreaterThan(0);
-    });
-
-    it("getArticleBySlug returns undefined for missing slugs (triggers fallback metadata)", async () => {
-      const article = await getArticleBySlug("nonexistent");
-      expect(article).toBeUndefined();
+    it("returns fallback metadata when the slug is missing", async () => {
+      const metadata = await generateMetadata({
+        params: Promise.resolve({ slug: "nonexistent" }),
+      });
+      expect(metadata.title).toBe("Article Not Found");
     });
   });
 });

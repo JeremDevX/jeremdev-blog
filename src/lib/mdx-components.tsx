@@ -3,6 +3,21 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ComponentPropsWithoutRef } from "react";
 
+function toImageDimension(value: unknown, fallback: number): number {
+  if (typeof value === "number" && Number.isFinite(value) && value > 0) {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed) && parsed > 0) {
+      return parsed;
+    }
+  }
+
+  return fallback;
+}
+
 function MdxImage(props: ComponentPropsWithoutRef<"img">) {
   const { src, alt, width, height } = props;
   if (!src || typeof src !== "string") return null;
@@ -11,8 +26,8 @@ function MdxImage(props: ComponentPropsWithoutRef<"img">) {
     <Image
       src={src}
       alt={alt ?? ""}
-      width={width ? Number(width) : 1200}
-      height={height ? Number(height) : 630}
+      width={toImageDimension(width, 1200)}
+      height={toImageDimension(height, 630)}
     />
   );
 }

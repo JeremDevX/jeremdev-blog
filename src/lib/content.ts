@@ -2,6 +2,8 @@ import fs from "fs/promises";
 import path from "path";
 import matter from "gray-matter";
 import type { Frontmatter, ArticleMeta, Article } from "@/types/content";
+import { findTaxonomyNode } from "@/lib/taxonomy";
+import { getAllTools } from "@/lib/tools";
 
 const ARTICLES_DIR = path.join(process.cwd(), "content/articles");
 
@@ -13,6 +15,31 @@ const REQUIRED_FRONTMATTER_FIELDS: (keyof Frontmatter)[] = [
   "category",
   "published",
 ];
+
+const ISO_DATE_ONLY_REGEX = /^\d{4}-\d{2}-\d{2}$/;
+const ISO_DATETIME_REGEX =
+  /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(?:\.\d{1,3})?)?(?:Z|[+-]\d{2}:\d{2})$/;
+
+function isValidIsoDate(value: string): boolean {
+  const matchesIsoFormat =
+    ISO_DATE_ONLY_REGEX.test(value) || ISO_DATETIME_REGEX.test(value);
+  if (!matchesIsoFormat) return false;
+  return !Number.isNaN(new Date(value).getTime());
+}
+
+function getToolSlugAliases(): Set<string> {
+  const aliases = new Set<string>();
+
+  for (const tool of getAllTools()) {
+    aliases.add(tool.slug);
+    const leafSlug = tool.slug.split("/").filter(Boolean).at(-1);
+    if (leafSlug) aliases.add(leafSlug);
+  }
+
+  return aliases;
+}
+
+const TOOL_SLUG_ALIASES = getToolSlugAliases();
 
 function validateFrontmatter(data: Record<string, unknown>, filePath: string): Frontmatter {
   for (const field of REQUIRED_FRONTMATTER_FIELDS) {
@@ -31,17 +58,35 @@ function validateFrontmatter(data: Record<string, unknown>, filePath: string): F
   if (typeof data.category !== "string") throw new Error(`Field "category" must be a string in ${filePath}`);
   if (typeof data.published !== "boolean") throw new Error(`Field "published" must be a boolean in ${filePath}`);
 
+  if (!isValidIsoDate(data.date)) {
+    throw new Error(`Field "date" must be a valid ISO date string in ${filePath}`);
+  }
+
+  if (!findTaxonomyNode(data.category)) {
+    throw new Error(
+      `Field "category" must reference an existing taxonomy path in ${filePath}`
+    );
+  }
+
   if (data.coverImage !== undefined && typeof data.coverImage !== "string") {
     throw new Error(`Field "coverImage" must be a string in ${filePath}`);
   }
   if (data.featured !== undefined && typeof data.featured !== "boolean") {
     throw new Error(`Field "featured" must be a boolean in ${filePath}`);
   }
-  if (data.relatedTools !== undefined && !Array.isArray(data.relatedTools)) {
-    throw new Error(`Field "relatedTools" must be an array in ${filePath}`);
+  if (
+    data.relatedTools !== undefined &&
+    (!Array.isArray(data.relatedTools) ||
+      data.relatedTools.some((toolSlug) => typeof toolSlug !== "string"))
+  ) {
+    throw new Error(`Field "relatedTools" must be a string[] in ${filePath}`);
   }
-  if (data.relatedArticles !== undefined && !Array.isArray(data.relatedArticles)) {
-    throw new Error(`Field "relatedArticles" must be an array in ${filePath}`);
+  if (
+    data.relatedArticles !== undefined &&
+    (!Array.isArray(data.relatedArticles) ||
+      data.relatedArticles.some((articleSlug) => typeof articleSlug !== "string"))
+  ) {
+    throw new Error(`Field "relatedArticles" must be a string[] in ${filePath}`);
   }
 
   return data as unknown as Frontmatter;
@@ -61,8 +106,16 @@ function validateCrossReferences(
         }
       }
     }
-    // relatedTools validation skipped — tool catalog (src/lib/tools.ts)
-    // does not exist yet. Enable validation in Story 2.4.
+
+    if (article.relatedTools) {
+      for (const toolSlug of article.relatedTools) {
+        if (!TOOL_SLUG_ALIASES.has(toolSlug)) {
+          console.warn(
+            `[content] Invalid relatedTools slug "${toolSlug}" in article "${article.slug}"`
+          );
+        }
+      }
+    }
   }
 }
 
@@ -148,7 +201,10 @@ export async function getArticlesByCategory(
   categoryPath: string
 ): Promise<ArticleMeta[]> {
   const allArticles = await getAllArticles();
-  return allArticles.filter((a) => a.category.startsWith(categoryPath));
+  return allArticles.filter(
+    (a) =>
+      a.category === categoryPath || a.category.startsWith(`${categoryPath}/`)
+  );
 }
 
 export async function getFeaturedArticles(): Promise<ArticleMeta[]> {
