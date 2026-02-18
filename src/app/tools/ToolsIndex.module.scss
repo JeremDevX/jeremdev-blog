@@ -4,11 +4,12 @@
 .page {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
   max-width: vars.$max-layout-width;
   margin: 0 auto;
   padding: var(--space-12) var(--space-6);
+  gap: var(--space-2);
 
   @media (min-width: 768px) {
     padding: var(--space-16) var(--space-8);

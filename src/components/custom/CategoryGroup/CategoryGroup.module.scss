@@ -2,12 +2,17 @@
 @use "../../../styles/mixins" as mix;
 
 .section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   margin-bottom: var(--space-8);
 }
 
 .heading {
   @include mix.secondary-title;
   color: hsl(var(--accent));
+  text-align: left;
   margin-bottom: var(--space-6);
 }
 
@@ -16,6 +21,7 @@
   grid-template-columns: 1fr;
   gap: var(--space-6);
   width: 100%;
+  align-items: stretch;
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);

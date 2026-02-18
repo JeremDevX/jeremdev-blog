@@ -2,18 +2,51 @@
 @use "../../../styles/variables" as vars;
 
 .hero {
-  background: var(--gradient);
+  position: relative;
+  overflow: hidden;
   width: 100%;
-  padding: 5rem 1.5rem;
+  padding: clamp(4.5rem, 8vw, 6.5rem) 1.5rem;
   text-align: center;
+  background:
+    radial-gradient(
+      1000px 380px at 15% -20%,
+      hsla(212, 80%, 69%, 0.22),
+      transparent 65%
+    ),
+    radial-gradient(
+      900px 360px at 85% -20%,
+      hsla(200, 58%, 54%, 0.18),
+      transparent 65%
+    ),
+    linear-gradient(
+      160deg,
+      hsl(var(--background-elevated)) 0%,
+      hsl(var(--background)) 100%
+    );
+  border-bottom: 1px solid var(--glass-border);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      hsla(0, 0%, 100%, 0.04) 0%,
+      transparent 45%,
+      hsla(212, 80%, 69%, 0.04) 100%
+    );
+    pointer-events: none;
+  }
 
   @media (min-width: 768px) {
-    padding: 6rem 2rem;
+    padding: clamp(5.5rem, 9vw, 7rem) 2rem;
   }
 }
 
 .container {
   @include mix.flex-c-c-col;
+  position: relative;
+  z-index: 1;
   gap: 1.5rem;
   max-width: vars.$max-layout-width;
   margin: 0 auto;
@@ -21,13 +54,15 @@
 
 .heading {
   @include mix.main-title;
-  @include mix.gradient-text;
+  color: hsl(var(--foreground));
   font-size: clamp(2.5rem, 5vw, 3.5rem);
+  line-height: 1.1;
+  text-shadow: 0 6px 30px hsla(212, 80%, 69%, 0.25);
 }
 
 .subtitle {
   font-size: clamp(1.125rem, 2.5vw, 1.375rem);
-  color: hsla(var(--foreground), 0.85);
+  color: hsl(var(--muted-foreground));
   max-width: 600px;
   line-height: 1.6;
   margin: 0;
@@ -46,14 +81,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-height: 46px;
+  min-width: 168px;
   font-weight: 600;
   font-size: 1rem;
   padding: 0.75rem 1.75rem;
   border-radius: var(--radius);
+  border: 1px solid transparent;
   text-decoration: none;
   transition:
     transform 200ms ease-out,
-    box-shadow 200ms ease-out;
+    box-shadow 200ms ease-out,
+    background-color 200ms ease-out,
+    border-color 200ms ease-out,
+    color 200ms ease-out;
 
   &:hover {
     transform: translateY(-2px);
@@ -61,21 +102,27 @@
 }
 
 .ctaPrimary {
-  background: hsl(var(--background));
-  color: hsl(var(--foreground));
-  box-shadow: vars.$drop-light;
+  background: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  box-shadow: vars.$drop-glow-accent;
 
   &:hover {
     box-shadow: vars.$drop-light-lg;
+    background: hsl(var(--accent));
+    border-color: hsl(var(--accent));
+    color: hsl(var(--foreground));
   }
 }
 
 .ctaSecondary {
-  background: transparent;
+  background: hsl(var(--background-elevated));
   color: hsl(var(--foreground));
-  border: 1px solid hsla(var(--foreground), 0.3);
+  border-color: hsl(var(--border));
+  box-shadow: vars.$drop-light;
 
   &:hover {
-    border-color: hsla(var(--foreground), 0.6);
+    border-color: hsl(var(--primary));
+    background: hsl(var(--muted) / 0.4);
   }
 }

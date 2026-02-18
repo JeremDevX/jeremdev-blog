@@ -6,6 +6,7 @@ import Button from "./Button";
 
 export default function ArrowTopOfPage() {
   const [isVisible, setIsVisible] = useState(false);
+  const [footerClearance, setFooterClearance] = useState<number>(24);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +25,32 @@ export default function ArrowTopOfPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return;
+
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+
+    const defaultClearance = 24;
+    const updateClearance = (isIntersecting: boolean) => {
+      if (!isIntersecting) {
+        setFooterClearance(defaultClearance);
+        return;
+      }
+
+      const footerHeight = footer.getBoundingClientRect().height;
+      setFooterClearance(Math.max(defaultClearance, Math.ceil(footerHeight + 16)));
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => updateClearance(entry.isIntersecting),
+      { threshold: 0.01 },
+    );
+
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
+
   // Don't render if not visible
   if (!isVisible) {
     return null;
@@ -38,6 +65,9 @@ export default function ArrowTopOfPage() {
       onClick={scrollToTop}
       className="arrow-top"
       ariaLabel="Scroll to top"
+      style={{
+        bottom: `calc(${footerClearance}px + env(safe-area-inset-bottom, 0px))`,
+      }}
     >
       Back to Top
       <ArrowUpToLine size={20} className="arrow-top__icon" />

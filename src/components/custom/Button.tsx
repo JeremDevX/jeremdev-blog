@@ -7,6 +7,7 @@ interface ButtonProps {
   ariaLabel?: string;
   className?: string;
   disabled?: boolean;
+  style?: React.CSSProperties;
 }
 
 export default function Button(props: ButtonProps) {
@@ -17,15 +18,17 @@ export default function Button(props: ButtonProps) {
           href={`${props.link}`}
           className={`button ${props.className ? props.className : ""}`}
           aria-label={props.ariaLabel}
+          style={props.style}
         >
           {props.children}
         </Link>
       ) : (
         <button
-          className={`button ${props.disabled ? "btn-disabled" : ""} ${props.className}`}
+          className={`button ${props.disabled ? "btn-disabled" : ""} ${props.className ?? ""}`}
           onClick={props.onClick}
           aria-label={props.ariaLabel}
           disabled={props.disabled}
+          style={props.style}
         >
           {props.children}
         </button>

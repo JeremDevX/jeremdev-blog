@@ -95,6 +95,7 @@ export default function Navbar() {
 
         {/* Mobile Hamburger Menu */}
         <button
+          type="button"
           className={styles.hamburger}
           onClick={() => setIsDrawerOpen(true)}
           aria-label="Toggle navigation menu"

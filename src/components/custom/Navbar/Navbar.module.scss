@@ -179,17 +179,24 @@
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: 0.5rem;
-  padding: 0.125rem;
+  padding: 0.25rem;
+  background: transparent;
+  color: hsl(var(--foreground));
 
   @media (max-width: 767px) {
     display: inline-flex;
+  }
+
+  &:hover {
+    color: hsl(var(--primary));
+    background: hsl(var(--muted) / 0.35);
+    border-color: hsl(var(--border));
   }
 
   &:focus-visible {
     outline: 2px solid hsl(var(--primary));
     outline-offset: 4px;
     border-radius: 4px;
-    padding: 0.125rem;
   }
 }
 
@@ -198,6 +205,12 @@
 // ============================================================================
 
 .drawerSheetContent {
+  background-color: var(--glass-bg-strong);
+  color: hsl(var(--foreground));
+  border-right: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur-strong));
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+
   @media (max-width: 767px) {
     width: 100%;
     max-width: 24rem;
