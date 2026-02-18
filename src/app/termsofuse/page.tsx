@@ -9,61 +9,75 @@ export const metadata: Metadata = {
 export default function TermsOfUse() {
   return (
     <main className="tou">
-      <h1 className="tou__main-title">Terms of Use</h1>
-      <ul>
-        <li>
-          <h2 className="tou__secondary-title">
-            1. Introduction Welcome to my website
-          </h2>
-          By accessing or using this Website, you agree to comply with and be
-          bound by the following terms and conditions. If you do not agree to
-          these terms, please do not use this Website.
+      <header className="tou__hero">
+        <h1 className="tou__main-title">Terms of Use</h1>
+        <p className="tou__intro">
+          Please read these terms before using the website and its content.
+        </p>
+      </header>
+
+      <ol className="tou__sections">
+        <li className="tou__section">
+          <h2 className="tou__secondary-title">1. Introduction</h2>
+          <p className="tou__text">
+            Welcome to TechHowlerX. By accessing or using this website, you
+            agree to comply with and be bound by the following terms and
+            conditions. If you do not agree with these terms, please do not use
+            the website.
+          </p>
         </li>
 
-        <li>
+        <li className="tou__section">
           <h2 className="tou__secondary-title">
-            2. Intellectual Property & License
+            2. Intellectual Property and License
           </h2>
-          All content available on this Website, including but not limited to
-          text, images, tutorials, code, and other resources, is owned by{" "}
-          <span className="highlight">TechHowlerX</span> unless otherwise
-          stated. <br />
-          <br />
-          You are free to:
+          <p className="tou__text">
+            All content available on this website, including text, images,
+            tutorials, code, and other resources, is owned by{" "}
+            <span className="highlight">TechHowlerX</span> unless otherwise
+            stated.
+          </p>
+          <p className="tou__label">You are free to:</p>
           <ul className="tou__list">
             <li>
-              Share: You can copy and redistribute the content in any medium or
-              format.
+              <span className="semi-bold">Share:</span> copy and redistribute
+              the content in any medium or format.
             </li>
             <li>
-              Adapt: You can remix, transform, and build upon the content for
-              any purpose, even commercially.
+              <span className="semi-bold">Adapt:</span> remix, transform, and
+              build upon the content for any purpose, including commercial use.
             </li>
           </ul>
-          <br />
-          Under the following conditions:
+          <p className="tou__label">Under the following condition:</p>
           <ul className="tou__list">
             <li>
-              Attribution: You must give appropriate credit, provide a link to
-              the original content on this Website, and indicate if changes were
-              made. You may do so in any reasonable manner, but not in any way
-              that suggests the content creator endorses you or your use of the
-              content.
+              <span className="semi-bold">Attribution:</span> you must give
+              appropriate credit, provide a link to the original content on this
+              website, and indicate whether changes were made.
             </li>
           </ul>
-          <br />
-          You can find more details about this license at Creative Commons
-          Attribution 4.0 International (CC BY 4.0).
+          <p className="tou__text">
+            License details are available on{" "}
+            <Link
+              href="https://creativecommons.org/licenses/by/4.0/"
+              className="tou__link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Creative Commons Attribution 4.0 International (CC BY 4.0)
+            </Link>
+            .
+          </p>
         </li>
 
-        <li>
+        <li className="tou__section">
           <h2 className="tou__secondary-title">3. Restrictions</h2>
-          You are not allowed to:
+          <p className="tou__text">You are not allowed to:</p>
           <ul className="tou__list">
-            <li>Use the content in any way that is unlawful or harmful.</li>
+            <li>Use the content in any unlawful or harmful way.</li>
             <li>
-              Misrepresent the original creator of the content or claim it as
-              your own without proper attribution.
+              Misrepresent the original creator or claim the content as your own
+              without proper attribution.
             </li>
             <li>
               Use the content to promote illegal activities or spread false
@@ -72,48 +86,58 @@ export default function TermsOfUse() {
           </ul>
         </li>
 
-        <li>
+        <li className="tou__section">
           <h2 className="tou__secondary-title">4. Limitation of Liability</h2>
-          <span className="highlight">TechHowlerX</span> will not be held liable
-          for any damages arising from the use or misuse of the content provided
-          on this Website. All content is provided “as is,” without any
-          guarantees or warranties.
+          <p className="tou__text">
+            <span className="highlight">TechHowlerX</span> will not be held
+            liable for any damages arising from the use or misuse of content
+            provided on this website. All content is provided &quot;as
+            is&quot;, without guarantees or warranties.
+          </p>
         </li>
 
-        <li>
+        <li className="tou__section">
           <h2 className="tou__secondary-title">5. External Links</h2>
-          The Website may contain links to third-party websites. These external
-          sites are not under our control, and we are not responsible for the
-          content or privacy practices of these websites.
+          <p className="tou__text">
+            This website may contain links to third-party sites. These external
+            sites are not under our control, and we are not responsible for
+            their content or privacy practices.
+          </p>
         </li>
 
-        <li>
-          <h2 className="tou__secondary-title">
-            6. Modifications to the Terms
-          </h2>
-          We reserve the right to modify these terms at any time. Changes will
-          be effective immediately upon posting to this page. Continued use of
-          the Website after changes to the Terms of Use constitutes acceptance
-          of those changes.
+        <li className="tou__section">
+          <h2 className="tou__secondary-title">6. Modifications to the Terms</h2>
+          <p className="tou__text">
+            These terms may be updated at any time. Changes are effective
+            immediately after publication on this page. Continued use of the
+            website after updates means that you accept the revised terms.
+          </p>
         </li>
 
-        <li>
+        <li className="tou__section">
           <h2 className="tou__secondary-title">7. Contact</h2>
-          If you have any questions or concerns about these terms, or if you
-          wish to report any issues, please contact me at{" "}
-          <Link
-            href="mailto:jeremdev.contactpro@gmail.com"
-            className="tou__link highlight"
-          >
-            jeremdev.contactpro@gmail.com
-          </Link>{" "}
-          or via{" "}
-          <Link href="https://x.com" className="tou__link highlight">
-            X(Twitter)
-          </Link>
-          .
+          <p className="tou__text">
+            If you have questions about these terms or wish to report an issue,
+            contact me at{" "}
+            <Link
+              href="mailto:jeremdev.contactpro@gmail.com"
+              className="tou__link"
+            >
+              jeremdev.contactpro@gmail.com
+            </Link>{" "}
+            or via{" "}
+            <Link
+              href="https://x.com/JeremDevX"
+              className="tou__link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              X (Twitter)
+            </Link>
+            .
+          </p>
         </li>
-      </ul>
+      </ol>
     </main>
   );
 }

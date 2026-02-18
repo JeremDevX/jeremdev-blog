@@ -1,21 +1,91 @@
 @use "../mixins" as mix;
-@use "../variables" as vars;
 
 .tou {
   @include mix.info-page;
-  @include mix.text-normal;
+  gap: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+
+  &__hero {
+    @include mix.flex-c-c-col;
+    text-align: center;
+    gap: 0.6rem;
+    margin-bottom: 0.25rem;
+  }
+
   &__main-title {
     @include mix.info-main-title;
+    margin-bottom: 0;
   }
+
+  &__intro {
+    @include mix.text-normal;
+    color: hsl(var(--muted-foreground));
+    max-width: 60ch;
+  }
+
+  &__sections {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__section {
+    @include mix.gradient-border-card;
+    background: hsl(var(--card));
+    padding: 1.25rem 1.5rem;
+  }
+
   &__secondary-title {
-    @include mix.info-secondary-title;
+    @include mix.medium-title;
+    text-align: left;
+    margin: 0 0 0.65rem;
+    text-decoration: none;
   }
+
+  &__text {
+    @include mix.text-small;
+    color: hsl(var(--muted-foreground));
+  }
+
+  &__label {
+    @include mix.text-small;
+    margin-top: 0.8rem;
+    color: hsl(var(--foreground));
+    font-weight: 600;
+  }
+
   &__list {
     list-style-type: disc;
-    padding-left: 3rem;
+    padding-left: 1.5rem;
+    margin-top: 0.35rem;
+    display: grid;
+    gap: 0.25rem;
+    @include mix.text-small;
+    color: hsl(var(--muted-foreground));
   }
+
+  &__link {
+    color: hsl(var(--primary));
+    font-weight: 600;
+  }
+
   &__link:hover {
     text-decoration: underline;
     text-underline-offset: 4px;
+  }
+
+  @media (max-width: 768px) {
+    gap: 0.9rem;
+    margin-top: 2.5rem;
+    padding: 0 0.9rem;
+
+    &__section {
+      padding: 1rem;
+    }
   }
 }

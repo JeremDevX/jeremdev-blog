@@ -1,35 +1,124 @@
 @use "../mixins" as mix;
-@use "../variables" as vars;
 
 .about {
   @include mix.info-page;
+  gap: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+
+  &__hero {
+    @include mix.flex-c-c-col;
+    gap: 0.75rem;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0.25rem;
+  }
+
+  &__eyebrow {
+    font-size: 0.8125rem;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+  }
 
   &__main-title {
     @include mix.info-main-title;
+    margin-bottom: 0;
+    max-width: 22ch;
   }
+
+  &__lead {
+    @include mix.text-normal;
+    color: hsl(var(--muted-foreground));
+    max-width: 62ch;
+  }
+
+  &__section,
+  &__card {
+    @include mix.gradient-border-card;
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    background-color: hsl(var(--card));
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    gap: 1rem;
+  }
+
   &__secondary-title {
-    @include mix.info-secondary-title;
+    @include mix.medium-title;
+    text-align: left;
+    margin: 0 0 0.75rem;
+    text-decoration: none;
   }
+
   &__paragraph {
     @include mix.text-normal;
-  }
-  &__socials {
-    @include mix.flex-c-c-row;
-    flex-wrap: wrap;
-    gap: 3rem;
-    margin-top: 0.5rem;
-    &-icon {
-      @include mix.flex-c-c-col;
+    color: hsl(var(--muted-foreground));
 
-      border-radius: var(--radius);
-      padding: 0.5rem 1rem 0.25rem;
-      border: 1px solid transparent;
-      transition: border-color var(--transition-fast), transform var(--transition-fast);
+    &--compact {
+      margin-top: -0.25rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  &__list {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    display: grid;
+    gap: 0.35rem;
+    color: hsl(var(--muted-foreground));
+    @include mix.text-small;
+  }
+
+  &__socials {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 0.75rem;
+
+    &-icon {
+      @include mix.flex-c-c-row;
+      justify-content: flex-start;
+      gap: 0.65rem;
+      border-radius: calc(var(--radius) - 2px);
+      border: 1px solid var(--glass-border);
+      background: hsla(212, 49%, 9%, 0.6);
+      padding: 0.7rem 0.9rem;
+      transition: border-color var(--transition-fast), transform var(--transition-fast), background-color var(--transition-fast);
 
       &:hover {
+        background: hsla(212, 49%, 12%, 0.75);
         transform: translateY(-2px);
-        border-color: var(--glass-border);
+        border-color: var(--glass-border-hover);
       }
+    }
+  }
+
+  &__social-svg {
+    fill: currentColor;
+  }
+
+  @media (max-width: 768px) {
+    gap: 0.9rem;
+    margin-top: 2.5rem;
+    padding: 0 0.9rem;
+
+    &__section,
+    &__card {
+      padding: 1rem;
+    }
+
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+
+    &__socials {
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
     }
   }
 }

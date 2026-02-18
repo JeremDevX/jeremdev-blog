@@ -2,10 +2,9 @@
 @use "../mixins" as mix;
 
 .footer {
-  @include mix.flex-c-c-row;
   position: relative;
-  height: 5rem;
   width: 100%;
+  padding: 0 1rem;
   background-color: var(--glass-bg-strong);
   backdrop-filter: blur(var(--glass-blur-strong));
   -webkit-backdrop-filter: blur(var(--glass-blur-strong));
@@ -24,68 +23,128 @@
     background: var(--gradient-divider);
   }
 
-  @media (max-width: 768px) {
-    height: auto;
-  }
   &--hidden {
     display: none;
   }
-  &__container {
-    @include mix.flex-between-row;
 
+  &__container {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) repeat(2, minmax(0, 1fr));
     max-width: vars.$max-layout-width;
     width: 100%;
-    gap: 2.5rem;
+    margin: 0 auto;
+    gap: 2rem;
+    padding: 1.75rem 0 1.25rem;
 
-    @media (max-width: 768px) {
-      flex-direction: column;
-      gap: 1rem;
-      padding: 2rem 0;
+    @media (max-width: 900px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
     }
     @media (max-width: 640px) {
-      padding: 1rem 0;
+      grid-template-columns: 1fr;
+      padding: 1.5rem 0 1rem;
     }
   }
+
+  &__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    @media (max-width: 900px) {
+      grid-column: 1 / -1;
+      max-width: 34rem;
+    }
+  }
+
   &__logo {
     @include mix.flex-c-c-row;
-    &-text {
-      font-size: 1.25rem;
-      line-height: 1.75rem;
-      font-weight: 700;
-      margin-top: 1.5rem;
-      color: hsl(var(--muted-foreground));
-    }
+    justify-content: flex-start;
+    gap: 0.65rem;
+    width: fit-content;
   }
-  &__links {
-    @include mix.flex-c-c-row;
 
-    gap: 1.5rem;
+  &__logo-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
   }
+
+  &__logo-text {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+  }
+
+  &__tagline {
+    font-size: 0.875rem;
+    line-height: 1.2;
+    color: hsl(var(--muted-foreground));
+  }
+
+  &__description {
+    @include mix.text-small;
+    color: hsl(var(--muted-foreground));
+    max-width: 32ch;
+  }
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  &__column-title {
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+  }
+
+  &__links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+  }
+
   &__link {
     position: relative;
-    color: hsl(var(--muted-foreground));
-    transition: color var(--transition-fast);
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 50%;
-      width: 0;
-      height: 2px;
-      background: var(--gradient-accent);
-      border-radius: 2px;
-      transition: width var(--transition-base), left var(--transition-base);
-    }
-    &:focus,
+    color: hsl(var(--foreground));
+    opacity: 0.85;
+    transition: color var(--transition-fast), opacity var(--transition-fast), transform var(--transition-fast);
+
     &:hover {
-      color: hsl(var(--foreground));
+      color: hsl(var(--primary));
+      opacity: 1;
+      transform: translateX(2px);
     }
-    &:hover::after {
-      width: 100%;
-      left: 0;
+
+    &:focus-visible {
+      color: hsl(var(--foreground));
+      opacity: 1;
+      transform: none;
     }
   }
-  &__legal {
-    @include mix.flex-c-c-col;
+
+  &__bottom {
+    @include mix.flex-between-row;
+    max-width: vars.$max-layout-width;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1rem 0 1.25rem;
+    gap: 1rem;
+    color: hsl(var(--muted-foreground));
+    font-size: 0.875rem;
+    border-top: 1px solid var(--glass-border);
+
+    @media (max-width: 640px) {
+      flex-direction: column;
+      align-items: flex-start;
+      padding-top: 0.9rem;
+      gap: 0.5rem;
+    }
   }
 }
