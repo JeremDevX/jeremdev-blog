@@ -25,6 +25,7 @@ export default function SearchInput() {
   const searchIndexRef = useRef<SearchIndexEntry[] | null>(null);
   const fuseRef = useRef<Fuse<SearchIndexEntry> | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -98,8 +99,12 @@ export default function SearchInput() {
     setSelectedIndex(0);
   }, [debouncedQuery]);
 
-  const closeOverlay = useCallback(() => {
+  const closeOverlay = useCallback((options?: { restoreFocus?: boolean }) => {
+    const { restoreFocus = true } = options ?? {};
     setIsOpen(false);
+    if (restoreFocus) {
+      setTimeout(() => triggerRef.current?.focus(), 0);
+    }
   }, []);
 
   // Handle escape key and focus trap
@@ -144,7 +149,7 @@ export default function SearchInput() {
   };
 
   const navigateToResult = (slug: string) => {
-    closeOverlay();
+    closeOverlay({ restoreFocus: false });
     router.push(slug);
   };
 
@@ -177,9 +182,10 @@ export default function SearchInput() {
   return (
     <div className={styles.search}>
       <button
+        ref={triggerRef}
         className={styles.trigger}
         onClick={() => setIsOpen(true)}
-        aria-label="Search"
+        aria-label="Search articles and tools"
         type="button"
       >
         <Search className={styles.triggerIcon} />
@@ -194,7 +200,7 @@ export default function SearchInput() {
           onClick={handleBackdropClick}
           role="dialog"
           aria-modal="true"
-          aria-label="Search"
+          aria-label="Search articles and tools"
         >
           <div className={styles.container} ref={containerRef}>
             <div className={styles.inputWrapper}>
@@ -207,7 +213,7 @@ export default function SearchInput() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleInputKeyDown}
-                aria-label="Search query"
+                aria-label="Search articles and tools"
                 role="combobox"
                 aria-expanded={results.length > 0}
                 aria-controls="search-results-listbox"

@@ -12,6 +12,7 @@
     @include mix.text-normal;
     font-weight: 600;
     width: fit-content;
+    margin-top: 2rem;
 
     @media (max-width: 1024px) {
       margin: 1rem 0 0 1rem;

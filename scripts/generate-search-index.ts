@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import matter from "gray-matter";
+import { getAllArticles } from "../src/lib/content";
 import { getAllTools } from "../src/lib/tools";
 
 export interface SearchIndexEntry {
@@ -11,46 +11,16 @@ export interface SearchIndexEntry {
   type: "article" | "tool";
 }
 
-const ARTICLES_DIR = path.join(process.cwd(), "content/articles");
-
-/**
- * Reads articles from the filesystem and returns search index entries.
- *
- * Note: This duplicates some logic from src/lib/content.ts (getAllArticles)
- * because tsx does not resolve tsconfig path aliases (@/), and content.ts
- * imports from @/types/content. If path alias support is added to the
- * build script runner, this should be replaced with a call to getAllArticles().
- */
 export async function getArticlesForIndex(): Promise<SearchIndexEntry[]> {
-  let files: string[];
-  try {
-    files = await fs.readdir(ARTICLES_DIR);
-  } catch {
-    console.warn("No articles directory found, skipping articles.");
-    return [];
-  }
+  const articles = await getAllArticles();
 
-  const entries: SearchIndexEntry[] = [];
-
-  for (const file of files) {
-    if (!file.endsWith(".mdx")) continue;
-
-    const filePath = path.join(ARTICLES_DIR, file);
-    const raw = await fs.readFile(filePath, "utf-8");
-    const { data } = matter(raw);
-
-    if (!data.published) continue;
-
-    entries.push({
-      title: data.title,
-      slug: `/blog/posts/${data.slug}`,
-      resume: data.resume || "",
-      category: data.category || "",
-      type: "article",
-    });
-  }
-
-  return entries;
+  return articles.map((article) => ({
+    title: article.title,
+    slug: `/blog/posts/${article.slug}`,
+    resume: article.resume,
+    category: article.category,
+    type: "article",
+  }));
 }
 
 export function getToolsForIndex(): SearchIndexEntry[] {

@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { Suspense, useMemo } from "react";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
@@ -8,44 +8,15 @@ import {
   getTaxonomyBreadcrumb,
 } from "@/lib/taxonomy";
 import { getArticlesByCategory } from "@/lib/content";
-import { getAllTools } from "@/lib/tools";
+import { getToolsByTaxonomyPath } from "@/lib/tools";
 import Breadcrumb from "@/components/custom/Breadcrumb";
 import TaxonomyContent from "./TaxonomyContent";
 import type { TaxonomyNode } from "@/types/taxonomy";
-import type { ToolMeta } from "@/types/tools";
 import styles from "./TaxonomyPage.module.scss";
 
 type Props = {
   params: Promise<{ path: string[] }>;
 };
-
-const TOOL_CATEGORY_BY_PATH: Record<string, string> = {
-  "css-tools": "CSS",
-  "code-tools": "Development",
-  "text-tools": "Content",
-};
-
-function getToolsForTaxonomyPath(
-  taxonomyPath: string,
-  tools: ToolMeta[],
-): ToolMeta[] {
-  if (taxonomyPath === "tools") {
-    return tools;
-  }
-
-  if (taxonomyPath.startsWith("tools/")) {
-    const segment = taxonomyPath.split("/")[1];
-    const category = TOOL_CATEGORY_BY_PATH[segment];
-    if (!category) return [];
-    return tools.filter((tool) => tool.category === category);
-  }
-
-  if (taxonomyPath.startsWith("accessibility")) {
-    return tools.filter((tool) => tool.category === "Accessibility");
-  }
-
-  return [];
-}
 
 export function generateStaticParams() {
   const paths: { path: string[] }[] = [];
@@ -109,7 +80,7 @@ export default async function TaxonomyPage({ params }: Props) {
     })),
   ];
   const articles = await getArticlesByCategory(taxonomyPath);
-  const tools = getToolsForTaxonomyPath(taxonomyPath, getAllTools());
+  const tools = getToolsByTaxonomyPath(taxonomyPath);
   const children = node.children ?? [];
 
   const contentItems = [

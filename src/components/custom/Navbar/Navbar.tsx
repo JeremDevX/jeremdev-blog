@@ -29,7 +29,7 @@ const mobileMenuLinks = [
     category: "Blog",
     links: [
       { label: "Blog", href: "/blog" },
-      { label: "Categories", href: "/blog/categories" },
+      { label: "Topics", href: "/topics" },
     ],
   },
   {

@@ -184,6 +184,7 @@ describe("TaxonomySidebar Utils", () => {
         description: "Unknown",
         category: "Unknown",
         icon: "Unknown",
+        taxonomyPaths: ["unknown/thing"],
       };
       const result = getDefaultOpenItems("/tools/unknown/thing", [], [unmappedTool]);
       expect(result).toEqual([]);

@@ -10,6 +10,7 @@ const TOOLS: ToolMeta[] = [
       "Check the contrast ratio between two colors and verify WCAG compliance.",
     category: "Accessibility",
     icon: "Contrast",
+    taxonomyPaths: ["accessibility/standards/color-contrast", "tools"],
   },
   {
     name: "Border Radius Generator",
@@ -18,6 +19,7 @@ const TOOLS: ToolMeta[] = [
       "Generate CSS border-radius values with a visual live preview.",
     category: "CSS",
     icon: "Squircle",
+    taxonomyPaths: ["tools/css-tools/border-radius"],
   },
   {
     name: "Box Shadow Generator",
@@ -26,6 +28,7 @@ const TOOLS: ToolMeta[] = [
       "Generate CSS box-shadow values with controls for offset, blur, spread, and color.",
     category: "CSS",
     icon: "Layers2",
+    taxonomyPaths: ["tools/css-tools/box-shadow"],
   },
   {
     name: "Slug Generator",
@@ -33,6 +36,7 @@ const TOOLS: ToolMeta[] = [
     description: "Generate URL-friendly slugs from any text input.",
     category: "Development",
     icon: "Link",
+    taxonomyPaths: ["tools/code-tools/slug-generator"],
   },
   {
     name: "Word Counter",
@@ -41,6 +45,7 @@ const TOOLS: ToolMeta[] = [
       "Count words and characters with platform-specific length recommendations.",
     category: "Content",
     icon: "Text",
+    taxonomyPaths: ["tools/text-tools/word-counter"],
   },
 ];
 
@@ -65,4 +70,16 @@ export function getToolsByCategory(): ToolCategory[] {
 
 export function getToolBySlug(slug: string): ToolMeta | undefined {
   return TOOLS.find((tool) => tool.slug === slug);
+}
+
+export function getToolsByTaxonomyPath(taxonomyPath: string): ToolMeta[] {
+  if (!taxonomyPath) return [];
+
+  return TOOLS.filter((tool) =>
+    tool.taxonomyPaths.some(
+      (assignedPath) =>
+        assignedPath === taxonomyPath ||
+        assignedPath.startsWith(`${taxonomyPath}/`),
+    ),
+  );
 }

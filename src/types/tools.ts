@@ -4,6 +4,7 @@ export interface ToolMeta {
   description: string;
   category: string;
   icon: string;
+  taxonomyPaths: string[];
   relatedArticles?: string[];
 }
 

@@ -17,10 +17,10 @@ export default function PostLayout({
     <div className="tool">
       <TaxonomySidebarServer />
       <main className="tool__container article-padding">
-        <Link href="/tools" className="tool__back">
-          ← Back to tools
-        </Link>
         {children}
+        <Link href="/tools" className="tool__back">
+          View all tools
+        </Link>
         <div className="tool__return-top">
           <ArrowTopOfPage />
         </div>
