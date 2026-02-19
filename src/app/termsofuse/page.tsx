@@ -2,8 +2,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "TechHowlerX - Terms of Use",
-  description: "Terms of use of TechHowlerX's website.",
+  title: "TechHowlerX Terms of Use",
+  description:
+    "Read the plain-language terms for TechHowlerX, including CC BY 4.0 licensing, affiliate disclosure, privacy scope, and GDPR context.",
 };
 
 export default function TermsOfUse() {
@@ -12,129 +13,72 @@ export default function TermsOfUse() {
       <header className="tou__hero">
         <h1 className="tou__main-title">Terms of Use</h1>
         <p className="tou__intro">
-          Please read these terms before using the website and its content.
+          These terms explain, in plain language, how content on TechHowlerX
+          can be used and what privacy posture applies to this MVP.
         </p>
       </header>
 
       <ol className="tou__sections">
         <li className="tou__section">
-          <h2 className="tou__secondary-title">1. Introduction</h2>
+          <h2 className="tou__secondary-title">1. Ownership and license</h2>
           <p className="tou__text">
-            Welcome to TechHowlerX. By accessing or using this website, you
-            agree to comply with and be bound by the following terms and
-            conditions. If you do not agree with these terms, please do not use
-            the website.
-          </p>
-        </li>
-
-        <li className="tou__section">
-          <h2 className="tou__secondary-title">
-            2. Intellectual Property and License
-          </h2>
-          <p className="tou__text">
-            All content available on this website, including text, images,
-            tutorials, code, and other resources, is owned by{" "}
-            <span className="highlight">TechHowlerX</span> unless otherwise
-            stated.
-          </p>
-          <p className="tou__label">You are free to:</p>
-          <ul className="tou__list">
-            <li>
-              <span className="semi-bold">Share:</span> copy and redistribute
-              the content in any medium or format.
-            </li>
-            <li>
-              <span className="semi-bold">Adapt:</span> remix, transform, and
-              build upon the content for any purpose, including commercial use.
-            </li>
-          </ul>
-          <p className="tou__label">Under the following condition:</p>
-          <ul className="tou__list">
-            <li>
-              <span className="semi-bold">Attribution:</span> you must give
-              appropriate credit, provide a link to the original content on this
-              website, and indicate whether changes were made.
-            </li>
-          </ul>
-          <p className="tou__text">
-            License details are available on{" "}
+            Unless stated otherwise, the content on TechHowlerX is created by
+            Jérémie L. and shared under{" "}
             <Link
               href="https://creativecommons.org/licenses/by/4.0/"
               className="tou__link"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Creative Commons Attribution 4.0 International (CC BY 4.0)
+              Creative Commons Attribution 4.0 (CC BY 4.0)
             </Link>
-            .
+            . You can reuse and adapt content, including commercially, as long
+            as you give clear attribution and reference the original source.
           </p>
         </li>
 
         <li className="tou__section">
-          <h2 className="tou__secondary-title">3. Restrictions</h2>
-          <p className="tou__text">You are not allowed to:</p>
-          <ul className="tou__list">
-            <li>Use the content in any unlawful or harmful way.</li>
-            <li>
-              Misrepresent the original creator or claim the content as your own
-              without proper attribution.
-            </li>
-            <li>
-              Use the content to promote illegal activities or spread false
-              information.
-            </li>
-          </ul>
-        </li>
-
-        <li className="tou__section">
-          <h2 className="tou__secondary-title">4. Limitation of Liability</h2>
+          <h2 className="tou__secondary-title">2. Affiliate disclosure</h2>
           <p className="tou__text">
-            <span className="highlight">TechHowlerX</span> will not be held
-            liable for any damages arising from the use or misuse of content
-            provided on this website. All content is provided &quot;as
-            is&quot;, without guarantees or warranties.
+            Some links may be affiliate links in the future. If that happens,
+            it means TechHowlerX may receive a small commission at no extra cost
+            to you. Recommendations are still selected for practical relevance,
+            not for volume of commission.
           </p>
         </li>
 
         <li className="tou__section">
-          <h2 className="tou__secondary-title">5. External Links</h2>
+          <h2 className="tou__secondary-title">3. Privacy and analytics</h2>
           <p className="tou__text">
-            This website may contain links to third-party sites. These external
-            sites are not under our control, and we are not responsible for
-            their content or privacy practices.
+            This MVP uses Vercel Analytics only for aggregate traffic insights.
+            The intended setup is privacy-first: no cookies and no personal data
+            collection through site analytics.
           </p>
         </li>
 
         <li className="tou__section">
-          <h2 className="tou__secondary-title">6. Modifications to the Terms</h2>
+          <h2 className="tou__secondary-title">4. GDPR and jurisdiction</h2>
           <p className="tou__text">
-            These terms may be updated at any time. Changes are effective
-            immediately after publication on this page. Continued use of the
-            website after updates means that you accept the revised terms.
+            TechHowlerX is operated from Europe and follows GDPR principles. For
+            legal interpretation or disputes, the applicable framework is France
+            and the European Union.
           </p>
         </li>
 
         <li className="tou__section">
-          <h2 className="tou__secondary-title">7. Contact</h2>
+          <h2 className="tou__secondary-title">5. Acceptable use</h2>
           <p className="tou__text">
-            If you have questions about these terms or wish to report an issue,
-            contact me at{" "}
-            <Link
-              href="mailto:jeremdev.contactpro@gmail.com"
-              className="tou__link"
-            >
-              jeremdev.contactpro@gmail.com
-            </Link>{" "}
-            or via{" "}
-            <Link
-              href="https://x.com/JeremDevX"
-              className="tou__link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              X (Twitter)
-            </Link>
-            .
+            Please do not use this website or its content for unlawful,
+            misleading, or harmful activities. Do not remove attribution when
+            reusing licensed content.
+          </p>
+        </li>
+
+        <li className="tou__section">
+          <h2 className="tou__secondary-title">6. Updates</h2>
+          <p className="tou__text">
+            These terms can evolve as the project grows. Updates become active
+            when published on this page.
           </p>
         </li>
       </ol>

@@ -34,6 +34,9 @@ export default function Footer() {
         <nav className="footer__column" aria-label="Footer navigation">
           <span className="footer__column-title">Explore</span>
           <div className="footer__links">
+            <Link href="/" className="footer__link">
+              Home
+            </Link>
             <Link href="/blog" className="footer__link">
               Blog
             </Link>
@@ -50,37 +53,43 @@ export default function Footer() {
         </nav>
 
         <div className="footer__column">
-          <span className="footer__column-title">Connect</span>
+          <span className="footer__column-title">Connect & Support</span>
           <div className="footer__links">
-            <Link
-              href="https://jeremdevx.com"
-              className="footer__link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Portfolio
-            </Link>
             <Link
               href="https://github.com/JeremDevX"
               className="footer__link"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Visit GitHub profile (opens in new tab)"
             >
               GitHub
+            </Link>
+            <Link
+              href="https://www.linkedin.com/in/jeremie-lavergnat/"
+              className="footer__link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit LinkedIn profile (opens in new tab)"
+            >
+              LinkedIn
             </Link>
             <Link
               href="https://x.com/JeremDevX"
               className="footer__link"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Visit X (Twitter) profile (opens in new tab)"
             >
               X (Twitter)
             </Link>
             <Link
-              href="mailto:jeremdev.contactpro@gmail.com"
+              href="https://www.buymeacoffee.com/jeremdevx"
               className="footer__link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit Buy Me a Coffee page (opens in new tab)"
             >
-              Contact
+              Buy Me a Coffee
             </Link>
           </div>
         </div>
