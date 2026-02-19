@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { metadata as contrastCheckerMetadata } from "@/app/tools/(tools)/accessibility/contrast-checker/page";
 import { metadata as borderRadiusMetadata } from "@/app/tools/(tools)/css/border-radius/page";
 import { metadata as boxShadowMetadata } from "@/app/tools/(tools)/css/box-shadow/page";
+import { metadata as flexboxPlaygroundMetadata } from "@/app/tools/(tools)/css/flexbox-playground/page";
 import { metadata as slugGeneratorMetadata } from "@/app/tools/(tools)/code/slug-generator/page";
 import { metadata as wordCounterMetadata } from "@/app/tools/(tools)/text/word-counter/page";
 
@@ -20,6 +21,11 @@ const METADATA_CASES = [
     metadata: boxShadowMetadata,
     title: "Box Shadow Generator",
     canonical: "/tools/css/box-shadow",
+  },
+  {
+    metadata: flexboxPlaygroundMetadata,
+    title: "Flexbox Playground",
+    canonical: "/tools/css/flexbox-playground",
   },
   {
     metadata: slugGeneratorMetadata,

@@ -7,6 +7,10 @@ import ContrastChecker, {
 } from "@/app/tools/(tools)/accessibility/contrast-checker/ContrastChecker";
 import BorderRadius from "@/app/tools/(tools)/css/border-radius/BorderRadius";
 import BoxShadow from "@/app/tools/(tools)/css/box-shadow/BoxShadow";
+import FlexboxPlayground, {
+  buildFlexboxCssOutput,
+  resolveFlexBasisValue,
+} from "@/app/tools/(tools)/css/flexbox-playground/FlexboxPlayground";
 import SlugGenerator, {
   normalizeSlug,
 } from "@/app/tools/(tools)/code/slug-generator/SlugGenerator";
@@ -123,6 +127,58 @@ describe("Tool migrations", () => {
     });
   });
 
+  describe("FlexboxPlayground", () => {
+    it("resolves flex-basis values across supported modes", () => {
+      expect(resolveFlexBasisValue("auto", 120)).toBe("auto");
+      expect(resolveFlexBasisValue("px", 120)).toBe("120px");
+      expect(resolveFlexBasisValue("percent", 40)).toBe("40%");
+    });
+
+    it("builds CSS output with flex-flow and item flex shorthand", () => {
+      const output = buildFlexboxCssOutput(
+        {
+          direction: "row",
+          wrap: "wrap",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          alignContent: "stretch",
+          width: 760,
+          height: 360,
+          padding: 16,
+          gapMode: "uniform",
+          gap: 12,
+          rowGap: 12,
+          columnGap: 12,
+        },
+        [
+          {
+            id: 1,
+            order: 0,
+            grow: 1,
+            shrink: 1,
+            basisMode: "px",
+            basisValue: 96,
+            alignSelf: "auto",
+          },
+        ],
+      );
+
+      expect(output).toContain("flex-flow: row wrap;");
+      expect(output).toContain("flex: 1 1 96px;");
+    });
+
+    it("updates generated CSS when justify-content changes", () => {
+      render(<FlexboxPlayground />);
+
+      expect(screen.getByText(/justify-content: flex-start;/)).toBeTruthy();
+
+      const justifySelect = screen.getByLabelText(/Justify content/i);
+      fireEvent.change(justifySelect, { target: { value: "space-between" } });
+
+      expect(screen.getByText(/justify-content: space-between;/)).toBeTruthy();
+    });
+  });
+
   describe("SlugGenerator", () => {
     it("normalizes accented and punctuated input", () => {
       expect(normalizeSlug("Déjà vu!!!  2026")).toBe("deja-vu-2026");
@@ -167,6 +223,7 @@ describe("Tool migrations", () => {
         "src/app/tools/(tools)/accessibility/contrast-checker/ContrastChecker.tsx",
         "src/app/tools/(tools)/css/border-radius/BorderRadius.tsx",
         "src/app/tools/(tools)/css/box-shadow/BoxShadow.tsx",
+        "src/app/tools/(tools)/css/flexbox-playground/FlexboxPlayground.tsx",
         "src/app/tools/(tools)/code/slug-generator/SlugGenerator.tsx",
         "src/app/tools/(tools)/text/word-counter/WordCounter.tsx",
       ];

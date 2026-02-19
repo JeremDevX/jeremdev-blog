@@ -8,9 +8,9 @@ import {
 
 describe("Tools Catalog", () => {
   describe("getAllTools", () => {
-    it("returns all 5 tools", () => {
+    it("returns all 6 tools", () => {
       const tools = getAllTools();
-      expect(tools).toHaveLength(5);
+      expect(tools).toHaveLength(6);
     });
 
     it("every tool has required fields", () => {
@@ -35,7 +35,7 @@ describe("Tools Catalog", () => {
     it("groups tools correctly", () => {
       const categories = getToolsByCategory();
       const css = categories.find((c) => c.name === "CSS");
-      expect(css?.tools).toHaveLength(2);
+      expect(css?.tools).toHaveLength(3);
 
       const accessibility = categories.find((c) => c.name === "Accessibility");
       expect(accessibility?.tools).toHaveLength(1);
@@ -70,14 +70,15 @@ describe("Tools Catalog", () => {
 
     it("returns descendant tools for a parent taxonomy path", () => {
       const tools = getToolsByTaxonomyPath("tools/css-tools");
-      expect(tools).toHaveLength(2);
+      expect(tools).toHaveLength(3);
       expect(tools.map((tool) => tool.name)).toContain("Border Radius Generator");
       expect(tools.map((tool) => tool.name)).toContain("Box Shadow Generator");
+      expect(tools.map((tool) => tool.name)).toContain("Flexbox Playground");
     });
 
     it("returns all tools for the Tools big topic", () => {
       const tools = getToolsByTaxonomyPath("tools");
-      expect(tools).toHaveLength(5);
+      expect(tools).toHaveLength(6);
     });
 
     it("returns accessibility tool for the accessibility branch", () => {

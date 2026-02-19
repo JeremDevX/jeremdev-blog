@@ -31,6 +31,15 @@ const TOOLS: ToolMeta[] = [
     taxonomyPaths: ["tools/css-tools/box-shadow"],
   },
   {
+    name: "Flexbox Playground",
+    slug: "/tools/css/flexbox-playground",
+    description:
+      "Simulate and generate Flexbox layouts with live controls for container and item properties.",
+    category: "CSS",
+    icon: "Rows3",
+    taxonomyPaths: ["tools/css-tools/flexbox-playground"],
+  },
+  {
     name: "Slug Generator",
     slug: "/tools/code/slug-generator",
     description: "Generate URL-friendly slugs from any text input.",

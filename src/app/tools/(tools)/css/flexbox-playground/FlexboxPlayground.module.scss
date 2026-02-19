@@ -1,0 +1,413 @@
+.toolMain {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 2rem;
+  padding: 0 0.5rem;
+}
+
+.toolMainTitle {
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  text-align: center;
+}
+
+.toolLayout {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.controlsPanel {
+  order: 1;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 1rem;
+}
+
+.controlSection {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.75rem;
+  background:
+    radial-gradient(80% 80% at 0% 0%, hsla(202, 100%, 65%, 0.11), transparent 65%),
+    radial-gradient(80% 80% at 100% 100%, hsla(188, 94%, 43%, 0.09), transparent 70%),
+    hsl(var(--card));
+}
+
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sectionTitle {
+  font-size: clamp(1rem, 2.3vw, 1.2rem);
+  font-weight: 700;
+}
+
+.sectionNote {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.controlGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: clamp(0.84rem, 2vw, 0.95rem);
+}
+
+.controlText {
+  color: hsl(var(--foreground));
+  font-weight: 600;
+}
+
+.inputRange,
+.selectInput {
+  width: 100%;
+}
+
+.selectInput {
+  min-height: 2.2rem;
+  border-radius: 0.5rem;
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  padding: 0.25rem 0.5rem;
+}
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.button {
+  width: fit-content;
+  padding: 0.45rem 0.85rem;
+  border-radius: 0.5rem;
+  border: 1px solid hsl(var(--primary));
+  background-color: hsla(var(--primary), 0.12);
+  color: hsl(var(--foreground));
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.button:hover {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.buttonGhost {
+  border-color: hsl(var(--border));
+  background-color: transparent;
+}
+
+.buttonGhost:hover {
+  border-color: hsl(var(--primary));
+}
+
+.itemSelector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.itemButton {
+  border: 1px solid hsl(var(--border));
+  border-radius: 999px;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  padding: 0.3rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.itemButtonActive {
+  border-color: hsl(var(--primary));
+  background-color: hsla(var(--primary), 0.15);
+}
+
+.previewPanel {
+  order: -1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.75rem;
+  background:
+    linear-gradient(160deg, hsla(212, 80%, 69%, 0.07), transparent 55%),
+    hsl(var(--card));
+}
+
+.previewHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.previewMeta {
+  margin: 0;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.86rem;
+}
+
+.previewMeta code {
+  color: hsl(var(--foreground));
+}
+
+.previewStage {
+  width: 100%;
+  overflow: auto;
+  border-radius: 0.75rem;
+  border: 1px solid hsl(var(--border));
+  background:
+    linear-gradient(180deg, hsla(212, 80%, 69%, 0.08), transparent 40%),
+    hsl(var(--background));
+  padding: 0.8rem;
+}
+
+.previewFrame {
+  margin: 0 auto;
+  max-width: 100%;
+  border: 2px dashed hsla(212, 80%, 69%, 0.4);
+  border-radius: 0.75rem;
+  background:
+    linear-gradient(180deg, hsla(212, 80%, 69%, 0.12), transparent 35%),
+    hsl(var(--background-elevated));
+}
+
+.previewItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.5rem;
+  min-width: 3.5rem;
+  border-radius: 0.5rem;
+  padding: 0.4rem;
+  border: 1px solid hsla(0, 0%, 100%, 0.15);
+  color: hsl(var(--primary-foreground));
+  box-shadow: 0 6px 14px hsla(210, 60%, 3%, 0.22);
+  text-align: center;
+}
+
+.previewItemSelected {
+  outline: 2px solid hsl(var(--foreground));
+  outline-offset: 1px;
+}
+
+.itemLabel {
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.itemMeta {
+  font-size: 0.72rem;
+  opacity: 0.95;
+}
+
+.output {
+  width: 100%;
+}
+
+.output pre {
+  max-height: 14rem;
+  overflow: auto;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1.125rem;
+  padding: clamp(1.125rem, 2.2vw, 1.5rem);
+  margin: 2rem 0.5rem 0;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(120% 100% at 100% 0%, hsla(200, 58%, 54%, 0.12), transparent 60%),
+    radial-gradient(120% 100% at 0% 100%, hsla(212, 80%, 69%, 0.1), transparent 58%),
+    hsl(var(--card));
+  box-shadow: 0 8px 24px hsla(210, 60%, 3%, 0.28);
+}
+
+.descriptionTitle {
+  width: fit-content;
+  margin-bottom: 0.25rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border-hover);
+  background: linear-gradient(
+    135deg,
+    hsla(212, 80%, 69%, 0.14),
+    hsla(200, 58%, 54%, 0.1)
+  );
+  box-shadow: inset 0 0 0 1px hsla(212, 80%, 69%, 0.15);
+  font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+  font-weight: 700;
+}
+
+.descriptionMedTitle {
+  width: fit-content;
+  margin-top: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid hsla(212, 80%, 69%, 0.22);
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  font-weight: 700;
+}
+
+.descriptionText {
+  color: hsl(var(--foreground));
+  opacity: 0.92;
+  font-size: clamp(1rem, 2.2vw, 1.125rem);
+  line-height: 1.65;
+}
+
+.descriptionNote {
+  padding: 0.75rem 0.875rem;
+  border-left: 3px solid hsla(212, 80%, 69%, 0.6);
+  border-radius: 0.5rem;
+  background-color: hsla(212, 80%, 32%, 0.14);
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+.descriptionCode {
+  padding: 0.18rem 0.45rem;
+  border-radius: 0.375rem;
+  border: 1px solid hsla(212, 80%, 69%, 0.25);
+  background-color: hsla(212, 80%, 32%, 0.22);
+}
+
+.list {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.list li {
+  margin-bottom: 0.35rem;
+}
+
+.list li::marker {
+  color: hsl(var(--accent));
+}
+
+@media (max-width: 900px) {
+  .controlsPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .controlGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .toolMain {
+    gap: 1.5rem;
+    padding: 0;
+  }
+
+  .controlSection,
+  .previewPanel {
+    padding: 0.8rem;
+    border-radius: 0.65rem;
+  }
+
+  .previewMeta {
+    font-size: 0.8rem;
+  }
+
+  .previewStage {
+    padding: 0.55rem;
+    border-radius: 0.65rem;
+  }
+
+  .previewFrame {
+    border-radius: 0.65rem;
+  }
+
+  .previewItem {
+    min-height: 3rem;
+    min-width: 3rem;
+    padding: 0.3rem;
+  }
+
+  .itemLabel {
+    font-size: 0.78rem;
+  }
+
+  .itemMeta {
+    font-size: 0.64rem;
+  }
+
+  .description {
+    margin: 1.25rem 0 0;
+  }
+
+  .output pre {
+    max-height: 11rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .toolMainTitle {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .actionRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .itemSelector {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+
+  .itemButton {
+    width: 100%;
+    padding-inline: 0.4rem;
+    font-size: 0.74rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+}

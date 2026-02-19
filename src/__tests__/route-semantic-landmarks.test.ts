@@ -99,6 +99,7 @@ describe("Route semantic landmarks and heading constraints", () => {
       "src/app/tools/(tools)/accessibility/contrast-checker/ContrastChecker.tsx",
       "src/app/tools/(tools)/css/border-radius/BorderRadius.tsx",
       "src/app/tools/(tools)/css/box-shadow/BoxShadow.tsx",
+      "src/app/tools/(tools)/css/flexbox-playground/FlexboxPlayground.tsx",
       "src/app/tools/(tools)/code/slug-generator/SlugGenerator.tsx",
       "src/app/tools/(tools)/text/word-counter/WordCounter.tsx",
     ];
