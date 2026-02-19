@@ -11,6 +11,9 @@ import FlexboxPlayground, {
   buildFlexboxCssOutput,
   resolveFlexBasisValue,
 } from "@/app/tools/(tools)/css/flexbox-playground/FlexboxPlayground";
+import GridPlayground, {
+  buildGridCssOutput,
+} from "@/app/tools/(tools)/css/grid-playground/GridPlayground";
 import SlugGenerator, {
   normalizeSlug,
 } from "@/app/tools/(tools)/code/slug-generator/SlugGenerator";
@@ -179,6 +182,60 @@ describe("Tool migrations", () => {
     });
   });
 
+  describe("GridPlayground", () => {
+    it("builds CSS output with grid template and item placement shorthands", () => {
+      const output = buildGridCssOutput(
+        {
+          columns: 4,
+          rows: 3,
+          minTrackSize: 96,
+          rowSize: 88,
+          autoFlow: "row",
+          justifyItems: "stretch",
+          alignItems: "stretch",
+          justifyContent: "stretch",
+          alignContent: "stretch",
+          width: 680,
+          height: 440,
+          padding: 14,
+          gapMode: "uniform",
+          gap: 12,
+          rowGap: 12,
+          columnGap: 12,
+        },
+        [
+          {
+            id: 1,
+            columnStart: 2,
+            columnSpan: 2,
+            rowStart: 1,
+            rowSpan: 2,
+            justifySelf: "center",
+            alignSelf: "end",
+            order: 0,
+          },
+        ],
+      );
+
+      expect(output).toContain(
+        "grid-template-columns: repeat(4, minmax(96px, 1fr));",
+      );
+      expect(output).toContain("grid-column: 2 / span 2;");
+      expect(output).toContain("place-self: end center;");
+    });
+
+    it("updates generated CSS when grid auto-flow changes", () => {
+      render(<GridPlayground />);
+
+      expect(screen.getByText(/grid-auto-flow: row;/)).toBeTruthy();
+
+      const autoFlowSelect = screen.getByLabelText(/Grid auto flow/i);
+      fireEvent.change(autoFlowSelect, { target: { value: "column dense" } });
+
+      expect(screen.getByText(/grid-auto-flow: column dense;/)).toBeTruthy();
+    });
+  });
+
   describe("SlugGenerator", () => {
     it("normalizes accented and punctuated input", () => {
       expect(normalizeSlug("Déjà vu!!!  2026")).toBe("deja-vu-2026");
@@ -224,6 +281,7 @@ describe("Tool migrations", () => {
         "src/app/tools/(tools)/css/border-radius/BorderRadius.tsx",
         "src/app/tools/(tools)/css/box-shadow/BoxShadow.tsx",
         "src/app/tools/(tools)/css/flexbox-playground/FlexboxPlayground.tsx",
+        "src/app/tools/(tools)/css/grid-playground/GridPlayground.tsx",
         "src/app/tools/(tools)/code/slug-generator/SlugGenerator.tsx",
         "src/app/tools/(tools)/text/word-counter/WordCounter.tsx",
       ];

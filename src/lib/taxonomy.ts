@@ -86,6 +86,7 @@ export const taxonomyTree: TaxonomyTree = [
           { name: "Border Radius", slug: "border-radius", description: "Border radius generator and previewer" },
           { name: "Box Shadow", slug: "box-shadow", description: "Box shadow generator and previewer" },
           { name: "Flexbox Playground", slug: "flexbox-playground", description: "Live flexbox simulator and CSS generator" },
+          { name: "Grid Playground", slug: "grid-playground", description: "Live CSS Grid simulator and CSS generator" },
         ],
       },
       {

@@ -18,9 +18,9 @@ describe("Search Index Generation", () => {
   });
 
   describe("getToolsForIndex", () => {
-    it("contains exactly 6 tools", () => {
+    it("contains exactly 7 tools", () => {
       const tools = getToolsForIndex();
-      expect(tools).toHaveLength(6);
+      expect(tools).toHaveLength(7);
     });
 
     it("every tool has all required SearchIndexEntry fields", () => {
@@ -92,8 +92,8 @@ describe("Search Index Generation", () => {
       const tools = index.filter((e) => e.type === "tool");
 
       expect(articles).toHaveLength(1);
-      expect(tools).toHaveLength(6);
-      expect(index).toHaveLength(7);
+      expect(tools).toHaveLength(7);
+      expect(index).toHaveLength(8);
     });
   });
 });

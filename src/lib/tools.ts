@@ -40,6 +40,15 @@ const TOOLS: ToolMeta[] = [
     taxonomyPaths: ["tools/css-tools/flexbox-playground"],
   },
   {
+    name: "Grid Playground",
+    slug: "/tools/css/grid-playground",
+    description:
+      "Simulate and generate CSS Grid layouts with live controls for tracks, alignment, and item placement.",
+    category: "CSS",
+    icon: "Grid3X3",
+    taxonomyPaths: ["tools/css-tools/grid-playground"],
+  },
+  {
     name: "Slug Generator",
     slug: "/tools/code/slug-generator",
     description: "Generate URL-friendly slugs from any text input.",
