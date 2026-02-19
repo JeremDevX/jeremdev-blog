@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import TaxonomySidebar from "@/components/custom/TaxonomySidebar/TaxonomySidebar";
 import { getAllTools } from "@/lib/tools";
 import type { ArticleMeta } from "@/types/content";
@@ -96,6 +96,17 @@ describe("TaxonomySidebar Component", () => {
     expect(inactiveLink).not.toHaveAttribute("aria-current");
   });
 
+  it("marks tool item active when pathname has trailing slash", () => {
+    mockUsePathname.mockReturnValue("/tools/css/box-shadow/");
+
+    render(<TaxonomySidebar articles={[]} tools={mockTools} />);
+
+    const activeLink = screen.getByRole("link", {
+      name: /Box Shadow Generator/,
+    });
+    expect(activeLink).toHaveAttribute("aria-current", "page");
+  });
+
   it("applies activeLink class to the current page item", () => {
     render(<TaxonomySidebar articles={[]} tools={mockTools} />);
 
@@ -119,6 +130,100 @@ describe("TaxonomySidebar Component", () => {
 
     // "Tools & Utilities" should be visible as an accordion trigger
     expect(screen.getByText("Tools & Utilities")).toBeInTheDocument();
+  });
+
+  it("keeps active state synchronized when route changes from tool to article", () => {
+    const { rerender } = render(
+      <TaxonomySidebar articles={[]} tools={mockTools} />
+    );
+
+    const initialActiveTool = screen.getByRole("link", {
+      name: /Box Shadow Generator/,
+    });
+    expect(initialActiveTool).toHaveAttribute("aria-current", "page");
+
+    mockUsePathname.mockReturnValue("/blog/posts/vpn-anonymity-explained");
+    rerender(<TaxonomySidebar articles={[mockArticle]} tools={mockTools} />);
+
+    const activeArticle = screen.getByRole("link", {
+      name: "VPN Anonymity Explained",
+    });
+    expect(activeArticle).toHaveAttribute("aria-current", "page");
+  });
+
+  it("preserves expanded branch context across route changes", () => {
+    const { rerender } = render(
+      <TaxonomySidebar articles={[]} tools={mockTools} />
+    );
+
+    const accessibilityTrigger = screen.getByRole("button", {
+      name: "Accessibility",
+    });
+    expect(accessibilityTrigger).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(accessibilityTrigger);
+    expect(accessibilityTrigger).toHaveAttribute("aria-expanded", "true");
+
+    mockUsePathname.mockReturnValue("/blog/posts/vpn-anonymity-explained");
+    rerender(<TaxonomySidebar articles={[mockArticle]} tools={mockTools} />);
+
+    const accessibilityTriggerAfterRouteChange = screen.getByRole("button", {
+      name: "Accessibility",
+    });
+    expect(accessibilityTriggerAfterRouteChange).toHaveAttribute(
+      "aria-expanded",
+      "true"
+    );
+  });
+
+  it("uses native button triggers for Enter/Space keyboard activation", () => {
+    mockUsePathname.mockReturnValue("/about");
+
+    render(<TaxonomySidebar articles={[]} tools={mockTools} />);
+
+    const toolsTrigger = screen.getByRole("button", {
+      name: "Tools & Utilities",
+    });
+
+    expect(toolsTrigger.tagName).toBe("BUTTON");
+    expect(toolsTrigger).toHaveAttribute("type", "button");
+    expect(toolsTrigger).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(toolsTrigger);
+    expect(toolsTrigger).toHaveAttribute("aria-expanded", "true");
+
+    fireEvent.click(toolsTrigger);
+    expect(toolsTrigger).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("supports arrow-key navigation between top-level accordion triggers", () => {
+    mockUsePathname.mockReturnValue("/about");
+
+    render(<TaxonomySidebar articles={[]} tools={mockTools} />);
+
+    const accessibilityTrigger = screen.getByRole("button", {
+      name: "Accessibility",
+    });
+    const toolsTrigger = screen.getByRole("button", {
+      name: "Tools & Utilities",
+    });
+
+    accessibilityTrigger.focus();
+    fireEvent.keyDown(accessibilityTrigger, { key: "ArrowDown" });
+
+    expect(toolsTrigger).toHaveFocus();
+  });
+
+  it("keeps sidebar triggers keyboard focusable", () => {
+    render(<TaxonomySidebar articles={[]} tools={mockTools} />);
+
+    const toolsTrigger = screen.getByRole("button", {
+      name: "Tools & Utilities",
+    });
+    toolsTrigger.focus();
+
+    expect(toolsTrigger).toHaveFocus();
+    expect(toolsTrigger).not.toHaveAttribute("tabindex", "-1");
   });
 
   it("renders correct href for tool links", () => {

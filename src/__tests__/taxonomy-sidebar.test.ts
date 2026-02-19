@@ -5,7 +5,7 @@ import {
   getDefaultOpenItems,
   hasContent,
 } from "@/components/custom/TaxonomySidebar/sidebar-utils";
-import { taxonomyTree } from "@/lib/taxonomy";
+import { findTaxonomyNode, taxonomyTree } from "@/lib/taxonomy";
 import { getAllTools } from "@/lib/tools";
 import type { ArticleMeta } from "@/types/content";
 import type { ToolMeta } from "@/types/tools";
@@ -19,15 +19,6 @@ const mockArticle: ArticleMeta = {
   published: true,
 };
 
-const mockHtmlArticle: ArticleMeta = {
-  title: "The Importance of Semantics in HTML",
-  slug: "importance-of-semantics-in-html",
-  date: "2024-10-15",
-  resume: "A test article",
-  category: "programming/html/semantics",
-  published: true,
-};
-
 const mockTools = getAllTools();
 
 describe("TaxonomySidebar Utils", () => {
@@ -35,6 +26,14 @@ describe("TaxonomySidebar Utils", () => {
     it("contains taxonomy paths for all tools from the catalog", () => {
       for (const tool of mockTools) {
         expect(tool.taxonomyPaths.length).toBeGreaterThan(0);
+      }
+    });
+
+    it("resolves every tool taxonomy path to a valid taxonomy node", () => {
+      for (const tool of mockTools) {
+        for (const taxonomyPath of tool.taxonomyPaths) {
+          expect(findTaxonomyNode(taxonomyPath)).toBeDefined();
+        }
       }
     });
 
@@ -115,26 +114,62 @@ describe("TaxonomySidebar Utils", () => {
       expect(boxShadow!.items[0].href).toBe("/tools/css/box-shadow");
     });
 
-    it("sorts items alphabetically within a branch", () => {
-      const tree = buildSidebarTree(
-        taxonomyTree,
-        [mockArticle, mockHtmlArticle],
-        mockTools
+    it("renders a multi-mapped tool once using its most specific taxonomy path", () => {
+      const tree = buildSidebarTree(taxonomyTree, [], mockTools);
+
+      const flattenItems = (branches: typeof tree): { href: string; name: string }[] =>
+        branches.flatMap((branch) => [
+          ...branch.items.map((item) => ({ href: item.href, name: item.name })),
+          ...flattenItems(branch.children),
+        ]);
+
+      const allItems = flattenItems(tree);
+      const contrastEntries = allItems.filter(
+        (item) => item.href === "/tools/accessibility/contrast-checker",
       );
 
-      // Find css-tools branch which has 2 tools
+      expect(contrastEntries).toHaveLength(1);
+
+      const accessibility = tree.find((b) => b.node.slug === "accessibility");
+      const standards = accessibility?.children.find((b) => b.node.slug === "standards");
+      const colorContrast = standards?.children.find(
+        (b) => b.node.slug === "color-contrast",
+      );
+      expect(colorContrast?.items.some((item) => item.href === "/tools/accessibility/contrast-checker")).toBe(true);
+    });
+
+    it("sorts merged items alphabetically within a branch", () => {
+      const articleInToolBranch: ArticleMeta = {
+        title: "A Box Shadow Guide",
+        slug: "a-box-shadow-guide",
+        date: "2024-10-16",
+        resume: "An article in a shared branch",
+        category: "tools/css-tools/box-shadow",
+        published: true,
+      };
+
+      const boxShadowTool = mockTools.find(
+        (tool) => tool.slug === "/tools/css/box-shadow",
+      );
+      expect(boxShadowTool).toBeDefined();
+
+      const tree = buildSidebarTree(
+        taxonomyTree,
+        [articleInToolBranch],
+        boxShadowTool ? [boxShadowTool] : [],
+      );
+
       const toolsBranch = tree.find((b) => b.node.slug === "tools");
+      expect(toolsBranch).toBeDefined();
       const cssTools = toolsBranch!.children.find((b) => b.node.slug === "css-tools");
+      expect(cssTools).toBeDefined();
+      const boxShadow = cssTools!.children.find((b) => b.node.slug === "box-shadow");
+      expect(boxShadow).toBeDefined();
 
-      // Get all items from css-tools children
-      const allCssToolItems = cssTools!.children.flatMap((c) => c.items);
-      expect(allCssToolItems.length).toBe(2);
-
-      // Each branch has 1 item, but within the css-tools branch overall,
-      // border-radius < box-shadow alphabetically
-      const names = allCssToolItems.map((i) => i.name);
-      expect(names).toContain("Border Radius Generator");
-      expect(names).toContain("Box Shadow Generator");
+      expect(boxShadow!.items.map((item) => item.name)).toEqual([
+        "A Box Shadow Guide",
+        "Box Shadow Generator",
+      ]);
     });
 
     it("returns empty items for branches with no matching content", () => {
@@ -168,6 +203,32 @@ describe("TaxonomySidebar Utils", () => {
     it("returns ancestor paths for an article page", () => {
       const result = getDefaultOpenItems(
         "/blog/posts/vpn-anonymity-explained",
+        [mockArticle],
+        mockTools
+      );
+      expect(result).toEqual([
+        "networking-security",
+        "networking-security/privacy",
+        "networking-security/privacy/vpn-anonymity",
+      ]);
+    });
+
+    it("returns ancestor paths for a tool page with trailing slash", () => {
+      const result = getDefaultOpenItems(
+        "/tools/css/box-shadow/",
+        [],
+        mockTools
+      );
+      expect(result).toEqual([
+        "tools",
+        "tools/css-tools",
+        "tools/css-tools/box-shadow",
+      ]);
+    });
+
+    it("returns ancestor paths for an article page with trailing slash", () => {
+      const result = getDefaultOpenItems(
+        "/blog/posts/vpn-anonymity-explained/",
         [mockArticle],
         mockTools
       );

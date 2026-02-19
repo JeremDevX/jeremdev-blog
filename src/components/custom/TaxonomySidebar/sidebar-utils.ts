@@ -19,6 +19,22 @@ export function buildTaxonomyPath(ancestors: string[], slug: string): string {
   return [...ancestors, slug].join("/");
 }
 
+export function normalizePathname(pathname: string): string {
+  if (!pathname) return "";
+  if (pathname === "/") return pathname;
+  return pathname.replace(/\/+$/, "");
+}
+
+function getPreferredTaxonomyPath(taxonomyPaths: string[]): string | undefined {
+  if (taxonomyPaths.length === 0) return undefined;
+
+  return [...taxonomyPaths].sort((a, b) => {
+    const depthDiff = b.split("/").length - a.split("/").length;
+    if (depthDiff !== 0) return depthDiff;
+    return a.localeCompare(b);
+  })[0];
+}
+
 export function buildSidebarTree(
   nodes: TaxonomyNode[],
   articles: ArticleMeta[],
@@ -42,7 +58,7 @@ export function buildSidebarTree(
 
     // Find tools matching this taxonomy node
     const matchingTools: SidebarItem[] = tools
-      .filter((t) => t.taxonomyPaths.includes(currentPath))
+      .filter((t) => getPreferredTaxonomyPath(t.taxonomyPaths) === currentPath)
       .map((t) => ({
         type: "tool" as const,
         name: t.name,
@@ -80,8 +96,12 @@ export function getDefaultOpenItems(
   articles: ArticleMeta[],
   tools: ToolMeta[],
 ): string[] {
+  const normalizedPathname = normalizePathname(pathname);
+
   // Check if pathname matches a tool page
-  const tool = tools.find((t) => t.slug === pathname);
+  const tool = tools.find(
+    (t) => normalizePathname(t.slug) === normalizedPathname,
+  );
   if (tool) {
     const openItems = new Set<string>();
     for (const taxonomyPath of tool.taxonomyPaths) {
@@ -93,7 +113,10 @@ export function getDefaultOpenItems(
   }
 
   // Check if pathname matches an article page
-  const article = articles.find((a) => `/blog/posts/${a.slug}` === pathname);
+  const article = articles.find(
+    (a) =>
+      normalizePathname(`/blog/posts/${a.slug}`) === normalizedPathname,
+  );
   if (article) {
     return buildOpenPathsFromTaxonomyPath(article.category);
   }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Wrench } from "lucide-react";
@@ -18,6 +18,7 @@ import {
   buildSidebarTree,
   getDefaultOpenItems,
   hasContent,
+  normalizePathname,
   type SidebarBranch,
   type SidebarItem,
 } from "./sidebar-utils";
@@ -60,17 +61,12 @@ function TopicBranch({
 
           if (childHasSubBranches) {
             return (
-              <Accordion
+              <TopicBranch
                 key={childPath}
-                type="multiple"
-                defaultValue={[childPath]}
-              >
-                <TopicBranch
-                  branch={child}
-                  pathname={pathname}
-                  parentPath={[...parentPath, branch.node.slug]}
-                />
-              </Accordion>
+                branch={child}
+                pathname={pathname}
+                parentPath={[...parentPath, branch.node.slug]}
+              />
             );
           }
 
@@ -100,11 +96,13 @@ function ItemList({
   pathname: string;
 }) {
   if (items.length === 0) return null;
+  const normalizedPathname = normalizePathname(pathname);
 
   return (
     <ul className={styles.itemList}>
       {items.map((item) => {
-        const isActive = pathname === item.href;
+        const isActive =
+          normalizedPathname === normalizePathname(item.href);
         return (
           <li key={item.href}>
             <Link
@@ -130,7 +128,22 @@ export default function TaxonomySidebar({
   mode = "desktop",
 }: TaxonomySidebarProps) {
   const pathname = usePathname();
-  const defaultOpenItems = getDefaultOpenItems(pathname, articles, tools);
+  const routeOpenItems = useMemo(
+    () => getDefaultOpenItems(pathname, articles, tools),
+    [pathname, articles, tools],
+  );
+  const [openItems, setOpenItems] = useState<string[]>(routeOpenItems);
+
+  useEffect(() => {
+    setOpenItems((previousOpenItems) => {
+      const mergedOpenItems = new Set(previousOpenItems);
+      for (const routeItem of routeOpenItems) {
+        mergedOpenItems.add(routeItem);
+      }
+      return [...mergedOpenItems];
+    });
+  }, [routeOpenItems]);
+
   const tree = useMemo(
     () => buildSidebarTree(taxonomyTree, articles, tools),
     [articles, tools],
@@ -143,8 +156,8 @@ export default function TaxonomySidebar({
       className={`${styles.sidebar} ${isMobileMode ? styles.sidebarMobile : ""}`}
       aria-label="Taxonomy navigation"
     >
-      <Accordion type="multiple" defaultValue={defaultOpenItems} key={pathname}>
-        {branchesWithContent.map((bigTopic, index) => (
+      <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
+        {branchesWithContent.map((bigTopic) => (
           <div key={bigTopic.node.slug}>
             <AccordionItem
               value={bigTopic.node.slug}
@@ -176,19 +189,17 @@ export default function TaxonomySidebar({
                 </span>
               </AccordionTrigger>
               <AccordionContent>
-                <Accordion type="multiple" defaultValue={defaultOpenItems}>
-                  {bigTopic.children.filter(hasContent).map((topic) => (
-                    <TopicBranch
-                      key={buildTaxonomyPath(
-                        [bigTopic.node.slug],
-                        topic.node.slug,
-                      )}
-                      branch={topic}
-                      pathname={pathname}
-                      parentPath={[bigTopic.node.slug]}
-                    />
-                  ))}
-                </Accordion>
+                {bigTopic.children.filter(hasContent).map((topic) => (
+                  <TopicBranch
+                    key={buildTaxonomyPath(
+                      [bigTopic.node.slug],
+                      topic.node.slug,
+                    )}
+                    branch={topic}
+                    pathname={pathname}
+                    parentPath={[bigTopic.node.slug]}
+                  />
+                ))}
                 {bigTopic.items.length > 0 && (
                   <ItemList items={bigTopic.items} pathname={pathname} />
                 )}
