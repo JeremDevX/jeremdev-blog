@@ -44,14 +44,14 @@ describe("FilterTabs", () => {
   it("renders counts and defaults to all", () => {
     render(<FilterTabs items={items} />);
 
-    expect(screen.getByRole("button", { name: /All \(3\)/i })).toBeTruthy();
+    expect(screen.getByRole("tab", { name: /All \(3\)/i })).toBeTruthy();
     expect(
-      screen.getByRole("button", { name: /Articles \(2\)/i }),
+      screen.getByRole("tab", { name: /Articles \(2\)/i }),
     ).toBeTruthy();
-    expect(screen.getByRole("button", { name: /Tools \(1\)/i })).toBeTruthy();
+    expect(screen.getByRole("tab", { name: /Tools \(1\)/i })).toBeTruthy();
 
-    const allTab = screen.getByRole("button", { name: /All \(3\)/i });
-    expect(allTab.getAttribute("aria-pressed")).toBe("true");
+    const allTab = screen.getByRole("tab", { name: /All \(3\)/i });
+    expect(allTab.getAttribute("aria-selected")).toBe("true");
     expect(allTab.className).toContain("tab--active");
   });
 
@@ -60,13 +60,13 @@ describe("FilterTabs", () => {
 
     render(<FilterTabs items={items} onFilterChange={onFilterChange} />);
 
-    const articlesTab = screen.getByRole("button", {
+    const articlesTab = screen.getByRole("tab", {
       name: /Articles \(2\)/i,
     });
     fireEvent.click(articlesTab);
 
     await waitFor(() => {
-      expect(articlesTab.getAttribute("aria-pressed")).toBe("true");
+      expect(articlesTab.getAttribute("aria-selected")).toBe("true");
     });
 
     expect(onFilterChange).toHaveBeenCalledWith(
@@ -80,10 +80,10 @@ describe("FilterTabs", () => {
 
     render(<FilterTabs items={items} />);
 
-    const toolsTab = screen.getByRole("button", { name: /Tools \(1\)/i });
-    expect(toolsTab.getAttribute("aria-pressed")).toBe("true");
+    const toolsTab = screen.getByRole("tab", { name: /Tools \(1\)/i });
+    expect(toolsTab.getAttribute("aria-selected")).toBe("true");
 
-    const articlesTab = screen.getByRole("button", {
+    const articlesTab = screen.getByRole("tab", {
       name: /Articles \(2\)/i,
     });
     fireEvent.click(articlesTab);
@@ -99,11 +99,11 @@ describe("FilterTabs", () => {
   it("supports keyboard focus for accessibility", () => {
     render(<FilterTabs items={items} />);
 
-    const allTab = screen.getByRole("button", { name: /All \(3\)/i });
-    const articlesTab = screen.getByRole("button", {
+    const allTab = screen.getByRole("tab", { name: /All \(3\)/i });
+    const articlesTab = screen.getByRole("tab", {
       name: /Articles \(2\)/i,
     });
-    const toolsTab = screen.getByRole("button", { name: /Tools \(1\)/i });
+    const toolsTab = screen.getByRole("tab", { name: /Tools \(1\)/i });
 
     // Verify buttons are keyboard accessible
     expect(allTab.tagName).toBe("BUTTON");
@@ -118,15 +118,53 @@ describe("FilterTabs", () => {
     expect(document.activeElement).toBe(articlesTab);
   });
 
-  it("has aria-pressed attribute for screen readers", () => {
+  it("has aria-selected state for tabs", () => {
     render(<FilterTabs items={items} />);
 
-    const allTab = screen.getByRole("button", { name: /All \(3\)/i });
-    const articlesTab = screen.getByRole("button", {
+    const allTab = screen.getByRole("tab", { name: /All \(3\)/i });
+    const articlesTab = screen.getByRole("tab", {
       name: /Articles \(2\)/i,
     });
 
-    expect(allTab.getAttribute("aria-pressed")).toBe("true");
-    expect(articlesTab.getAttribute("aria-pressed")).toBe("false");
+    expect(allTab.getAttribute("aria-selected")).toBe("true");
+    expect(articlesTab.getAttribute("aria-selected")).toBe("false");
+  });
+
+  it("exposes tablist semantics for arrow-key navigation", () => {
+    render(<FilterTabs items={items} />);
+
+    expect(
+      screen.getByRole("tablist", { name: /content filters/i }),
+    ).toBeTruthy();
+
+    const allTab = screen.getByRole("tab", { name: /All \(3\)/i });
+    const articlesTab = screen.getByRole("tab", { name: /Articles \(2\)/i });
+
+    expect(allTab.getAttribute("aria-selected")).toBe("true");
+    expect(allTab.getAttribute("tabindex")).toBe("0");
+    expect(articlesTab.getAttribute("aria-selected")).toBe("false");
+    expect(articlesTab.getAttribute("tabindex")).toBe("-1");
+  });
+
+  it("moves active tab with arrow keys", async () => {
+    render(<FilterTabs items={items} />);
+
+    const allTab = screen.getByRole("tab", { name: /All \(3\)/i });
+    allTab.focus();
+    fireEvent.keyDown(allTab, { key: "ArrowRight" });
+
+    const articlesTab = screen.getByRole("tab", { name: /Articles \(2\)/i });
+    await waitFor(() => {
+      expect(articlesTab).toHaveFocus();
+      expect(articlesTab.getAttribute("aria-selected")).toBe("true");
+    });
+  });
+
+  it("links tabs to a controlled tabpanel when provided", () => {
+    render(<FilterTabs items={items} tabPanelId="taxonomy-content-panel" />);
+
+    const allTab = screen.getByRole("tab", { name: /All \(3\)/i });
+    expect(allTab.getAttribute("aria-controls")).toBe("taxonomy-content-panel");
+    expect(allTab.getAttribute("id")).toBe("filter-tabs-tab-all");
   });
 });

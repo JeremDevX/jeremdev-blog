@@ -235,8 +235,10 @@ describe("Navbar", () => {
       const blogLink = screen.getAllByRole("link", { name: /blog/i })[1]; // Second one is in drawer
       fireEvent.click(blogLink);
 
-      // Drawer should start closing (state updated)
-      // Note: In real implementation, Sheet component handles the close animation
+      await waitFor(() => {
+        const sheet = screen.getByTestId("sheet");
+        expect(sheet.getAttribute("data-open")).toBe("false");
+      });
     });
   });
 
@@ -251,6 +253,9 @@ describe("Navbar", () => {
         "Toggle navigation menu",
       );
       expect(hamburgerButton.getAttribute("aria-expanded")).toBe("false");
+      expect(hamburgerButton.getAttribute("aria-controls")).toBe(
+        "navbar-mobile-drawer",
+      );
     });
 
     it("updates aria-expanded when drawer opens", async () => {

@@ -122,6 +122,7 @@ export default function BoxShadow() {
                   value={input.value}
                   onChange={input.onChange}
                   className={styles.input}
+                  aria-valuetext={`${input.name} ${input.value} pixels`}
                 />
               </label>
             ))}

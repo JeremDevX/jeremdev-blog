@@ -131,6 +131,7 @@ export default function BorderRadius() {
                     handleCornerChange(inputRange.id, Number(event.target.value))
                   }
                   className={styles.slide}
+                  aria-valuetext={`${inputRange.name} ${inputRange.value}%`}
                 />
               </label>
             ))}
@@ -155,6 +156,7 @@ export default function BorderRadius() {
                       handleSizeChange(input.id, Number(event.target.value))
                     }
                     className={styles.slide}
+                    aria-valuetext={`${input.name} ${input.value} pixels`}
                   />
                 </label>
               ))}
@@ -165,6 +167,7 @@ export default function BorderRadius() {
           <div style={squareStyle} className={styles.preview} />
         </div>
         <button
+          type="button"
           className={`${styles.button} ${styles.semiBold}`}
           onClick={handleCustomSizeToggle}
           title="Click to change the size of the square or restore the default size"

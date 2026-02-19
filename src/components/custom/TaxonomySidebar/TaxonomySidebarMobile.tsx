@@ -23,6 +23,7 @@ export default function TaxonomySidebarMobile({
   tools,
 }: TaxonomySidebarMobileProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const drawerId = "taxonomy-sidebar-mobile-drawer";
 
   return (
     <div className={styles.mobileOnly}>
@@ -31,13 +32,20 @@ export default function TaxonomySidebarMobile({
         className={styles.trigger}
         onClick={() => setIsOpen(true)}
         aria-label="Open topics navigation"
+        aria-expanded={isOpen}
+        aria-controls={drawerId}
+        aria-haspopup="dialog"
       >
         <ListTree className={styles.triggerIcon} aria-hidden="true" />
         Topics
       </button>
 
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetContent side="left" className={styles.sheetContent}>
+        <SheetContent
+          side="left"
+          className={styles.sheetContent}
+          id={drawerId}
+        >
           <SheetHeader className={styles.sheetHeader}>
             <SheetTitle className={styles.sheetTitle}>Topics</SheetTitle>
           </SheetHeader>

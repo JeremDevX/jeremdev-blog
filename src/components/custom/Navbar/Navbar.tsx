@@ -25,6 +25,7 @@ const navLinks = [
 export default function Navbar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const pathname = usePathname();
+  const drawerId = "navbar-mobile-drawer";
 
   // Close drawer handler
   const handleCloseDrawer = () => {
@@ -82,6 +83,7 @@ export default function Navbar() {
               className={`${styles.navLink} ${
                 isLinkActive(link.href) ? styles.navLinkActive : ""
               }`}
+              aria-current={isLinkActive(link.href) ? "page" : undefined}
             >
               {link.label}
             </Link>
@@ -100,6 +102,8 @@ export default function Navbar() {
           onClick={() => setIsDrawerOpen(true)}
           aria-label="Toggle navigation menu"
           aria-expanded={isDrawerOpen}
+          aria-controls={drawerId}
+          aria-haspopup="dialog"
         >
           <Menu size={24} />
         </button>
@@ -107,7 +111,11 @@ export default function Navbar() {
 
       {/* Mobile Drawer using shadcn/ui Sheet */}
       <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-        <SheetContent side="left" className={styles.drawerSheetContent}>
+        <SheetContent
+          side="left"
+          className={styles.drawerSheetContent}
+          id={drawerId}
+        >
           <SheetHeader className={styles.drawerHeader}>
             <SheetTitle>Navigation</SheetTitle>
           </SheetHeader>
@@ -121,6 +129,7 @@ export default function Navbar() {
                   isLinkActive(link.href) ? styles.drawerLinkActive : ""
                 }`}
                 onClick={handleCloseDrawer}
+                aria-current={isLinkActive(link.href) ? "page" : undefined}
               >
                 {link.label}
               </Link>

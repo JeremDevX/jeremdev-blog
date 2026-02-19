@@ -213,9 +213,13 @@ export default function SearchInput() {
           <div className={styles.container} ref={containerRef}>
             <div className={styles.inputWrapper}>
               <Search className={styles.inputIcon} />
+              <label htmlFor="search-overlay-input" className={styles.visuallyHidden}>
+                Search articles and tools
+              </label>
               <input
                 ref={inputRef}
                 type="search"
+                id="search-overlay-input"
                 placeholder="Search articles and tools..."
                 className={styles.input}
                 value={query}

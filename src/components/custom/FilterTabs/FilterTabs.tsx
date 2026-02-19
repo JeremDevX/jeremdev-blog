@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect, useCallback } from "react";
+import { useMemo, useState, useEffect, useCallback, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
 import styles from "./FilterTabs.module.scss";
@@ -14,6 +14,8 @@ export type FilterTabsItem = {
 type FilterTabsProps<T extends FilterTabsItem> = {
   items: T[];
   onFilterChange?: (filter: FilterTabsFilter, filteredItems: T[]) => void;
+  tabPanelId?: string;
+  idPrefix?: string;
 };
 
 function resolveFilterParam(params: URLSearchParams): FilterTabsFilter {
@@ -40,6 +42,8 @@ function filterItems<T extends FilterTabsItem>(
 export default function FilterTabs<T extends FilterTabsItem>({
   items,
   onFilterChange,
+  tabPanelId,
+  idPrefix = "filter-tabs",
 }: FilterTabsProps<T>) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -48,6 +52,14 @@ export default function FilterTabs<T extends FilterTabsItem>({
   const [activeFilter, setActiveFilter] = useState<FilterTabsFilter>(() =>
     resolveFilterParam(new URLSearchParams(searchParams.toString())),
   );
+  const tabRefs = useRef<Record<FilterTabsFilter, HTMLButtonElement | null>>({
+    all: null,
+    articles: null,
+    tools: null,
+  });
+  const orderedFilters: FilterTabsFilter[] = ["all", "articles", "tools"];
+
+  const getTabId = (filter: FilterTabsFilter) => `${idPrefix}-tab-${filter}`;
 
   useEffect(() => {
     const nextFilter = resolveFilterParam(
@@ -94,9 +106,45 @@ export default function FilterTabs<T extends FilterTabsItem>({
     router.replace(nextUrl, { scroll: false });
   };
 
-  const handleFilterClick = (nextFilter: FilterTabsFilter) => {
+  const activateFilter = (
+    nextFilter: FilterTabsFilter,
+    options?: { focusTab?: boolean },
+  ) => {
     setActiveFilter(nextFilter);
     updateUrlParam(nextFilter);
+    if (options?.focusTab) {
+      requestAnimationFrame(() => {
+        tabRefs.current[nextFilter]?.focus();
+      });
+    }
+  };
+
+  const handleFilterClick = (nextFilter: FilterTabsFilter) => {
+    activateFilter(nextFilter);
+  };
+
+  const handleTabKeyDown = (
+    event: React.KeyboardEvent<HTMLButtonElement>,
+    currentFilter: FilterTabsFilter,
+  ) => {
+    const currentIndex = orderedFilters.indexOf(currentFilter);
+    if (currentIndex === -1) return;
+
+    let nextIndex: number | null = null;
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+      nextIndex = (currentIndex + 1) % orderedFilters.length;
+    } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+      nextIndex = (currentIndex - 1 + orderedFilters.length) % orderedFilters.length;
+    } else if (event.key === "Home") {
+      nextIndex = 0;
+    } else if (event.key === "End") {
+      nextIndex = orderedFilters.length - 1;
+    }
+
+    if (nextIndex === null) return;
+
+    event.preventDefault();
+    activateFilter(orderedFilters[nextIndex], { focusTab: true });
   };
 
   const renderTab = (
@@ -113,8 +161,16 @@ export default function FilterTabs<T extends FilterTabsItem>({
           ? styles["tab--active"]
           : styles["tab--inactive"],
       )}
-      aria-pressed={activeFilter === filter}
+      ref={(element) => {
+        tabRefs.current[filter] = element;
+      }}
+      id={getTabId(filter)}
+      role="tab"
+      aria-selected={activeFilter === filter}
+      tabIndex={activeFilter === filter ? 0 : -1}
+      aria-controls={tabPanelId}
       onClick={() => handleFilterClick(filter)}
+      onKeyDown={(event) => handleTabKeyDown(event, filter)}
     >
       {label} ({count})
     </button>
@@ -123,8 +179,9 @@ export default function FilterTabs<T extends FilterTabsItem>({
   return (
     <div
       className={styles.filterTabs}
-      role="group"
+      role="tablist"
       aria-label="Content filters"
+      aria-orientation="horizontal"
     >
       {renderTab("All", "all", counts.all)}
       {renderTab("Articles", "articles", counts.articles)}

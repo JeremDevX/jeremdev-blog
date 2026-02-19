@@ -41,6 +41,8 @@ export default function TaxonomyContent({ items }: TaxonomyContentProps) {
     filterItemsByType(items, initialFilter),
   );
   const [activeFilter, setActiveFilter] = useState<FilterTabsFilter>(initialFilter);
+  const tabPanelId = "taxonomy-content-panel";
+  const tabIdPrefix = "taxonomy-content-filter";
 
   const emptyMessage =
     activeFilter === "articles"
@@ -53,20 +55,28 @@ export default function TaxonomyContent({ items }: TaxonomyContentProps) {
     <>
       <FilterTabs
         items={items}
+        tabPanelId={tabPanelId}
+        idPrefix={tabIdPrefix}
         onFilterChange={(filter, nextItems) => {
           setActiveFilter(filter);
           setFilteredItems(nextItems);
         }}
       />
-      {filteredItems.length > 0 ? (
-        <div className={styles.contentGrid}>
-          {filteredItems.map((item) => (
-            <ContentCard key={`${item.type}-${item.href}`} {...item} />
-          ))}
-        </div>
-      ) : (
-        <p className={styles.emptyState}>{emptyMessage}</p>
-      )}
+      <div
+        id={tabPanelId}
+        role="tabpanel"
+        aria-labelledby={`${tabIdPrefix}-tab-${activeFilter}`}
+      >
+        {filteredItems.length > 0 ? (
+          <div className={styles.contentGrid}>
+            {filteredItems.map((item) => (
+              <ContentCard key={`${item.type}-${item.href}`} {...item} />
+            ))}
+          </div>
+        ) : (
+          <p className={styles.emptyState}>{emptyMessage}</p>
+        )}
+      </div>
     </>
   );
 }

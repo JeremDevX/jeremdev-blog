@@ -79,6 +79,16 @@ describe("Tool migrations", () => {
         ),
       ).toBeTruthy();
     });
+
+    it("exposes current value context on range inputs", () => {
+      render(<BorderRadius />);
+
+      const topLeftSlider = screen.getByLabelText(/Top Left:/i);
+      expect(topLeftSlider).toHaveAttribute("aria-valuetext", "Top Left 0%");
+
+      fireEvent.change(topLeftSlider, { target: { value: "40" } });
+      expect(topLeftSlider).toHaveAttribute("aria-valuetext", "Top Left 40%");
+    });
   });
 
   describe("BoxShadow", () => {
@@ -100,6 +110,16 @@ describe("Tool migrations", () => {
       expect(
         screen.getByText("box-shadow: 5px 5px 12px 5px #FFFFFF;"),
       ).toBeTruthy();
+    });
+
+    it("exposes slider value context through aria-valuetext", () => {
+      render(<BoxShadow />);
+
+      const blurSlider = screen.getByLabelText(/Blur/i);
+      expect(blurSlider).toHaveAttribute("aria-valuetext", "Blur 5 pixels");
+
+      fireEvent.change(blurSlider, { target: { value: "12" } });
+      expect(blurSlider).toHaveAttribute("aria-valuetext", "Blur 12 pixels");
     });
   });
 

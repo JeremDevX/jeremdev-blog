@@ -9,7 +9,9 @@ export default function PostLayout({
 }>) {
   return (
     <div className={styles.root}>
-      <TaxonomySidebarServer />
+      <aside className={styles.sidebar} aria-label="Taxonomy sidebar">
+        <TaxonomySidebarServer />
+      </aside>
       <main className={`${styles.main} article-padding`}>
         {children}
         <Link href="/tools" className={styles.backLink}>
