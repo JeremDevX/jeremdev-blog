@@ -74,6 +74,34 @@ describe("RelatedSection", () => {
     ).toBeTruthy();
   });
 
+  it("renders a single related card when only one item exists", () => {
+    render(
+      <RelatedSection
+        items={[
+          {
+            type: "article",
+            title: "Flexbox vs Grid: Which Layout System Should You Choose?",
+            description: "How to choose between Flexbox and Grid.",
+            href: "/blog/posts/flexbox-vs-grid",
+            date: "2026-02-19",
+            category: "programming/css/layout",
+          },
+        ]}
+        placeholder="Related content will be added soon."
+      />,
+    );
+
+    expect(screen.getByRole("heading", { name: "Related" })).toBeTruthy();
+    expect(
+      screen.queryByText("Related content will be added soon."),
+    ).toBeNull();
+    expect(
+      screen.getByRole("link", {
+        name: /flexbox vs grid: which layout system should you choose\?/i,
+      }),
+    ).toBeTruthy();
+  });
+
   it("preserves keyboard accessibility through card links", () => {
     render(
       <RelatedSection

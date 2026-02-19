@@ -1,0 +1,193 @@
+---
+title: "Flexbox vs Grid: Which Layout System Should You Choose?"
+slug: "flexbox-vs-grid"
+date: "2026-02-19"
+resume: "Flexbox and Grid solve different layout problems. Flexbox is best for one-dimensional flows, while Grid is designed for two-dimensional structures."
+category: "programming/css/layout"
+published: true
+relatedTools:
+  - "/tools/css/flexbox-playground"
+  - "/tools/css/grid-playground"
+---
+
+## What Are Flexbox and Grid?
+
+When you start building layouts in CSS, one question comes back all the time: should I use **Flexbox** or **Grid**?
+
+Both are modern layout systems, both are powerful, and both are useful. But they are not made for the same type of problem.
+
+- **Flexbox** is designed for **one-dimensional** layouts (a row *or* a column).
+- **Grid** is designed for **two-dimensional** layouts (rows *and* columns at the same time).
+
+Understanding this difference saves a lot of time and avoids overcomplicated CSS.
+
+## Flexbox vs Grid at a Glance
+
+| Criteria | Flexbox | Grid |
+| --- | --- | --- |
+| Dimension | One-dimensional (row or column) | Two-dimensional (rows and columns) |
+| Best for | UI components and alignment | Page and section structures |
+| Placement model | Content flow first | Explicit track/area placement |
+| Typical examples | Navbar, tabs, button groups, card actions | Dashboards, gallery layouts, full-page skeletons |
+| Learning curve | Easier to start | Slightly steeper, but very powerful |
+| Common pitfall | Trying to force 2D layouts | Overengineering simple 1D alignment |
+
+## When Should You Use Flexbox?
+
+Flexbox is perfect when your main goal is to align items on a single axis and distribute space dynamically.
+
+Typical use cases:
+
+- Navbar links
+- Button groups
+- Cards aligned in one row
+- Vertical alignment inside a component
+
+Example:
+
+```css
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+```
+
+In this example, Flexbox gives simple and clean control over alignment and spacing.
+
+## Flexbox VS Grid: Real Comparison
+
+### Axis Control
+
+- **Flexbox** controls one axis at a time.
+- **Grid** controls both axes at once.
+
+If you only need horizontal or vertical alignment, Flexbox is usually faster to implement.
+
+### Layout Precision
+
+- **Flexbox** shines when item size is content-driven.
+- **Grid** shines when layout is structure-driven.
+
+If you need strict columns, rows, and named regions, Grid is the better fit.
+
+### Responsiveness
+
+Both are responsive, but not in the same way:
+
+- Flexbox handles wrapping naturally with `flex-wrap`.
+- Grid handles adaptive tracks very well with patterns like `repeat(auto-fit, minmax(...))`.
+
+### Source Order and Reordering
+
+Both systems allow visual reordering, but use this carefully.
+Keeping source order aligned with reading order is usually better for accessibility and maintainability.
+
+### Maintainability
+
+- Repetitive component-level alignment is often cleaner with Flexbox.
+- Large page skeletons are usually easier to reason about with Grid areas and track definitions.
+
+## When Should You Use Grid?
+
+Grid is the right choice when you need a real page structure with both rows and columns, or when items must be placed in specific areas.
+
+Typical use cases:
+
+- Dashboard layout
+- Magazine-like sections
+- Complex card galleries
+- Full page structure (header, sidebar, main, footer)
+
+Example:
+
+```css
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header"
+    "sidebar main"
+    "footer footer";
+  min-height: 100vh;
+}
+```
+
+With Grid, you define the structure first, then place each block where it belongs.
+
+## Flexbox vs Grid: The Real Difference
+
+Here is the short version:
+
+- Use **Flexbox** when content should naturally flow in one direction.
+- Use **Grid** when layout needs explicit structure in two directions.
+
+Another way to see it:
+
+- Flexbox is **content-first**.
+- Grid is often **layout-first**.
+
+## Which One Is More Used Today?
+
+As of **February 19, 2026**, the practical answer is:
+
+- **Flexbox is still more broadly used in production pages.**
+- **Grid is strongly growing and is often preferred for complex layouts.**
+
+Why Flexbox is still used more:
+
+- It is simpler to start with.
+- It solves many everyday UI problems quickly.
+- It is heavily used in existing codebases and framework components.
+
+A concrete reference point is public ecosystem data (such as HTTP Archive Web Almanac and State of CSS): these sources consistently show **Flexbox appearing more often in day-to-day production code**, while **Grid keeps gaining strong interest for larger layout architecture**.
+
+At the same time, developer perception is evolving: modern CSS surveys often highlight Grid as one of the most impactful layout tools, especially for complex two-dimensional interfaces.
+
+So in short:
+
+- For **day-to-day component layout**, Flexbox still dominates.
+- For **intentional two-dimensional systems**, Grid is increasingly the first choice.
+
+## Can You Use Both Together?
+
+Yes, and this is usually the best approach.
+
+A common pattern is:
+
+- Use **Grid** for the global page or section structure.
+- Use **Flexbox** inside each block for local alignment.
+
+For example, a dashboard can use Grid for columns/rows, while each card header uses Flexbox to align icon, title, and action buttons.
+
+## Common Mistakes
+
+- Forcing Flexbox to mimic a two-dimensional layout with too many hacks.
+- Using Grid for a simple one-line alignment that Flexbox can solve in two lines.
+- Forgetting `gap` and manually adding margins everywhere.
+- Ignoring responsive behavior (`minmax()`, `auto-fit`, wrapping strategies).
+
+## Quick Decision Guide
+
+- Need to align items inside one component? Use **Flexbox**.
+- Need columns and rows with explicit placement? Use **Grid**.
+- Need a complete UI system? Use **Grid for macro layout** + **Flexbox for micro layout**.
+
+## Conclusion
+
+Flexbox and Grid are not competitors. They are complementary tools.
+
+If your layout is one-dimensional, start with Flexbox.
+If your layout is two-dimensional, start with Grid.
+If your interface is real-world and complex, use both in the right places.
+
+### Useful Links
+
+- [MDN: Basic concepts of Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Basic_concepts_of_flexbox)
+- [MDN: Basic concepts of CSS Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Basic_concepts_of_grid_layout)
+- [CSS Tricks: A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+- [CSS Tricks: A Complete Guide to Grid](https://css-tricks.com/snippets/css/complete-guide-grid/)
+- [HTTP Archive Web Almanac 2022 (CSS)](https://almanac.httparchive.org/en/2022/css)
+- [State of CSS 2025: CSS Usage](https://2025.stateofcss.com/en-US/usage/)

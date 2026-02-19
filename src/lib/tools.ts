@@ -38,6 +38,7 @@ const TOOLS: ToolMeta[] = [
     category: "CSS",
     icon: "Rows3",
     taxonomyPaths: ["tools/css-tools/flexbox-playground"],
+    relatedArticles: ["flexbox-vs-grid"],
   },
   {
     name: "Grid Playground",
@@ -47,6 +48,7 @@ const TOOLS: ToolMeta[] = [
     category: "CSS",
     icon: "Grid3X3",
     taxonomyPaths: ["tools/css-tools/grid-playground"],
+    relatedArticles: ["flexbox-vs-grid"],
   },
   {
     name: "Slug Generator",

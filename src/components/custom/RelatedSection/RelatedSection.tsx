@@ -31,7 +31,7 @@ export default function RelatedSection({
   const relatedItems = (items ?? []).filter(isValidRelatedItem).slice(0, 4);
   const HeadingTag = headingLevel;
 
-  if (relatedItems.length < 2) {
+  if (relatedItems.length === 0) {
     if (!placeholder) {
       return null;
     }
