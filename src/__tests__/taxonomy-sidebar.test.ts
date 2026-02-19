@@ -4,6 +4,7 @@ import {
   buildSidebarTree,
   getDefaultOpenItems,
   hasContent,
+  type SidebarItem,
 } from "@/components/custom/TaxonomySidebar/sidebar-utils";
 import { findTaxonomyNode, taxonomyTree } from "@/lib/taxonomy";
 import { getAllTools } from "@/lib/tools";
@@ -178,6 +179,42 @@ describe("TaxonomySidebar Utils", () => {
       // Programming branch should have no items
       const programming = tree.find((b) => b.node.slug === "programming");
       expect(programming!.items).toHaveLength(0);
+    });
+
+    it("supports strict content-type separation by input dataset", () => {
+      const articleInToolBranch: ArticleMeta = {
+        title: "A Box Shadow Guide",
+        slug: "a-box-shadow-guide",
+        date: "2024-10-16",
+        resume: "An article in a tools taxonomy branch",
+        category: "tools/css-tools/box-shadow",
+        published: true,
+      };
+
+      const boxShadowTool = mockTools.find(
+        (tool) => tool.slug === "/tools/css/box-shadow",
+      );
+      expect(boxShadowTool).toBeDefined();
+
+      const articleOnlyTree = buildSidebarTree(
+        taxonomyTree,
+        [articleInToolBranch],
+        [],
+      );
+      const toolOnlyTree = buildSidebarTree(
+        taxonomyTree,
+        [],
+        boxShadowTool ? [boxShadowTool] : [],
+      );
+
+      const flattenTypes = (branches: typeof articleOnlyTree): SidebarItem["type"][] =>
+        branches.flatMap((branch) => [
+          ...branch.items.map((item) => item.type),
+          ...flattenTypes(branch.children),
+        ]);
+
+      expect(flattenTypes(articleOnlyTree).every((type) => type === "article")).toBe(true);
+      expect(flattenTypes(toolOnlyTree).every((type) => type === "tool")).toBe(true);
     });
   });
 

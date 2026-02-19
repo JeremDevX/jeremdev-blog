@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import TaxonomySidebar from "@/components/custom/TaxonomySidebar/TaxonomySidebar";
 import { getAllTools } from "@/lib/tools";
 import type { ArticleMeta } from "@/types/content";
@@ -233,5 +233,26 @@ describe("TaxonomySidebar Component", () => {
       name: /Box Shadow Generator/,
     });
     expect(toolLink).toHaveAttribute("href", "/tools/css/box-shadow");
+  });
+
+  it("renders distinct sections for article and tool taxonomies", () => {
+    const articleInToolBranch: ArticleMeta = {
+      title: "A Box Shadow Guide",
+      slug: "a-box-shadow-guide",
+      date: "2024-10-16",
+      resume: "An article in the box-shadow branch",
+      category: "tools/css-tools/box-shadow",
+      published: true,
+    };
+
+    mockUsePathname.mockReturnValue("/blog/posts/a-box-shadow-guide");
+
+    render(<TaxonomySidebar articles={[articleInToolBranch]} tools={mockTools} />);
+
+    const articleSection = screen.getByLabelText("Article taxonomy");
+    const toolSection = screen.getByLabelText("Tools taxonomy");
+
+    expect(within(articleSection).getByText("Articles")).toBeInTheDocument();
+    expect(within(toolSection).getByText("Tools")).toBeInTheDocument();
   });
 });

@@ -30,6 +30,14 @@ interface TaxonomySidebarProps {
   mode?: "desktop" | "mobile";
 }
 
+function mergeOpenItems(previousOpenItems: string[], routeOpenItems: string[]): string[] {
+  const mergedOpenItems = new Set(previousOpenItems);
+  for (const routeItem of routeOpenItems) {
+    mergedOpenItems.add(routeItem);
+  }
+  return [...mergedOpenItems];
+}
+
 function TopicBranch({
   branch,
   pathname,
@@ -70,7 +78,6 @@ function TopicBranch({
             );
           }
 
-          // Leaf node with items - render items directly under a label
           return (
             <div key={childPath} className={styles.subtopicGroup}>
               {child.node.name !== branch.node.name && (
@@ -122,33 +129,117 @@ function ItemList({
   );
 }
 
+function SectionAccordion({
+  branches,
+  pathname,
+  openItems,
+  onOpenItemsChange,
+}: {
+  branches: SidebarBranch[];
+  pathname: string;
+  openItems: string[];
+  onOpenItemsChange: (nextOpenItems: string[]) => void;
+}) {
+  return (
+    <Accordion type="multiple" value={openItems} onValueChange={onOpenItemsChange}>
+      {branches.map((bigTopic) => (
+        <div key={bigTopic.node.slug}>
+          <AccordionItem
+            value={bigTopic.node.slug}
+            className={styles.bigTopicItem}
+          >
+            <AccordionTrigger className={styles.bigTopicTrigger}>
+              <div
+                className={styles.bigTopicColorDot}
+                style={
+                  bigTopic.node.color
+                    ? ({
+                        backgroundColor: bigTopic.node.color,
+                      } as React.CSSProperties)
+                    : undefined
+                }
+                aria-hidden="true"
+              />
+              <span
+                className={styles.bigTopicName}
+                style={
+                  bigTopic.node.color
+                    ? ({
+                        "--topic-color": bigTopic.node.color,
+                      } as React.CSSProperties)
+                    : undefined
+                }
+              >
+                {bigTopic.node.name}
+              </span>
+            </AccordionTrigger>
+            <AccordionContent>
+              {bigTopic.children.filter(hasContent).map((topic) => (
+                <TopicBranch
+                  key={buildTaxonomyPath(
+                    [bigTopic.node.slug],
+                    topic.node.slug,
+                  )}
+                  branch={topic}
+                  pathname={pathname}
+                  parentPath={[bigTopic.node.slug]}
+                />
+              ))}
+              {bigTopic.items.length > 0 && (
+                <ItemList items={bigTopic.items} pathname={pathname} />
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </div>
+      ))}
+    </Accordion>
+  );
+}
+
 export default function TaxonomySidebar({
   articles,
   tools,
   mode = "desktop",
 }: TaxonomySidebarProps) {
   const pathname = usePathname();
-  const routeOpenItems = useMemo(
-    () => getDefaultOpenItems(pathname, articles, tools),
-    [pathname, articles, tools],
+
+  const articleRouteOpenItems = useMemo(
+    () => getDefaultOpenItems(pathname, articles, []),
+    [pathname, articles],
   );
-  const [openItems, setOpenItems] = useState<string[]>(routeOpenItems);
+
+  const toolRouteOpenItems = useMemo(
+    () => getDefaultOpenItems(pathname, [], tools),
+    [pathname, tools],
+  );
+
+  const [articleOpenItems, setArticleOpenItems] = useState<string[]>(articleRouteOpenItems);
+  const [toolOpenItems, setToolOpenItems] = useState<string[]>(toolRouteOpenItems);
 
   useEffect(() => {
-    setOpenItems((previousOpenItems) => {
-      const mergedOpenItems = new Set(previousOpenItems);
-      for (const routeItem of routeOpenItems) {
-        mergedOpenItems.add(routeItem);
-      }
-      return [...mergedOpenItems];
-    });
-  }, [routeOpenItems]);
+    setArticleOpenItems((previousOpenItems) =>
+      mergeOpenItems(previousOpenItems, articleRouteOpenItems),
+    );
+  }, [articleRouteOpenItems]);
 
-  const tree = useMemo(
-    () => buildSidebarTree(taxonomyTree, articles, tools),
-    [articles, tools],
+  useEffect(() => {
+    setToolOpenItems((previousOpenItems) =>
+      mergeOpenItems(previousOpenItems, toolRouteOpenItems),
+    );
+  }, [toolRouteOpenItems]);
+
+  const articleTree = useMemo(
+    () => buildSidebarTree(taxonomyTree, articles, []),
+    [articles],
   );
-  const branchesWithContent = tree.filter(hasContent);
+
+  const toolsTree = useMemo(
+    () => buildSidebarTree(taxonomyTree, [], tools),
+    [tools],
+  );
+
+  const articleBranchesWithContent = articleTree.filter(hasContent);
+  const toolBranchesWithContent = toolsTree.filter(hasContent);
   const isMobileMode = mode === "mobile";
 
   return (
@@ -156,58 +247,31 @@ export default function TaxonomySidebar({
       className={`${styles.sidebar} ${isMobileMode ? styles.sidebarMobile : ""}`}
       aria-label="Taxonomy navigation"
     >
-      <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
-        {branchesWithContent.map((bigTopic) => (
-          <div key={bigTopic.node.slug}>
-            <AccordionItem
-              value={bigTopic.node.slug}
-              className={styles.bigTopicItem}
-            >
-              <AccordionTrigger className={styles.bigTopicTrigger}>
-                <div
-                  className={styles.bigTopicColorDot}
-                  style={
-                    bigTopic.node.color
-                      ? ({
-                          backgroundColor: bigTopic.node.color,
-                        } as React.CSSProperties)
-                      : undefined
-                  }
-                  aria-hidden="true"
-                />
-                <span
-                  className={styles.bigTopicName}
-                  style={
-                    bigTopic.node.color
-                      ? ({
-                          "--topic-color": bigTopic.node.color,
-                        } as React.CSSProperties)
-                      : undefined
-                  }
-                >
-                  {bigTopic.node.name}
-                </span>
-              </AccordionTrigger>
-              <AccordionContent>
-                {bigTopic.children.filter(hasContent).map((topic) => (
-                  <TopicBranch
-                    key={buildTaxonomyPath(
-                      [bigTopic.node.slug],
-                      topic.node.slug,
-                    )}
-                    branch={topic}
-                    pathname={pathname}
-                    parentPath={[bigTopic.node.slug]}
-                  />
-                ))}
-                {bigTopic.items.length > 0 && (
-                  <ItemList items={bigTopic.items} pathname={pathname} />
-                )}
-              </AccordionContent>
-            </AccordionItem>
-          </div>
-        ))}
-      </Accordion>
+      <div className={styles.contentSections}>
+        {articleBranchesWithContent.length > 0 && (
+          <section className={styles.contentSection} aria-label="Article taxonomy">
+            <h2 className={styles.contentSectionTitle}>Articles</h2>
+            <SectionAccordion
+              branches={articleBranchesWithContent}
+              pathname={pathname}
+              openItems={articleOpenItems}
+              onOpenItemsChange={setArticleOpenItems}
+            />
+          </section>
+        )}
+
+        {toolBranchesWithContent.length > 0 && (
+          <section className={styles.contentSection} aria-label="Tools taxonomy">
+            <h2 className={styles.contentSectionTitle}>Tools</h2>
+            <SectionAccordion
+              branches={toolBranchesWithContent}
+              pathname={pathname}
+              openItems={toolOpenItems}
+              onOpenItemsChange={setToolOpenItems}
+            />
+          </section>
+        )}
+      </div>
     </nav>
   );
 }
