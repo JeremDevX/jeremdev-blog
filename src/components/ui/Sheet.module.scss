@@ -265,3 +265,18 @@
     transform: translateY(100%);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay[data-state="open"],
+  .overlay[data-state="closed"],
+  .contentTop[data-state="open"],
+  .contentTop[data-state="closed"],
+  .contentBottom[data-state="open"],
+  .contentBottom[data-state="closed"],
+  .contentLeft[data-state="open"],
+  .contentLeft[data-state="closed"],
+  .contentRight[data-state="open"],
+  .contentRight[data-state="closed"] {
+    animation: none;
+  }
+}

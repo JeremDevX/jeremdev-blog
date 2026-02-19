@@ -326,10 +326,6 @@
     background: hsl(var(--accent) / 0.12);
     border-color: hsl(var(--accent) / 0.25);
   }
-
-  &:focus-visible {
-    outline-color: hsl(var(--accent));
-  }
 }
 
 // Active/current page indicator — prominent visual feedback
@@ -343,10 +339,6 @@
     color: hsl(var(--primary));
     background: hsl(var(--primary) / 0.12);
     border-color: hsl(var(--primary) / 0.32);
-  }
-
-  &:focus-visible {
-    outline-color: hsl(var(--primary));
   }
 }
 

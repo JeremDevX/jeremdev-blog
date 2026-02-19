@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function TopicsPage() {
   return (
-    <main className={styles.container}>
+    <main id="main-content" tabIndex={-1} className={styles.container}>
       <h1 className={styles.heading}>Topics</h1>
       <p className={styles.intro}>
         Explore articles and resources organized by topic.

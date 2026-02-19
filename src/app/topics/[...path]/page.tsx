@@ -103,7 +103,7 @@ export default async function TaxonomyPage({ params }: Props) {
   ];
 
   return (
-    <main className={styles.container}>
+    <main id="main-content" tabIndex={-1} className={styles.container}>
       <Breadcrumb path={breadcrumbPath} />
 
       <h1 className={styles.heading}>{node.name}</h1>

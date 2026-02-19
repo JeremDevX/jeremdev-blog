@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import TaxonomySidebar from "@/components/custom/TaxonomySidebar/TaxonomySidebar";
 import { getAllTools } from "@/lib/tools";
 import type { ArticleMeta } from "@/types/content";
@@ -224,6 +224,66 @@ describe("TaxonomySidebar Component", () => {
 
     expect(toolsTrigger).toHaveFocus();
     expect(toolsTrigger).not.toHaveAttribute("tabindex", "-1");
+  });
+
+  it("transfers focus to the main heading after sidebar navigation", async () => {
+    document.body.innerHTML = `
+      <main id="main-content">
+        <h1>Destination heading</h1>
+      </main>
+    `;
+
+    const { rerender } = render(<TaxonomySidebar articles={[]} tools={mockTools} />);
+
+    const targetLink = screen.getByRole("link", {
+      name: /Border Radius Generator/,
+    });
+    fireEvent.click(targetLink);
+
+    mockUsePathname.mockReturnValue("/tools/css/border-radius");
+    rerender(<TaxonomySidebar articles={[]} tools={mockTools} />);
+
+    const heading = screen.getByRole("heading", {
+      name: /destination heading/i,
+      level: 1,
+    });
+
+    await waitFor(() => {
+      expect(heading).toHaveAttribute("tabindex", "-1");
+      expect(heading).toHaveFocus();
+    });
+  });
+
+  it("retries heading focus transfer when the destination heading mounts asynchronously", async () => {
+    document.body.innerHTML = `
+      <main id="main-content"></main>
+    `;
+
+    const { rerender } = render(<TaxonomySidebar articles={[]} tools={mockTools} />);
+
+    const targetLink = screen.getByRole("link", {
+      name: /Border Radius Generator/,
+    });
+    fireEvent.click(targetLink);
+
+    mockUsePathname.mockReturnValue("/tools/css/border-radius");
+    rerender(<TaxonomySidebar articles={[]} tools={mockTools} />);
+
+    const main = document.getElementById("main-content");
+    if (!main) {
+      throw new Error("main-content target should exist in test setup");
+    }
+
+    const heading = document.createElement("h1");
+    heading.textContent = "Late heading target";
+    setTimeout(() => {
+      main.appendChild(heading);
+    }, 0);
+
+    await waitFor(() => {
+      expect(heading).toHaveAttribute("tabindex", "-1");
+      expect(heading).toHaveFocus();
+    });
   });
 
   it("renders correct href for tool links", () => {

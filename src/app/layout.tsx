@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/custom/Navbar";
 import Footer from "@/components/custom/Footer";
 import ArrowTopOfPage from "@/components/custom/ArrowTopOfPage";
+import SkipLink from "@/components/custom/SkipLink/SkipLink";
 import "../styles/main.scss";
 
 export const metadata: Metadata = {
@@ -43,6 +44,7 @@ export default function RootLayout({
         className={`body ${leagueSpartan.className}`}
         style={{ paddingTop: "5rem" }}
       >
+        <SkipLink />
         <header className="header">
           <Navbar />
         </header>

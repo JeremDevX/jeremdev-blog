@@ -30,17 +30,35 @@ vi.mock("@/components/custom/Search/Search", () => ({
 
 // Mock Sheet component
 vi.mock("@/components/ui/sheet", () => ({
-  Sheet: ({ children, open, onOpenChange }: any) => (
-    <div
-      data-testid="sheet"
-      data-open={open}
-      onClick={() => onOpenChange?.(false)}
-    >
+  Sheet: ({ children, open }: any) => (
+    <div data-testid="sheet" data-open={open}>
       {children}
     </div>
   ),
-  SheetContent: ({ children, side }: any) => (
+  SheetContent: ({ children, side, onOpenAutoFocus, onCloseAutoFocus }: any) => (
     <div data-testid="sheet-content" data-side={side}>
+      <button
+        type="button"
+        data-testid="sheet-open-autofocus"
+        onClick={() =>
+          onOpenAutoFocus?.({
+            preventDefault: vi.fn(),
+          })
+        }
+      >
+        open autofocus
+      </button>
+      <button
+        type="button"
+        data-testid="sheet-close-autofocus"
+        onClick={() =>
+          onCloseAutoFocus?.({
+            preventDefault: vi.fn(),
+          })
+        }
+      >
+        close autofocus
+      </button>
       {children}
     </div>
   ),
@@ -198,6 +216,37 @@ describe("Navbar", () => {
         expect(screen.getAllByRole("link", { name: /^tools$/i }).length).toBeGreaterThan(0);
         expect(screen.getAllByRole("link", { name: /^about$/i }).length).toBeGreaterThan(0);
         expect(screen.getByRole("button", { name: /search/i })).toBeTruthy();
+      });
+    });
+
+    it("moves focus to first drawer action when mobile drawer opens", async () => {
+      render(<Navbar />);
+
+      fireEvent.click(
+        screen.getByRole("button", { name: /toggle navigation menu/i }),
+      );
+
+      const drawerHomeLink = screen.getAllByRole("link", { name: /^home$/i })[1];
+      expect(drawerHomeLink).toBeTruthy();
+
+      fireEvent.click(screen.getByTestId("sheet-open-autofocus"));
+
+      await waitFor(() => {
+        expect(drawerHomeLink).toHaveFocus();
+      });
+    });
+
+    it("restores focus to hamburger trigger when mobile drawer closes", async () => {
+      render(<Navbar />);
+
+      const hamburgerButton = screen.getByRole("button", {
+        name: /toggle navigation menu/i,
+      });
+      fireEvent.click(hamburgerButton);
+      fireEvent.click(screen.getByTestId("sheet-close-autofocus"));
+
+      await waitFor(() => {
+        expect(hamburgerButton).toHaveFocus();
       });
     });
 

@@ -22,7 +22,7 @@ export default function ToolsPage() {
   const categories = getToolsByCategory();
 
   return (
-    <main className={styles.page}>
+    <main id="main-content" tabIndex={-1} className={styles.page}>
       <h1 className={styles.title}>Developer Tools</h1>
       {categories.map((category) => (
         <CategoryGroup key={category.name} category={category} />

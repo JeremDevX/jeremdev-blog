@@ -91,3 +91,13 @@
     border-color: var(--glass-border);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .contactIcon {
+    transition-property: border-color, color, background-color, opacity;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}

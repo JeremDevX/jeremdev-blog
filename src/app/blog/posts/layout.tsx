@@ -10,7 +10,9 @@ export default function PostLayout({
       <aside aria-label="Taxonomy sidebar">
         <TaxonomySidebarServer />
       </aside>
-      <main className="post article-padding">{children}</main>
+      <main id="main-content" tabIndex={-1} className="post article-padding">
+        {children}
+      </main>
     </>
   );
 }

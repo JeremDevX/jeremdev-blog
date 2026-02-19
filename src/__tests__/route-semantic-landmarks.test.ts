@@ -19,6 +19,7 @@ describe("Route semantic landmarks and heading constraints", () => {
       "src/app/tools/page.tsx",
       "src/app/topics/page.tsx",
       "src/app/topics/[...path]/page.tsx",
+      "src/app/not-found.tsx",
       "src/app/about/page.tsx",
       "src/app/termsofuse/page.tsx",
       "src/app/blog/posts/[slug]/page.tsx",
@@ -46,6 +47,42 @@ describe("Route semantic landmarks and heading constraints", () => {
       expect(content.includes("<aside"), `${filePath} should include <aside>`).toBe(
         true,
       );
+    }
+  });
+
+  it("keeps skip-link and language semantics in the root layout", () => {
+    const layoutContent = readSource("src/app/layout.tsx");
+    const skipLinkContent = readSource("src/components/custom/SkipLink/SkipLink.tsx");
+
+    expect(layoutContent.includes("<html lang=\"en\""), "layout should keep html lang=\"en\"").toBe(true);
+    expect(layoutContent.includes("<SkipLink />"), "layout should render skip link first").toBe(true);
+    expect(skipLinkContent.includes("href=\"#main-content\""), "skip link should keep target").toBe(true);
+    expect(
+      skipLinkContent.includes("Skip to main content"),
+      "skip link should include exact text",
+    ).toBe(true);
+  });
+
+  it("keeps a stable skip-link target id on all primary main landmarks", () => {
+    const filesWithMainTarget = [
+      "src/app/page.tsx",
+      "src/app/blog/page.tsx",
+      "src/app/tools/page.tsx",
+      "src/app/topics/page.tsx",
+      "src/app/topics/[...path]/page.tsx",
+      "src/app/not-found.tsx",
+      "src/app/about/page.tsx",
+      "src/app/termsofuse/page.tsx",
+      "src/app/blog/posts/layout.tsx",
+      "src/app/tools/(tools)/layout.tsx",
+    ];
+
+    for (const filePath of filesWithMainTarget) {
+      const content = readSource(filePath);
+      expect(
+        content.includes('id="main-content"'),
+        `${filePath} should keep id="main-content" on its primary main landmark`,
+      ).toBe(true);
     }
   });
 

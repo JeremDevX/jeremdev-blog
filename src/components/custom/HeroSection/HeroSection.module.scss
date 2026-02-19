@@ -126,3 +126,15 @@
     background: hsl(var(--muted) / 0.4);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .ctaPrimary,
+  .ctaSecondary {
+    transition-property: box-shadow, background-color, border-color, color,
+      opacity;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}

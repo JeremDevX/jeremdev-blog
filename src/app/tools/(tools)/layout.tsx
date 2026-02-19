@@ -12,7 +12,7 @@ export default function PostLayout({
       <aside className={styles.sidebar} aria-label="Taxonomy sidebar">
         <TaxonomySidebarServer />
       </aside>
-      <main className={`${styles.main} article-padding`}>
+      <main id="main-content" tabIndex={-1} className={`${styles.main} article-padding`}>
         {children}
         <Link href="/tools" className={styles.backLink}>
           View all tools

@@ -106,3 +106,15 @@
   opacity: 0.8;
   margin-top: auto;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition-property: border-color, box-shadow, background-color, color,
+      opacity;
+
+    &:hover,
+    &:focus-within {
+      transform: none;
+    }
+  }
+}

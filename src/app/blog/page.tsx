@@ -25,7 +25,7 @@ export default async function BlogPage() {
     getTaxonomyBreadcrumb(categoryPath).at(-1)?.name ?? categoryPath;
 
   return (
-    <main className={styles.page}>
+    <main id="main-content" tabIndex={-1} className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.title}>Blog</h1>
         <p className={styles.subtitle}>

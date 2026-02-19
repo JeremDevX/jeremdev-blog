@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function TermsOfUse() {
   return (
-    <main className="tou">
+    <main id="main-content" tabIndex={-1} className="tou">
       <header className="tou__hero">
         <h1 className="tou__main-title">Terms of Use</h1>
         <p className="tou__intro">

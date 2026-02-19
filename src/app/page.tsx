@@ -24,7 +24,7 @@ export default async function IndexPage() {
   const tools = getAllTools();
 
   return (
-    <main className={styles.page}>
+    <main id="main-content" tabIndex={-1} className={styles.page}>
       <HeroSection />
 
       <section className={styles.section} aria-labelledby="latest-articles">

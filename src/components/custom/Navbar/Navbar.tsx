@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import SearchInput, { SEARCH_OPEN_EVENT } from "@/components/custom/Search/Search";
 import {
   Sheet,
@@ -26,6 +26,9 @@ export default function Navbar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const pathname = usePathname();
   const drawerId = "navbar-mobile-drawer";
+  const drawerTriggerRef = useRef<HTMLButtonElement>(null);
+  const firstDrawerActionRef = useRef<HTMLAnchorElement>(null);
+  const skipCloseFocusRestoreRef = useRef(false);
 
   // Close drawer handler
   const handleCloseDrawer = () => {
@@ -33,6 +36,7 @@ export default function Navbar() {
   };
 
   const handleOpenSearchFromDrawer = () => {
+    skipCloseFocusRestoreRef.current = true;
     setIsDrawerOpen(false);
     window.dispatchEvent(new Event(SEARCH_OPEN_EVENT));
   };
@@ -97,6 +101,7 @@ export default function Navbar() {
 
         {/* Mobile Hamburger Menu */}
         <button
+          ref={drawerTriggerRef}
           type="button"
           className={styles.hamburger}
           onClick={() => setIsDrawerOpen(true)}
@@ -115,15 +120,28 @@ export default function Navbar() {
           side="left"
           className={styles.drawerSheetContent}
           id={drawerId}
+          onOpenAutoFocus={(event) => {
+            event.preventDefault();
+            firstDrawerActionRef.current?.focus();
+          }}
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            if (skipCloseFocusRestoreRef.current) {
+              skipCloseFocusRestoreRef.current = false;
+              return;
+            }
+            drawerTriggerRef.current?.focus();
+          }}
         >
           <SheetHeader className={styles.drawerHeader}>
             <SheetTitle>Navigation</SheetTitle>
           </SheetHeader>
 
           <div className={styles.drawerContent}>
-            {navLinks.map((link) => (
+            {navLinks.map((link, index) => (
               <Link
                 key={link.href}
+                ref={index === 0 ? firstDrawerActionRef : undefined}
                 href={link.href}
                 className={`${styles.drawerLink} ${
                   isLinkActive(link.href) ? styles.drawerLinkActive : ""

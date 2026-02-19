@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function About() {
   return (
-    <main className="about">
+    <main id="main-content" tabIndex={-1} className="about">
       <header className="about__hero">
         <p className="about__eyebrow">About TechHowlerX</p>
         <h1 className="about__main-title">

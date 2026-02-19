@@ -3,21 +3,52 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import TaxonomySidebarMobile from "./TaxonomySidebarMobile";
 
 vi.mock("./TaxonomySidebar", () => ({
-  default: () => <div data-testid="taxonomy-sidebar">Sidebar</div>,
+  default: ({ onItemNavigate }: { onItemNavigate?: () => void }) => (
+    <div data-testid="taxonomy-sidebar">
+      <a href="/topics/example" onClick={onItemNavigate}>
+        Example topic
+      </a>
+    </div>
+  ),
 }));
 
 vi.mock("@/components/ui/sheet", () => ({
-  Sheet: ({ children, open, onOpenChange }: any) => (
-    <div
-      data-testid="sheet"
-      data-open={open}
-      onClick={() => onOpenChange?.(false)}
-    >
+  Sheet: ({ children, open }: any) => (
+    <div data-testid="sheet" data-open={open}>
       {children}
     </div>
   ),
-  SheetContent: ({ children, id, side, className }: any) => (
+  SheetContent: ({
+    children,
+    id,
+    side,
+    className,
+    onOpenAutoFocus,
+    onCloseAutoFocus,
+  }: any) => (
     <div id={id} data-testid="sheet-content" data-side={side} className={className}>
+      <button
+        type="button"
+        data-testid="sheet-open-autofocus"
+        onClick={() =>
+          onOpenAutoFocus?.({
+            preventDefault: vi.fn(),
+          })
+        }
+      >
+        open autofocus
+      </button>
+      <button
+        type="button"
+        data-testid="sheet-close-autofocus"
+        onClick={() =>
+          onCloseAutoFocus?.({
+            preventDefault: vi.fn(),
+          })
+        }
+      >
+        close autofocus
+      </button>
       {children}
     </div>
   ),
@@ -92,6 +123,33 @@ describe("TaxonomySidebarMobile", () => {
       expect(screen.getByTestId("sheet-content").getAttribute("id")).toBe(
         "taxonomy-sidebar-mobile-drawer",
       );
+    });
+  });
+
+  it("moves focus into drawer content when opened", async () => {
+    render(<TaxonomySidebarMobile articles={[]} tools={[]} />);
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /open topics navigation/i }),
+    );
+    fireEvent.click(screen.getByTestId("sheet-open-autofocus"));
+
+    await waitFor(() => {
+      expect(screen.getByRole("link", { name: /example topic/i })).toHaveFocus();
+    });
+  });
+
+  it("restores focus to trigger when drawer closes", async () => {
+    render(<TaxonomySidebarMobile articles={[]} tools={[]} />);
+
+    const trigger = screen.getByRole("button", {
+      name: /open topics navigation/i,
+    });
+    fireEvent.click(trigger);
+    fireEvent.click(screen.getByTestId("sheet-close-autofocus"));
+
+    await waitFor(() => {
+      expect(trigger).toHaveFocus();
     });
   });
 });

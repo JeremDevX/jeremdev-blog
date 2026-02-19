@@ -24,10 +24,13 @@ import {
 } from "./sidebar-utils";
 import styles from "./TaxonomySidebar.module.scss";
 
+const SIDEBAR_FOCUS_HEADING_KEY = "thx-focus-main-heading";
+
 interface TaxonomySidebarProps {
   articles: ArticleMeta[];
   tools: ToolMeta[];
   mode?: "desktop" | "mobile";
+  onItemNavigate?: () => void;
 }
 
 function mergeOpenItems(previousOpenItems: string[], routeOpenItems: string[]): string[] {
@@ -42,10 +45,12 @@ function TopicBranch({
   branch,
   pathname,
   parentPath,
+  onItemNavigate,
 }: {
   branch: SidebarBranch;
   pathname: string;
   parentPath: string[];
+  onItemNavigate?: () => void;
 }) {
   const currentPath = buildTaxonomyPath(parentPath, branch.node.slug);
   const childrenWithContent = branch.children.filter(hasContent);
@@ -74,6 +79,7 @@ function TopicBranch({
                 branch={child}
                 pathname={pathname}
                 parentPath={[...parentPath, branch.node.slug]}
+                onItemNavigate={onItemNavigate}
               />
             );
           }
@@ -83,12 +89,20 @@ function TopicBranch({
               {child.node.name !== branch.node.name && (
                 <span className={styles.subtopicLabel}>{child.node.name}</span>
               )}
-              <ItemList items={child.items} pathname={pathname} />
+              <ItemList
+                items={child.items}
+                pathname={pathname}
+                onItemNavigate={onItemNavigate}
+              />
             </div>
           );
         })}
         {branch.items.length > 0 && (
-          <ItemList items={branch.items} pathname={pathname} />
+          <ItemList
+            items={branch.items}
+            pathname={pathname}
+            onItemNavigate={onItemNavigate}
+          />
         )}
       </AccordionContent>
     </AccordionItem>
@@ -98,9 +112,11 @@ function TopicBranch({
 function ItemList({
   items,
   pathname,
+  onItemNavigate,
 }: {
   items: SidebarItem[];
   pathname: string;
+  onItemNavigate?: () => void;
 }) {
   if (items.length === 0) return null;
   const normalizedPathname = normalizePathname(pathname);
@@ -116,6 +132,12 @@ function ItemList({
               href={item.href}
               className={`${styles.itemLink} ${item.type === "tool" ? styles.toolLink : ""} ${isActive ? styles.activeLink : ""}`}
               aria-current={isActive ? "page" : undefined}
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.sessionStorage.setItem(SIDEBAR_FOCUS_HEADING_KEY, "1");
+                }
+                onItemNavigate?.();
+              }}
             >
               {item.type === "tool" && (
                 <Wrench className={styles.wrenchIcon} aria-hidden="true" />
@@ -134,11 +156,13 @@ function SectionAccordion({
   pathname,
   openItems,
   onOpenItemsChange,
+  onItemNavigate,
 }: {
   branches: SidebarBranch[];
   pathname: string;
   openItems: string[];
   onOpenItemsChange: (nextOpenItems: string[]) => void;
+  onItemNavigate?: () => void;
 }) {
   return (
     <Accordion type="multiple" value={openItems} onValueChange={onOpenItemsChange}>
@@ -183,10 +207,15 @@ function SectionAccordion({
                   branch={topic}
                   pathname={pathname}
                   parentPath={[bigTopic.node.slug]}
+                  onItemNavigate={onItemNavigate}
                 />
               ))}
               {bigTopic.items.length > 0 && (
-                <ItemList items={bigTopic.items} pathname={pathname} />
+                <ItemList
+                  items={bigTopic.items}
+                  pathname={pathname}
+                  onItemNavigate={onItemNavigate}
+                />
               )}
             </AccordionContent>
           </AccordionItem>
@@ -200,6 +229,7 @@ export default function TaxonomySidebar({
   articles,
   tools,
   mode = "desktop",
+  onItemNavigate,
 }: TaxonomySidebarProps) {
   const pathname = usePathname();
 
@@ -227,6 +257,56 @@ export default function TaxonomySidebar({
       mergeOpenItems(previousOpenItems, toolRouteOpenItems),
     );
   }, [toolRouteOpenItems]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.sessionStorage.getItem(SIDEBAR_FOCUS_HEADING_KEY) !== "1") return;
+
+    let isCancelled = false;
+    let attemptCount = 0;
+    const MAX_FOCUS_ATTEMPTS = 12;
+
+    const scheduleNextAttempt = (callback: () => void) => {
+      if (typeof window.requestAnimationFrame === "function") {
+        window.requestAnimationFrame(callback);
+        return;
+      }
+
+      window.setTimeout(callback, 16);
+    };
+
+    const focusHeadingTarget = () => {
+      if (isCancelled) return;
+
+      const headingTarget = document.querySelector<HTMLElement>(
+        "#main-content h1, main h1, article h1",
+      );
+
+      if (headingTarget) {
+        if (!headingTarget.hasAttribute("tabindex")) {
+          headingTarget.setAttribute("tabindex", "-1");
+        }
+
+        headingTarget.focus();
+        window.sessionStorage.removeItem(SIDEBAR_FOCUS_HEADING_KEY);
+        return;
+      }
+
+      attemptCount += 1;
+      if (attemptCount < MAX_FOCUS_ATTEMPTS) {
+        scheduleNextAttempt(focusHeadingTarget);
+        return;
+      }
+
+      window.sessionStorage.removeItem(SIDEBAR_FOCUS_HEADING_KEY);
+    };
+
+    scheduleNextAttempt(focusHeadingTarget);
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [pathname]);
 
   const articleTree = useMemo(
     () => buildSidebarTree(taxonomyTree, articles, []),
@@ -256,6 +336,7 @@ export default function TaxonomySidebar({
               pathname={pathname}
               openItems={articleOpenItems}
               onOpenItemsChange={setArticleOpenItems}
+              onItemNavigate={onItemNavigate}
             />
           </section>
         )}
@@ -268,6 +349,7 @@ export default function TaxonomySidebar({
               pathname={pathname}
               openItems={toolOpenItems}
               onOpenItemsChange={setToolOpenItems}
+              onItemNavigate={onItemNavigate}
             />
           </section>
         )}
