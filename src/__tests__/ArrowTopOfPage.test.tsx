@@ -31,6 +31,12 @@ describe("ArrowTopOfPage", () => {
       configurable: true,
       value: 0,
     });
+
+    Object.defineProperty(window, "innerHeight", {
+      writable: true,
+      configurable: true,
+      value: 800,
+    });
   });
 
   afterEach(() => {
@@ -139,6 +145,68 @@ describe("ArrowTopOfPage", () => {
         expect(icon).toBeTruthy();
         expect(icon.getAttribute("data-size")).toBe("20");
       });
+    });
+  });
+
+  describe("Footer clearance", () => {
+    beforeEach(() => {
+      window.scrollY = 500; // Ensure button is visible
+    });
+
+    it("keeps default clearance when footer is hidden", async () => {
+      const footer = document.createElement("footer");
+      footer.className = "footer footer--hidden";
+      document.body.appendChild(footer);
+
+      render(<ArrowTopOfPage />);
+      fireEvent.scroll(window);
+
+      await waitFor(() => {
+        const button = screen.getByRole("button");
+        expect(button.getAttribute("style")).toContain("calc(24px");
+      });
+
+      footer.remove();
+    });
+
+    it("updates clearance progressively as the footer becomes visible", async () => {
+      let footerTop = 760;
+      const footerHeight = 220;
+      const footer = document.createElement("footer");
+      footer.className = "footer";
+      vi.spyOn(footer, "getBoundingClientRect").mockImplementation(
+        () =>
+          ({
+            top: footerTop,
+            bottom: footerTop + footerHeight,
+            height: footerHeight,
+            left: 0,
+            right: 1000,
+            width: 1000,
+            x: 0,
+            y: footerTop,
+            toJSON: () => ({}),
+          }) as DOMRect,
+      );
+      document.body.appendChild(footer);
+
+      render(<ArrowTopOfPage />);
+      fireEvent.scroll(window);
+
+      await waitFor(() => {
+        const button = screen.getByRole("button");
+        expect(button.getAttribute("style")).toContain("calc(56px");
+      });
+
+      footerTop = 640;
+      fireEvent.scroll(window);
+
+      await waitFor(() => {
+        const button = screen.getByRole("button");
+        expect(button.getAttribute("style")).toContain("calc(176px");
+      });
+
+      footer.remove();
     });
   });
 

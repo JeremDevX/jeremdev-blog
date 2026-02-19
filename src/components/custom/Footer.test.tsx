@@ -98,4 +98,12 @@ describe("Footer", () => {
     const footer = container.querySelector("footer");
     expect(footer?.className).toContain("footer--hidden");
   });
+
+  it("hides footer on article detail pages", () => {
+    mockUsePathname.mockReturnValue("/blog/posts/test-article-rendering");
+    const { container } = render(<Footer />);
+
+    const footer = container.querySelector("footer");
+    expect(footer?.className).toContain("footer--hidden");
+  });
 });

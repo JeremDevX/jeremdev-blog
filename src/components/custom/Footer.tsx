@@ -7,10 +7,12 @@ import { usePathname } from "next/navigation";
 export default function Footer() {
   const pathname = usePathname();
   const isToolPage = pathname.startsWith("/tools/");
+  const isArticlePage = pathname.startsWith("/blog/posts/");
+  const shouldHideFooter = isToolPage || isArticlePage;
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className={`footer ${isToolPage ? "footer--hidden" : ""}`}>
+    <footer className={`footer ${shouldHideFooter ? "footer--hidden" : ""}`}>
       <div className="footer__container">
         <div className="footer__brand">
           <Link href="/" className="footer__logo" aria-label="Go to home page">

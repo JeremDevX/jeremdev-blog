@@ -4,51 +4,58 @@ import { useState, useEffect } from "react";
 import { ArrowUpToLine } from "lucide-react";
 import Button from "./Button";
 
+const VISIBILITY_THRESHOLD = 300;
+const DEFAULT_CLEARANCE = 24;
+const FOOTER_BUFFER = 16;
+
 export default function ArrowTopOfPage() {
   const [isVisible, setIsVisible] = useState(false);
-  const [footerClearance, setFooterClearance] = useState<number>(24);
+  const [footerClearance, setFooterClearance] =
+    useState<number>(DEFAULT_CLEARANCE);
 
   useEffect(() => {
-    const handleScroll = () => {
-      // Show button after scrolling down 300px
-      const shouldShow = window.scrollY > 300;
-      setIsVisible(shouldShow);
-    };
-
-    // Add scroll event listener
-    window.addEventListener("scroll", handleScroll);
-
-    // Check initial position
-    handleScroll();
-
-    // Cleanup
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    if (typeof IntersectionObserver === "undefined") return;
-
-    const footer = document.querySelector("footer");
-    if (!footer) return;
-
-    const defaultClearance = 24;
-    const updateClearance = (isIntersecting: boolean) => {
-      if (!isIntersecting) {
-        setFooterClearance(defaultClearance);
-        return;
+    const getFooterClearance = () => {
+      const footer = document.querySelector<HTMLElement>("footer");
+      if (!footer || footer.classList.contains("footer--hidden")) {
+        return DEFAULT_CLEARANCE;
       }
 
-      const footerHeight = footer.getBoundingClientRect().height;
-      setFooterClearance(Math.max(defaultClearance, Math.ceil(footerHeight + 16)));
+      const { top, height } = footer.getBoundingClientRect();
+      const viewportHeight =
+        window.innerHeight || document.documentElement.clientHeight;
+      const visibleFooterHeight = Math.min(
+        height,
+        Math.max(0, viewportHeight - top),
+      );
+
+      if (visibleFooterHeight <= 0) {
+        return DEFAULT_CLEARANCE;
+      }
+
+      return Math.max(
+        DEFAULT_CLEARANCE,
+        Math.ceil(visibleFooterHeight + FOOTER_BUFFER),
+      );
     };
 
-    const observer = new IntersectionObserver(
-      ([entry]) => updateClearance(entry.isIntersecting),
-      { threshold: 0.01 },
-    );
+    const syncArrowState = () => {
+      const shouldShow = window.scrollY > VISIBILITY_THRESHOLD;
+      const nextClearance = getFooterClearance();
 
-    observer.observe(footer);
-    return () => observer.disconnect();
+      setIsVisible((current) => (current === shouldShow ? current : shouldShow));
+      setFooterClearance((current) =>
+        current === nextClearance ? current : nextClearance,
+      );
+    };
+
+    window.addEventListener("scroll", syncArrowState);
+    window.addEventListener("resize", syncArrowState);
+    syncArrowState();
+
+    return () => {
+      window.removeEventListener("scroll", syncArrowState);
+      window.removeEventListener("resize", syncArrowState);
+    };
   }, []);
 
   // Don't render if not visible
