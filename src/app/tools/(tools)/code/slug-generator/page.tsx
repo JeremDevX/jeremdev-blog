@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import SlugGenerator from "./SlugGenerator";
 import Breadcrumb from "@/components/custom/Breadcrumb";
+import RelatedSection from "@/components/custom/RelatedSection";
+import { getToolRelatedContent } from "@/lib/content";
 import { getToolBySlug } from "@/lib/tools";
 
 export const metadata: Metadata = {
@@ -16,8 +18,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function SlugGeneratorPage() {
+export default async function SlugGeneratorPage() {
   const tool = getToolBySlug("/tools/code/slug-generator");
+  const relatedContent = await getToolRelatedContent(tool?.relatedArticles);
   const breadcrumbPath = tool
     ? [
         { name: "Tools", href: "/tools" },
@@ -35,6 +38,10 @@ export default function SlugGeneratorPage() {
     <>
       <Breadcrumb path={breadcrumbPath} />
       <SlugGenerator />
+      <RelatedSection
+        items={relatedContent}
+        placeholder="Related content will be added soon."
+      />
     </>
   );
 }

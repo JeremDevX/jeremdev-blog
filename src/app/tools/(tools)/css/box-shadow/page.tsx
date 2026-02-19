@@ -1,6 +1,8 @@
 import BoxShadow from "./BoxShadow";
 import type { Metadata } from "next";
 import Breadcrumb from "@/components/custom/Breadcrumb";
+import RelatedSection from "@/components/custom/RelatedSection";
+import { getToolRelatedContent } from "@/lib/content";
 import { getToolBySlug } from "@/lib/tools";
 
 export const metadata: Metadata = {
@@ -18,8 +20,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BoxShadowPage() {
+export default async function BoxShadowPage() {
   const tool = getToolBySlug("/tools/css/box-shadow");
+  const relatedContent = await getToolRelatedContent(tool?.relatedArticles);
   const breadcrumbPath = tool
     ? [
         { name: "Tools", href: "/tools" },
@@ -37,6 +40,10 @@ export default function BoxShadowPage() {
     <>
       <Breadcrumb path={breadcrumbPath} />
       <BoxShadow />
+      <RelatedSection
+        items={relatedContent}
+        placeholder="Related content will be added soon."
+      />
     </>
   );
 }

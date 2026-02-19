@@ -1,7 +1,12 @@
 import fs from "fs/promises";
 import path from "path";
 import matter from "gray-matter";
-import type { Frontmatter, ArticleMeta, Article } from "@/types/content";
+import type {
+  Frontmatter,
+  ArticleMeta,
+  Article,
+  RelatedContentItem,
+} from "@/types/content";
 import { findTaxonomyNode } from "@/lib/taxonomy";
 import type { ToolMeta } from "@/types/tools";
 import { getAllTools, getToolBySlug } from "@/lib/tools";
@@ -80,6 +85,94 @@ export function resolveRelatedTools(relatedTools?: string[]): ToolMeta[] {
   }
 
   return resolvedTools;
+}
+
+function toRelatedArticleItem(article: ArticleMeta): RelatedContentItem {
+  return {
+    type: "article",
+    title: article.title,
+    description: article.resume,
+    href: `/blog/posts/${article.slug}`,
+    date: article.date,
+    category: article.category,
+    coverImage: article.coverImage,
+  };
+}
+
+function toRelatedToolItem(tool: ToolMeta): RelatedContentItem {
+  return {
+    type: "tool",
+    title: tool.name,
+    description: tool.description,
+    href: tool.slug,
+    category: tool.category,
+  };
+}
+
+interface ResolveRelatedContentItemsInput {
+  relatedArticles?: string[];
+  relatedTools?: string[];
+  articleIndex: Map<string, ArticleMeta>;
+  excludeArticleSlug?: string;
+  limit?: number;
+}
+
+export function resolveRelatedContentItems({
+  relatedArticles,
+  relatedTools,
+  articleIndex,
+  excludeArticleSlug,
+  limit = 4,
+}: ResolveRelatedContentItemsInput): RelatedContentItem[] {
+  const maxItems = Math.max(0, limit);
+  if (maxItems === 0) {
+    return [];
+  }
+
+  const items: RelatedContentItem[] = [];
+  const seenHrefs = new Set<string>();
+
+  if (relatedArticles?.length) {
+    for (const articleSlug of relatedArticles) {
+      if (articleSlug === excludeArticleSlug) {
+        continue;
+      }
+
+      const article = articleIndex.get(articleSlug);
+      if (!article) {
+        continue;
+      }
+
+      const href = `/blog/posts/${article.slug}`;
+      if (seenHrefs.has(href)) {
+        continue;
+      }
+
+      seenHrefs.add(href);
+      items.push(toRelatedArticleItem(article));
+
+      if (items.length >= maxItems) {
+        return items;
+      }
+    }
+  }
+
+  if (relatedTools?.length) {
+    for (const tool of resolveRelatedTools(relatedTools)) {
+      if (seenHrefs.has(tool.slug)) {
+        continue;
+      }
+
+      seenHrefs.add(tool.slug);
+      items.push(toRelatedToolItem(tool));
+
+      if (items.length >= maxItems) {
+        break;
+      }
+    }
+  }
+
+  return items;
 }
 
 function validateFrontmatter(data: Record<string, unknown>, filePath: string): Frontmatter {
@@ -231,15 +324,44 @@ export async function getArticleBySlug(
   for (const file of files) {
     const result = await readArticleFile(file);
     if (result && result.meta.slug === slug && result.meta.published) {
+      const allArticles = await getAllArticles();
+      const articleIndex = new Map(
+        allArticles.map((articleMeta) => [articleMeta.slug, articleMeta]),
+      );
+
       return {
         ...result.meta,
         content: result.content,
         resolvedRelatedTools: resolveRelatedTools(result.meta.relatedTools),
+        resolvedRelatedContent: resolveRelatedContentItems({
+          relatedArticles: result.meta.relatedArticles,
+          relatedTools: result.meta.relatedTools,
+          articleIndex,
+          excludeArticleSlug: result.meta.slug,
+        }),
       };
     }
   }
 
   return undefined;
+}
+
+export async function getToolRelatedContent(
+  relatedArticles?: string[],
+): Promise<RelatedContentItem[]> {
+  if (!relatedArticles?.length) {
+    return [];
+  }
+
+  const allArticles = await getAllArticles();
+  const articleIndex = new Map(
+    allArticles.map((articleMeta) => [articleMeta.slug, articleMeta]),
+  );
+
+  return resolveRelatedContentItems({
+    relatedArticles,
+    articleIndex,
+  });
 }
 
 export async function getArticlesByCategory(

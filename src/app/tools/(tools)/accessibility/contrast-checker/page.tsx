@@ -1,6 +1,8 @@
 import ContrastChecker from "./ContrastChecker";
 import type { Metadata } from "next";
 import Breadcrumb from "@/components/custom/Breadcrumb";
+import RelatedSection from "@/components/custom/RelatedSection";
+import { getToolRelatedContent } from "@/lib/content";
 import { getToolBySlug } from "@/lib/tools";
 
 export const metadata: Metadata = {
@@ -18,8 +20,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ContrastCheckerPage() {
+export default async function ContrastCheckerPage() {
   const tool = getToolBySlug("/tools/accessibility/contrast-checker");
+  const relatedContent = await getToolRelatedContent(tool?.relatedArticles);
   const breadcrumbPath = tool
     ? [
         { name: "Tools", href: "/tools" },
@@ -37,6 +40,10 @@ export default function ContrastCheckerPage() {
     <>
       <Breadcrumb path={breadcrumbPath} />
       <ContrastChecker />
+      <RelatedSection
+        items={relatedContent}
+        placeholder="Related content will be added soon."
+      />
     </>
   );
 }

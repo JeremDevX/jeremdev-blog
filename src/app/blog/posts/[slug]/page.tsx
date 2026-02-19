@@ -5,6 +5,7 @@ import type { ComponentType } from "react";
 import type { MDXProps } from "mdx/types";
 import Breadcrumb from "@/components/custom/Breadcrumb";
 import BridgeCallout from "@/components/custom/BridgeCallout";
+import RelatedSection from "@/components/custom/RelatedSection";
 import { getArticleBySlug } from "@/lib/content";
 import { compileMDX } from "@/lib/mdx";
 import { getTaxonomyBreadcrumb } from "@/lib/taxonomy";
@@ -112,6 +113,7 @@ export default async function ArticlePage({ params }: Props) {
       </div>
 
       {firstRelatedTool ? <BridgeCallout tool={firstRelatedTool} /> : null}
+      <RelatedSection items={article.resolvedRelatedContent} />
     </article>
   );
 }

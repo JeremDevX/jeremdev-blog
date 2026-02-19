@@ -8,6 +8,7 @@ import {
   getLatestArticles,
   clearArticleCache,
   resolveRelatedTools,
+  resolveRelatedContentItems,
 } from "@/lib/content";
 
 describe("content loading utilities", () => {
@@ -221,6 +222,79 @@ Content`);
     it("returns an empty array when no related tools are provided", () => {
       expect(resolveRelatedTools()).toEqual([]);
       expect(resolveRelatedTools([])).toEqual([]);
+    });
+  });
+
+  describe("resolveRelatedContentItems", () => {
+    const articleIndex = new Map([
+      [
+        "importance-of-semantics-in-html",
+        {
+          title: "The Importance of Semantics in HTML",
+          slug: "importance-of-semantics-in-html",
+          date: "2024-10-15",
+          resume: "Semantic HTML tags improve accessibility.",
+          category: "programming/html/semantics",
+          published: true,
+          coverImage: "/images/articles/html-semantics-cover.webp",
+        },
+      ],
+      [
+        "vpn-anonymity-explained",
+        {
+          title: "Why a VPN doesn't really make you Anonymous",
+          slug: "vpn-anonymity-explained",
+          date: "2024-10-15",
+          resume: "A VPN encrypts your data and hides your IP.",
+          category: "networking-security/privacy/vpn-anonymity",
+          published: true,
+          coverImage: "/images/articles/vpn-anonymity-cover.webp",
+        },
+      ],
+    ]);
+
+    it("resolves mixed related content and deduplicates invalid entries", () => {
+      const relatedItems = resolveRelatedContentItems({
+        relatedArticles: [
+          "importance-of-semantics-in-html",
+          "vpn-anonymity-explained",
+          "importance-of-semantics-in-html",
+          "missing-article",
+        ],
+        relatedTools: [
+          "border-radius",
+          "/tools/css/border-radius",
+          "unknown-tool",
+        ],
+        articleIndex,
+      });
+
+      expect(relatedItems).toHaveLength(3);
+      expect(relatedItems[0].type).toBe("article");
+      expect(relatedItems[0].href).toBe(
+        "/blog/posts/importance-of-semantics-in-html"
+      );
+      expect(relatedItems[1].type).toBe("article");
+      expect(relatedItems[1].href).toBe("/blog/posts/vpn-anonymity-explained");
+      expect(relatedItems[2].type).toBe("tool");
+      expect(relatedItems[2].href).toBe("/tools/css/border-radius");
+    });
+
+    it("keeps behavior stable when one related-source array is missing", () => {
+      const fromArticlesOnly = resolveRelatedContentItems({
+        relatedArticles: ["importance-of-semantics-in-html"],
+        articleIndex,
+      });
+
+      const fromToolsOnly = resolveRelatedContentItems({
+        relatedTools: ["/tools/css/box-shadow"],
+        articleIndex,
+      });
+
+      expect(fromArticlesOnly).toHaveLength(1);
+      expect(fromArticlesOnly[0].type).toBe("article");
+      expect(fromToolsOnly).toHaveLength(1);
+      expect(fromToolsOnly[0].type).toBe("tool");
     });
   });
 });

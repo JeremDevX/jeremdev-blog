@@ -46,12 +46,11 @@ describe("article page integration", () => {
       expect(formatted).toBe("February 12, 2026");
     });
 
-    it("resolves related tool metadata for bridgecallout fake demo article", async () => {
-      const article = await getArticleBySlug("bridgecallout-fake-demo");
+    it("returns no related metadata when article has no configured links", async () => {
+      const article = await getArticleBySlug("importance-of-semantics-in-html");
       expect(article).toBeDefined();
-      expect(article?.resolvedRelatedTools).toBeDefined();
-      expect(article?.resolvedRelatedTools).toHaveLength(1);
-      expect(article?.resolvedRelatedTools?.[0].slug).toBe("/tools/css/border-radius");
+      expect(article?.resolvedRelatedTools).toEqual([]);
+      expect(article?.resolvedRelatedContent).toEqual([]);
     });
   });
 
