@@ -5,7 +5,7 @@ export interface Frontmatter {
   slug: string;
   date: string; // ISO 8601
   resume: string;
-  category: string; // taxonomy path e.g. "programming/css/visual-effects"
+  category: string; // taxonomy path e.g. "programming/css"
   coverImage?: string;
   relatedTools?: string[];
   relatedArticles?: string[];

@@ -30,7 +30,7 @@ const mockArticle: ArticleMeta = {
   slug: "vpn-anonymity-explained",
   date: "2024-10-15",
   resume: "A test article",
-  category: "networking-security/privacy/vpn-anonymity",
+  category: "networking-security/privacy",
   published: true,
 };
 
@@ -301,7 +301,7 @@ describe("TaxonomySidebar Component", () => {
       slug: "a-box-shadow-guide",
       date: "2024-10-16",
       resume: "An article in the box-shadow branch",
-      category: "tools/css-tools/box-shadow",
+      category: "tools/css-tools",
       published: true,
     };
 

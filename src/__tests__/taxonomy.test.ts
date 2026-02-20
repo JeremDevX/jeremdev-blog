@@ -22,25 +22,13 @@ describe("taxonomyTree", () => {
     }
   });
 
-  it("each Topic has name, slug, description, and children", () => {
+  it("each Topic has name, slug, and description", () => {
     for (const bigTopic of taxonomyTree) {
       for (const topic of bigTopic.children!) {
         expect(topic.name).toBeTruthy();
         expect(topic.slug).toBeTruthy();
         expect(topic.description).toBeTruthy();
-        expect(Array.isArray(topic.children)).toBe(true);
-      }
-    }
-  });
-
-  it("each Subtopic has name, slug, and description", () => {
-    for (const bigTopic of taxonomyTree) {
-      for (const topic of bigTopic.children!) {
-        for (const subtopic of topic.children!) {
-          expect(subtopic.name).toBeTruthy();
-          expect(subtopic.slug).toBeTruthy();
-          expect(subtopic.description).toBeTruthy();
-        }
+        expect(topic.children).toBeUndefined();
       }
     }
   });
@@ -66,19 +54,16 @@ describe("taxonomyTree", () => {
     const html = programming!.children!.find((n) => n.slug === "html");
     expect(html).toBeDefined();
     expect(html!.name).toBe("HTML");
-    const semantics = html!.children!.find((n) => n.slug === "semantics");
-    expect(semantics).toBeDefined();
-    expect(semantics!.name).toBe("Semantics");
+    expect(html!.children).toBeUndefined();
   });
 
-  it("includes Networking & Security big topic with privacy subtopic", () => {
+  it("includes Networking & Security big topic with privacy topic", () => {
     const netSec = taxonomyTree.find((n) => n.slug === "networking-security");
     expect(netSec).toBeDefined();
     expect(netSec!.color).toBeTruthy();
     const privacy = netSec!.children!.find((n) => n.slug === "privacy");
     expect(privacy).toBeDefined();
-    const vpn = privacy!.children!.find((n) => n.slug === "vpn-anonymity");
-    expect(vpn).toBeDefined();
+    expect(privacy!.children).toBeUndefined();
   });
 });
 
@@ -95,10 +80,10 @@ describe("findTaxonomyNode", () => {
     expect(node!.slug).toBe("css");
   });
 
-  it("finds a Subtopic by three-part path", () => {
-    const node = findTaxonomyNode("programming/css/visual-effects");
-    expect(node).toBeDefined();
-    expect(node!.slug).toBe("visual-effects");
+  it("returns undefined for removed third-level paths", () => {
+    const node = findTaxonomyNode("programming/css");
+    expect(node?.slug).toBe("css");
+    expect(findTaxonomyNode("programming/css/visual-effects")).toBeUndefined();
   });
 
   it("returns undefined for non-existent path", () => {
@@ -124,12 +109,12 @@ describe("getTaxonomyBreadcrumb", () => {
     expect(crumbs[1].slug).toBe("css");
   });
 
-  it("returns breadcrumb array for a Subtopic", () => {
-    const crumbs = getTaxonomyBreadcrumb("programming/css/visual-effects");
-    expect(crumbs).toHaveLength(3);
+  it("returns empty breadcrumb for removed third-level paths", () => {
+    const crumbs = getTaxonomyBreadcrumb("programming/css");
+    expect(crumbs).toHaveLength(2);
     expect(crumbs[0].slug).toBe("programming");
     expect(crumbs[1].slug).toBe("css");
-    expect(crumbs[2].slug).toBe("visual-effects");
+    expect(getTaxonomyBreadcrumb("programming/css/visual-effects")).toEqual([]);
   });
 
   it("returns empty array for non-existent path", () => {

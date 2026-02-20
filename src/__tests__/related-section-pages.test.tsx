@@ -62,7 +62,7 @@ describe("related-section page integration", () => {
       slug: "test-related-article",
       date: "2024-10-15",
       resume: "Article with mixed related content.",
-      category: "programming/html/semantics",
+      category: "programming/html",
       published: true,
       content: "## Hello",
       resolvedRelatedTools: [
@@ -72,7 +72,7 @@ describe("related-section page integration", () => {
           slug: "/tools/css/border-radius",
           category: "CSS",
           icon: "Squircle",
-          taxonomyPaths: ["tools/css-tools/border-radius"],
+          taxonomyPaths: ["tools/css-tools"],
         },
       ],
       resolvedRelatedContent: [
@@ -82,7 +82,7 @@ describe("related-section page integration", () => {
           description: "Semantic tags improve accessibility and SEO.",
           href: "/blog/posts/importance-of-semantics-in-html",
           date: "2024-10-15",
-          category: "programming/html/semantics",
+          category: "programming/html",
         },
         {
           type: "tool",
@@ -124,7 +124,7 @@ describe("related-section page integration", () => {
         description: "A VPN improves privacy but not full anonymity.",
         href: "/blog/posts/vpn-anonymity-explained",
         date: "2024-10-15",
-        category: "networking-security/privacy/vpn-anonymity",
+        category: "networking-security/privacy",
       },
       {
         type: "article",
@@ -132,7 +132,7 @@ describe("related-section page integration", () => {
         description: "Semantic tags improve accessibility and SEO.",
         href: "/blog/posts/importance-of-semantics-in-html",
         date: "2024-10-15",
-        category: "programming/html/semantics",
+        category: "programming/html",
       },
     ]);
 

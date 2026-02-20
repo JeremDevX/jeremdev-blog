@@ -30,7 +30,7 @@ describe("RelatedSection", () => {
             description: "Semantic tags improve accessibility and SEO.",
             href: "/blog/posts/importance-of-semantics-in-html",
             date: "2024-10-15",
-            category: "programming/html/semantics",
+            category: "programming/html",
           },
           {
             type: "tool",
@@ -84,7 +84,7 @@ describe("RelatedSection", () => {
             description: "How to choose between Flexbox and Grid.",
             href: "/blog/posts/flexbox-vs-grid",
             date: "2026-02-19",
-            category: "programming/css/layout",
+            category: "programming/css",
           },
         ]}
         placeholder="Related content will be added soon."
@@ -112,7 +112,7 @@ describe("RelatedSection", () => {
             description: "A VPN improves privacy but not full anonymity.",
             href: "/blog/posts/vpn-anonymity-explained",
             date: "2024-10-15",
-            category: "networking-security/privacy/vpn-anonymity",
+            category: "networking-security/privacy",
           },
           {
             type: "tool",

@@ -45,13 +45,6 @@ vi.mock("../lib/taxonomy", () => ({
           name: "CSS",
           slug: "css",
           description: "CSS articles",
-          children: [
-            {
-              name: "Visual Effects",
-              slug: "visual-effects",
-              description: "Visual effects",
-            },
-          ],
         },
       ],
     },
@@ -128,8 +121,8 @@ describe("Sitemap generation", () => {
     const urls = result.map((e) => e.url);
     expect(urls).toContain("https://techhowlerx.com/topics/programming");
     expect(urls).toContain("https://techhowlerx.com/topics/programming/css");
-    expect(urls).toContain(
-      "https://techhowlerx.com/topics/programming/css/visual-effects"
+    expect(urls).not.toContain(
+      "https://techhowlerx.com/topics/programming/css/visual-effects",
     );
   });
 

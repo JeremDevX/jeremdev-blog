@@ -56,7 +56,7 @@ describe("content loading utilities", () => {
       const article = await getArticleBySlug("vpn-anonymity-explained");
       expect(article).toBeDefined();
       expect(article!.title).toBe("Why a VPN doesn't really make you Anonymous");
-      expect(article!.category).toBe("networking-security/privacy/vpn-anonymity");
+      expect(article!.category).toBe("networking-security/privacy");
       expect(article!.date).toBe("2024-10-15");
       expect(article!.published).toBe(true);
       expect(article!.content).toContain("What is a VPN?");
@@ -66,7 +66,7 @@ describe("content loading utilities", () => {
       const article = await getArticleBySlug("importance-of-semantics-in-html");
       expect(article).toBeDefined();
       expect(article!.title).toBe("The Importance of Semantics in HTML");
-      expect(article!.category).toBe("programming/html/semantics");
+      expect(article!.category).toBe("programming/html");
       expect(article!.date).toBe("2024-10-15");
       expect(article!.published).toBe(true);
       expect(article!.content).toContain("What is a Tag in HTML?");
@@ -82,7 +82,7 @@ describe("content loading utilities", () => {
     it("only returns published articles matching category", async () => {
       // test-mdx-pipeline has this category but published: false
       const articles = await getArticlesByCategory(
-        "programming/javascript-typescript/fundamentals"
+        "programming/javascript-typescript"
       );
       expect(articles).toHaveLength(0);
     });
@@ -140,7 +140,7 @@ title: "Invalid Date"
 slug: "invalid-date"
 date: "15/10/2024"
 resume: "Invalid date format"
-category: "programming/css/layout"
+category: "programming/css"
 published: true
 ---
 Content`);
@@ -176,7 +176,7 @@ title: "Related Tools"
 slug: "related-tools"
 date: "2024-10-15"
 resume: "Tool cross-link validation"
-category: "programming/css/layout"
+category: "programming/css"
 relatedTools:
   - "contrast-checker"
   - "/tools/css/border-radius"
@@ -234,7 +234,7 @@ Content`);
           slug: "importance-of-semantics-in-html",
           date: "2024-10-15",
           resume: "Semantic HTML tags improve accessibility.",
-          category: "programming/html/semantics",
+          category: "programming/html",
           published: true,
           coverImage: "/images/articles/html-semantics-cover.webp",
         },
@@ -246,7 +246,7 @@ Content`);
           slug: "vpn-anonymity-explained",
           date: "2024-10-15",
           resume: "A VPN encrypts your data and hides your IP.",
-          category: "networking-security/privacy/vpn-anonymity",
+          category: "networking-security/privacy",
           published: true,
           coverImage: "/images/articles/vpn-anonymity-cover.webp",
         },

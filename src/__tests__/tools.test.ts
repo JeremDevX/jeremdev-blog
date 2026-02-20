@@ -62,10 +62,10 @@ describe("Tools Catalog", () => {
   });
 
   describe("getToolsByTaxonomyPath", () => {
-    it("returns exact tools for a leaf taxonomy path", () => {
-      const tools = getToolsByTaxonomyPath("tools/css-tools/border-radius");
+    it("returns exact tools for a topic taxonomy path", () => {
+      const tools = getToolsByTaxonomyPath("tools/code-tools");
       expect(tools).toHaveLength(1);
-      expect(tools[0].name).toBe("Border Radius Generator");
+      expect(tools[0].name).toBe("Slug Generator");
     });
 
     it("returns descendant tools for a parent taxonomy path", () => {

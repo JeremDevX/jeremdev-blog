@@ -10,39 +10,22 @@ export const taxonomyTree: TaxonomyTree = [
       {
         name: "CSS",
         slug: "css",
-        description: "Styling, layouts, animations, and visual effects",
-        children: [
-          { name: "Visual Effects", slug: "visual-effects", description: "Shadows, gradients, filters, and visual styling techniques" },
-          { name: "Layout", slug: "layout", description: "Flexbox, Grid, and positioning strategies" },
-          { name: "Responsive Design", slug: "responsive", description: "Media queries, fluid layouts, and mobile-first approaches" },
-        ],
+        description: "Styling, layouts, visual effects, and responsive design",
       },
       {
         name: "JavaScript & TypeScript",
         slug: "javascript-typescript",
-        description: "Language features, patterns, and best practices",
-        children: [
-          { name: "Fundamentals", slug: "fundamentals", description: "Core concepts, syntax, and language features" },
-          { name: "Frameworks", slug: "frameworks", description: "React, Next.js, and frontend frameworks" },
-          { name: "Tooling", slug: "tooling", description: "Build tools, linters, and developer experience" },
-        ],
+        description: "Language fundamentals, frameworks, and development tooling",
       },
       {
         name: "HTML",
         slug: "html",
         description: "HTML structure, semantics, and markup best practices",
-        children: [
-          { name: "Semantics", slug: "semantics", description: "Semantic HTML elements and document structure" },
-        ],
       },
       {
         name: "General Development",
         slug: "general",
-        description: "Cross-language concepts, architecture, and engineering practices",
-        children: [
-          { name: "Patterns", slug: "patterns", description: "Design patterns and architectural approaches" },
-          { name: "Performance", slug: "performance", description: "Optimization techniques and best practices" },
-        ],
+        description: "Cross-language concepts, architecture, patterns, and performance",
       },
     ],
   },
@@ -55,20 +38,12 @@ export const taxonomyTree: TaxonomyTree = [
       {
         name: "Standards & Guidelines",
         slug: "standards",
-        description: "WCAG, ARIA, and accessibility specifications",
-        children: [
-          { name: "Color & Contrast", slug: "color-contrast", description: "Color accessibility and contrast requirements" },
-          { name: "Screen Readers", slug: "screen-readers", description: "Assistive technology compatibility" },
-        ],
+        description: "WCAG, ARIA, color contrast, and screen-reader compatibility",
       },
       {
         name: "Inclusive Design",
         slug: "inclusive-design",
-        description: "Design principles for diverse users",
-        children: [
-          { name: "Keyboard Navigation", slug: "keyboard-navigation", description: "Keyboard-only interaction patterns" },
-          { name: "Cognitive Accessibility", slug: "cognitive", description: "Clarity, simplicity, and cognitive load" },
-        ],
+        description: "Inclusive UX principles, keyboard navigation, and cognitive accessibility",
       },
     ],
   },
@@ -81,29 +56,17 @@ export const taxonomyTree: TaxonomyTree = [
       {
         name: "CSS Tools",
         slug: "css-tools",
-        description: "Visual generators for CSS properties",
-        children: [
-          { name: "Border Radius", slug: "border-radius", description: "Border radius generator and previewer" },
-          { name: "Box Shadow", slug: "box-shadow", description: "Box shadow generator and previewer" },
-          { name: "Flexbox Playground", slug: "flexbox-playground", description: "Live flexbox simulator and CSS generator" },
-          { name: "Grid Playground", slug: "grid-playground", description: "Live CSS Grid simulator and CSS generator" },
-        ],
+        description: "Visual generators and playgrounds for CSS properties and layout",
       },
       {
         name: "Code Tools",
         slug: "code-tools",
         description: "Developer productivity utilities",
-        children: [
-          { name: "Slug Generator", slug: "slug-generator", description: "URL-friendly slug generator" },
-        ],
       },
       {
         name: "Text Tools",
         slug: "text-tools",
         description: "Text analysis and transformation utilities",
-        children: [
-          { name: "Word Counter", slug: "word-counter", description: "Word and character counting tool" },
-        ],
       },
     ],
   },
@@ -116,10 +79,7 @@ export const taxonomyTree: TaxonomyTree = [
       {
         name: "Privacy",
         slug: "privacy",
-        description: "Online privacy, VPNs, and data protection",
-        children: [
-          { name: "VPN & Anonymity", slug: "vpn-anonymity", description: "VPN technology and its limitations" },
-        ],
+        description: "Online privacy, VPN limitations, and data protection",
       },
     ],
   },

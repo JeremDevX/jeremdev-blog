@@ -74,17 +74,17 @@ describe("Breadcrumb", () => {
       <Breadcrumb
         path={[
           { name: "Topics", href: "/topics" },
-          { name: "Programming", href: "/topics/programming" },
-          { name: "CSS", href: "/topics/programming/css" },
-          { name: "Visual Effects", href: "/topics/programming/css/visual" },
-          { name: "Glow" },
+          { name: "Networking & Security", href: "/topics/networking-security" },
+          { name: "Privacy", href: "/topics/networking-security/privacy" },
+          { name: "Articles", href: "/blog" },
+          { name: "VPN Guide" },
         ]}
       />,
     );
 
     expect(screen.getByText("...")).toBeTruthy();
     expect(screen.getByText("Topics")).toBeTruthy();
-    expect(screen.getByText("Visual Effects")).toBeTruthy();
-    expect(screen.getByText("Glow")).toBeTruthy();
+    expect(screen.getByText("Articles")).toBeTruthy();
+    expect(screen.getByText("VPN Guide")).toBeTruthy();
   });
 });

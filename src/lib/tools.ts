@@ -10,7 +10,7 @@ const TOOLS: ToolMeta[] = [
       "Check the contrast ratio between two colors and verify WCAG compliance.",
     category: "Accessibility",
     icon: "Contrast",
-    taxonomyPaths: ["accessibility/standards/color-contrast", "tools"],
+    taxonomyPaths: ["accessibility/standards", "tools"],
   },
   {
     name: "Border Radius Generator",
@@ -19,7 +19,7 @@ const TOOLS: ToolMeta[] = [
       "Generate CSS border-radius values with a visual live preview.",
     category: "CSS",
     icon: "Squircle",
-    taxonomyPaths: ["tools/css-tools/border-radius"],
+    taxonomyPaths: ["tools/css-tools"],
   },
   {
     name: "Box Shadow Generator",
@@ -28,7 +28,7 @@ const TOOLS: ToolMeta[] = [
       "Generate CSS box-shadow values with controls for offset, blur, spread, and color.",
     category: "CSS",
     icon: "Layers2",
-    taxonomyPaths: ["tools/css-tools/box-shadow"],
+    taxonomyPaths: ["tools/css-tools"],
   },
   {
     name: "Flexbox Playground",
@@ -37,7 +37,7 @@ const TOOLS: ToolMeta[] = [
       "Simulate and generate Flexbox layouts with live controls for container and item properties.",
     category: "CSS",
     icon: "Rows3",
-    taxonomyPaths: ["tools/css-tools/flexbox-playground"],
+    taxonomyPaths: ["tools/css-tools"],
     relatedArticles: ["flexbox-vs-grid"],
   },
   {
@@ -47,7 +47,7 @@ const TOOLS: ToolMeta[] = [
       "Simulate and generate CSS Grid layouts with live controls for tracks, alignment, and item placement.",
     category: "CSS",
     icon: "Grid3X3",
-    taxonomyPaths: ["tools/css-tools/grid-playground"],
+    taxonomyPaths: ["tools/css-tools"],
     relatedArticles: ["flexbox-vs-grid"],
   },
   {
@@ -56,7 +56,7 @@ const TOOLS: ToolMeta[] = [
     description: "Generate URL-friendly slugs from any text input.",
     category: "Development",
     icon: "Link",
-    taxonomyPaths: ["tools/code-tools/slug-generator"],
+    taxonomyPaths: ["tools/code-tools"],
   },
   {
     name: "Word Counter",
@@ -65,7 +65,7 @@ const TOOLS: ToolMeta[] = [
       "Count words and characters with platform-specific length recommendations.",
     category: "Content",
     icon: "Text",
-    taxonomyPaths: ["tools/text-tools/word-counter"],
+    taxonomyPaths: ["tools/text-tools"],
   },
 ];
 

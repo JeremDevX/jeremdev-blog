@@ -27,7 +27,7 @@ describe("article page integration", () => {
       const { data } = await readTestArticleRaw();
       expect(data.title).toBe("Test Article Rendering");
       expect(data.slug).toBe("test-article-rendering");
-      expect(data.category).toBe("programming/css/visual-effects");
+      expect(data.category).toBe("programming/css");
       expect(data.coverImage).toBe("/images/test-cover.jpg");
       expect(data.resume).toBeTruthy();
       expect(data.date).toBe("2026-02-12");
@@ -82,7 +82,7 @@ describe("article page integration", () => {
       expect(metadata.openGraph?.type).toBe("article");
       expect(metadata.openGraph?.publishedTime).toBe("2024-10-15");
       expect(metadata.openGraph?.images).toEqual([
-        "/images/articles/vpn-anonymity-cover.webp",
+        "/images/articles/vpn-anonymity-cover.png",
       ]);
     });
 

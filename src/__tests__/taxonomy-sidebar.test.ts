@@ -16,7 +16,7 @@ const mockArticle: ArticleMeta = {
   slug: "vpn-anonymity-explained",
   date: "2024-10-15",
   resume: "A test article",
-  category: "networking-security/privacy/vpn-anonymity",
+  category: "networking-security/privacy",
   published: true,
 };
 
@@ -44,7 +44,7 @@ describe("TaxonomySidebar Utils", () => {
       );
       expect(contrastChecker).toBeDefined();
       expect(contrastChecker?.taxonomyPaths).toContain(
-        "accessibility/standards/color-contrast",
+        "accessibility/standards",
       );
     });
 
@@ -55,16 +55,14 @@ describe("TaxonomySidebar Utils", () => {
       const boxShadow = mockTools.find(
         (tool) => tool.slug === "/tools/css/box-shadow",
       );
-      expect(borderRadius?.taxonomyPaths).toContain("tools/css-tools/border-radius");
-      expect(boxShadow?.taxonomyPaths).toContain("tools/css-tools/box-shadow");
+      expect(borderRadius?.taxonomyPaths).toContain("tools/css-tools");
+      expect(boxShadow?.taxonomyPaths).toContain("tools/css-tools");
     });
   });
 
   describe("buildTaxonomyPath", () => {
     it("joins ancestors and slug with /", () => {
-      expect(buildTaxonomyPath(["programming", "css"], "visual-effects")).toBe(
-        "programming/css/visual-effects"
-      );
+      expect(buildTaxonomyPath(["programming"], "css")).toBe("programming/css");
     });
 
     it("handles root-level paths", () => {
@@ -86,33 +84,28 @@ describe("TaxonomySidebar Utils", () => {
         []
       );
 
-      // Navigate to networking-security > privacy > vpn-anonymity
+      // Navigate to networking-security > privacy
       const networkingSecurity = tree.find((b) => b.node.slug === "networking-security");
       expect(networkingSecurity).toBeDefined();
       const privacy = networkingSecurity!.children.find((b) => b.node.slug === "privacy");
       expect(privacy).toBeDefined();
-      const vpnAnonymity = privacy!.children.find((b) => b.node.slug === "vpn-anonymity");
-      expect(vpnAnonymity).toBeDefined();
-      expect(vpnAnonymity!.items).toHaveLength(1);
-      expect(vpnAnonymity!.items[0].type).toBe("article");
-      expect(vpnAnonymity!.items[0].name).toBe("VPN Anonymity Explained");
-      expect(vpnAnonymity!.items[0].href).toBe("/blog/posts/vpn-anonymity-explained");
+      expect(privacy!.items).toHaveLength(1);
+      expect(privacy!.items[0].type).toBe("article");
+      expect(privacy!.items[0].name).toBe("VPN Anonymity Explained");
+      expect(privacy!.items[0].href).toBe("/blog/posts/vpn-anonymity-explained");
     });
 
     it("places tools in correct taxonomy branches", () => {
       const tree = buildSidebarTree(taxonomyTree, [], mockTools);
 
-      // Navigate to tools > css-tools > box-shadow
+      // Navigate to tools > css-tools
       const toolsBranch = tree.find((b) => b.node.slug === "tools");
       expect(toolsBranch).toBeDefined();
       const cssTools = toolsBranch!.children.find((b) => b.node.slug === "css-tools");
       expect(cssTools).toBeDefined();
-      const boxShadow = cssTools!.children.find((b) => b.node.slug === "box-shadow");
-      expect(boxShadow).toBeDefined();
-      expect(boxShadow!.items).toHaveLength(1);
-      expect(boxShadow!.items[0].type).toBe("tool");
-      expect(boxShadow!.items[0].name).toBe("Box Shadow Generator");
-      expect(boxShadow!.items[0].href).toBe("/tools/css/box-shadow");
+      expect(cssTools!.items).toHaveLength(4);
+      expect(cssTools!.items.some((item) => item.name === "Box Shadow Generator")).toBe(true);
+      expect(cssTools!.items.some((item) => item.href === "/tools/css/box-shadow")).toBe(true);
     });
 
     it("renders a multi-mapped tool once using its most specific taxonomy path", () => {
@@ -133,10 +126,11 @@ describe("TaxonomySidebar Utils", () => {
 
       const accessibility = tree.find((b) => b.node.slug === "accessibility");
       const standards = accessibility?.children.find((b) => b.node.slug === "standards");
-      const colorContrast = standards?.children.find(
-        (b) => b.node.slug === "color-contrast",
-      );
-      expect(colorContrast?.items.some((item) => item.href === "/tools/accessibility/contrast-checker")).toBe(true);
+      expect(
+        standards?.items.some(
+          (item) => item.href === "/tools/accessibility/contrast-checker",
+        ),
+      ).toBe(true);
     });
 
     it("sorts merged items alphabetically within a branch", () => {
@@ -145,7 +139,7 @@ describe("TaxonomySidebar Utils", () => {
         slug: "a-box-shadow-guide",
         date: "2024-10-16",
         resume: "An article in a shared branch",
-        category: "tools/css-tools/box-shadow",
+        category: "tools/css-tools",
         published: true,
       };
 
@@ -164,10 +158,8 @@ describe("TaxonomySidebar Utils", () => {
       expect(toolsBranch).toBeDefined();
       const cssTools = toolsBranch!.children.find((b) => b.node.slug === "css-tools");
       expect(cssTools).toBeDefined();
-      const boxShadow = cssTools!.children.find((b) => b.node.slug === "box-shadow");
-      expect(boxShadow).toBeDefined();
 
-      expect(boxShadow!.items.map((item) => item.name)).toEqual([
+      expect(cssTools!.items.map((item) => item.name)).toEqual([
         "A Box Shadow Guide",
         "Box Shadow Generator",
       ]);
@@ -187,7 +179,7 @@ describe("TaxonomySidebar Utils", () => {
         slug: "a-box-shadow-guide",
         date: "2024-10-16",
         resume: "An article in a tools taxonomy branch",
-        category: "tools/css-tools/box-shadow",
+        category: "tools/css-tools",
         published: true,
       };
 
@@ -233,7 +225,6 @@ describe("TaxonomySidebar Utils", () => {
       expect(result).toEqual([
         "tools",
         "tools/css-tools",
-        "tools/css-tools/box-shadow",
       ]);
     });
 
@@ -246,7 +237,6 @@ describe("TaxonomySidebar Utils", () => {
       expect(result).toEqual([
         "networking-security",
         "networking-security/privacy",
-        "networking-security/privacy/vpn-anonymity",
       ]);
     });
 
@@ -259,7 +249,6 @@ describe("TaxonomySidebar Utils", () => {
       expect(result).toEqual([
         "tools",
         "tools/css-tools",
-        "tools/css-tools/box-shadow",
       ]);
     });
 
@@ -272,7 +261,6 @@ describe("TaxonomySidebar Utils", () => {
       expect(result).toEqual([
         "networking-security",
         "networking-security/privacy",
-        "networking-security/privacy/vpn-anonymity",
       ]);
     });
 

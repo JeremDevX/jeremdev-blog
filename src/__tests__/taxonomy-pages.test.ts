@@ -38,19 +38,6 @@ describe("Taxonomy pages - generateStaticParams (actual export)", () => {
     }
   });
 
-  it("generates params for all Subtopics (3 segments)", () => {
-    const params = generateStaticParams();
-    for (const bigTopic of taxonomyTree) {
-      for (const topic of bigTopic.children ?? []) {
-        for (const subtopic of topic.children ?? []) {
-          expect(params).toContainEqual({
-            path: [bigTopic.slug, topic.slug, subtopic.slug],
-          });
-        }
-      }
-    }
-  });
-
   it("total path count matches all nodes in the tree", () => {
     const params = generateStaticParams();
     let totalNodes = 0;
@@ -104,13 +91,14 @@ describe("Taxonomy pages - path resolution", () => {
     const node = findTaxonomyNode("programming/css");
     expect(node).toBeDefined();
     expect(node!.name).toBe("CSS");
-    expect(node!.children).toBeDefined();
+    expect(node!.children).toBeUndefined();
   });
 
-  it("resolves Subtopic from three segments", () => {
-    const node = findTaxonomyNode("programming/css/visual-effects");
+  it("returns undefined for removed third-level paths", () => {
+    const node = findTaxonomyNode("programming/css");
     expect(node).toBeDefined();
-    expect(node!.name).toBe("Visual Effects");
+    expect(node!.name).toBe("CSS");
+    expect(findTaxonomyNode("programming/css/visual-effects")).toBeUndefined();
   });
 
   it("returns undefined for invalid paths", () => {
@@ -134,12 +122,12 @@ describe("Taxonomy pages - breadcrumb generation", () => {
     expect(crumbs[1].slug).toBe("css");
   });
 
-  it("generates breadcrumb for Subtopic with full chain", () => {
-    const crumbs = getTaxonomyBreadcrumb("accessibility/standards/color-contrast");
-    expect(crumbs).toHaveLength(3);
+  it("returns empty breadcrumb for removed third-level paths", () => {
+    const crumbs = getTaxonomyBreadcrumb("accessibility/standards");
+    expect(crumbs).toHaveLength(2);
     expect(crumbs[0].slug).toBe("accessibility");
     expect(crumbs[1].slug).toBe("standards");
-    expect(crumbs[2].slug).toBe("color-contrast");
+    expect(getTaxonomyBreadcrumb("accessibility/standards/color-contrast")).toEqual([]);
   });
 
   it("returns empty for invalid path", () => {
