@@ -1,9 +1,9 @@
 @use "@/styles/mixins" as mixins;
 
 .container {
-  max-width: 920px;
+  max-width: 980px;
   margin: 0 auto;
-  padding: 1rem 0.75rem 2.5rem;
+  padding: 1rem 0.5rem 2.5rem;
 }
 
 .title {
@@ -78,7 +78,7 @@
 
   p {
     margin-bottom: 1.25rem;
-    max-width: 72ch;
+    max-width: 76ch;
     color: hsl(var(--foreground) / 0.95);
   }
 
@@ -140,14 +140,13 @@
 
   table {
     width: 100%;
-    margin: 1.75rem 0;
-    border-collapse: separate;
+    margin: 1.75rem auto;
+    border-collapse: collapse;
     border-spacing: 0;
+    table-layout: fixed;
     border: 1px solid hsl(var(--border));
     border-radius: var(--radius);
     overflow: hidden;
-    display: block;
-    overflow-x: auto;
     background: linear-gradient(
       180deg,
       hsl(var(--background-elevated) / 0.9),
@@ -155,20 +154,27 @@
     );
   }
 
-  thead th {
+  thead {
     background: hsl(var(--primary) / 0.15);
+  }
+
+  thead th {
+    background: transparent;
     color: hsl(var(--foreground));
     font-weight: 700;
-    text-align: left;
+    text-align: center;
     padding: 0.8rem 1rem;
     border-bottom: 1px solid hsl(var(--border));
-    white-space: nowrap;
+    white-space: normal;
   }
 
   tbody td {
     padding: 0.85rem 1rem;
     border-bottom: 1px solid hsl(var(--border) / 0.7);
-    white-space: nowrap;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    vertical-align: top;
   }
 
   tbody tr:last-child td {
@@ -254,7 +260,7 @@
 
 @media (max-width: 640px) {
   .container {
-    padding: 0.75rem 0.5rem 2rem;
+    padding: 0.75rem 0.35rem 2rem;
   }
 
   .meta {
