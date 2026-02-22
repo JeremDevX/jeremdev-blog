@@ -5,6 +5,7 @@
   "scripts": {
     "predev": "node --import tsx scripts/generate-search-index.ts",
     "dev": "next dev",
+    "dev:webpack": "next dev --webpack",
     "prebuild": "node --import tsx scripts/generate-search-index.ts",
     "build": "next build",
     "start": "next start",
