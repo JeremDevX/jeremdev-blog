@@ -1,1 +1,2 @@
-npm run build
+# Fast local gate before commit
+npm run lint

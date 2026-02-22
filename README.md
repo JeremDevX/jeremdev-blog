@@ -27,7 +27,13 @@ npm run build    # Generates search index, then builds production bundle
 npm run start    # Starts production server
 npm run test     # Runs Vitest
 npm run lint     # Runs ESLint (Next + TS flat config)
+npm run validate # Full release check: lint + tests + production build
 ```
+
+## Git Hooks (Husky)
+
+- `pre-commit`: runs `npm run lint` (fast feedback)
+- `pre-push`: runs `npm run validate` (full MVP safety gate)
 
 ## Search Index
 

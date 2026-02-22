@@ -1,0 +1,2 @@
+# Full gate before pushing (MVP release safety)
+npm run validate
