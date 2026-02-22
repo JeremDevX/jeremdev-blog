@@ -27,6 +27,11 @@ export const taxonomyTree: TaxonomyTree = [
         slug: "general",
         description: "Cross-language concepts, architecture, patterns, and performance",
       },
+      {
+        name: "AI",
+        slug: "ai",
+        description: "AI-assisted development, prompting workflows, and applied AI tooling",
+      },
     ],
   },
   {
