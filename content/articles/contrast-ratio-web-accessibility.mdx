@@ -1,0 +1,226 @@
+---
+title: "Understanding Contrast Ratio in Web Accessibility"
+slug: "contrast-ratio-web-accessibility"
+date: "2026-02-22"
+resume: "Contrast ratio is a core accessibility rule in web design. It improves readability, WCAG compliance, usability, and helps you build more inclusive interfaces."
+category: "accessibility/standards"
+published: true
+relatedTools:
+  - "/tools/accessibility/contrast-checker"
+coverImage: "/images/articles/contrast-ratio-web-accessibility.png"
+---
+
+## Understanding Contrast Ratio in Web Accessibility
+
+When building a UI, color choices are not only about branding or aesthetics.
+
+One of the most important things to check is the **contrast ratio** between your text (or icons) and the background. If the contrast is too low, content becomes hard to read, especially for users with low vision or color vision deficiencies.
+
+This is not just a design detail. It directly affects usability and accessibility compliance.
+
+## What Is Contrast Ratio?
+
+Contrast ratio is a value that compares the relative brightness of two colors.
+
+It is usually written like this:
+
+- `4.5:1`
+- `7:1`
+- `21:1` (maximum contrast, e.g. black on white)
+
+In WCAG, contrast ratio is based on **relative luminance**, not on hue alone. That is why two colors can look different but still fail contrast if their brightness is too close.
+
+## Why It Matters
+
+A low-contrast interface often looks clean on a designer's screen, but becomes difficult to use in real conditions:
+
+- low brightness
+- sunlight
+- poor display quality
+- visual impairments
+- thin fonts with anti-aliasing
+
+WCAG also explicitly notes that anti-aliasing can make text appear lighter than the declared CSS color, which is why aiming above the minimum threshold is usually a safer choice.
+
+## How Contrast Ratio Works (Step by Step)
+
+The calculation is simple in concept, but precise in implementation.
+
+### 1) Convert the colors to RGB
+
+If your color is in HEX (for example `#107854`), convert it to RGB:
+
+- `R = 16`
+- `G = 120`
+- `B = 84`
+
+### 2) Normalize each channel to sRGB
+
+Each RGB value is divided by `255`:
+
+- `RsRGB = R / 255`
+- `GsRGB = G / 255`
+- `BsRGB = B / 255`
+
+### 3) Convert sRGB to linear values
+
+WCAG uses a piecewise formula to convert sRGB values into linear light values before computing luminance. The current WCAG definition uses `0.04045` as the breakpoint (older references often show `0.03928`, but WCAG notes this was updated).
+
+### 4) Compute relative luminance
+
+WCAG defines relative luminance for sRGB as:
+
+- `L = 0.2126 * R + 0.7152 * G + 0.0722 * B`
+
+These weights reflect how the eye perceives brightness (green contributes the most).
+
+### 5) Compute the final contrast ratio
+
+Once you have both luminance values:
+
+- `L1` = lighter color
+- `L2` = darker color
+
+Use:
+
+- `(L1 + 0.05) / (L2 + 0.05)`
+
+WCAG defines the ratio range from **1:1** to **21:1**.
+
+## WCAG Thresholds You Actually Need
+
+### Text (WCAG AA / AAA)
+
+For text and images of text:
+
+- **AA normal text**: `4.5:1`
+- **AA large text**: `3:1`
+- **AAA normal text**: `7:1`
+- **AAA large text**: `4.5:1`
+
+WCAG also defines "large text" as roughly:
+
+- `18pt` (about `24px`) regular, or
+- `14pt` bold (about `18.5px`) and above
+
+### Icons and UI Components (WCAG 1.4.11)
+
+For **essential icons**, controls, and UI states (buttons, inputs, toggles, etc.), the requirement is generally:
+
+- **3:1 against adjacent colors**
+
+This is part of **Non-text Contrast** (SC 1.4.11).
+
+## Concrete Examples (from your carousel, cleaned and recalculated)
+
+Your carousel uses a very good example flow with green combinations and step-by-step luminance calculation. I kept that approach and corrected the wording/formatting noise from the PDF OCR.
+
+### Example 1 - `#107854` on `#6FFF0F`
+
+Using the WCAG formula:
+
+- Contrast ratio ≈ **4.17:1**
+
+What it means:
+
+- **Fails** AA for normal text (`4.5:1` required)
+- **Passes** AA for large text (`3:1`)
+- **Passes** non-text contrast for essential icons/UI (`3:1`)
+- **Fails** AAA normal text (`7:1`)
+
+### Example 2 - `#0A5239` on `#6FFF0F`
+
+Using the same process:
+
+- Contrast ratio ≈ **7.02:1**
+
+What it means:
+
+- **Passes** AA normal text
+- **Passes** AAA normal text
+- Also safe for large text and UI icons
+
+This is a good example of how a small color adjustment can move a palette from "almost OK" to fully compliant.
+
+## Common Mistakes
+
+- **Only checking color difference visually**  
+  Different hue does not mean enough contrast.
+
+- **Using the same threshold for everything**  
+  Text, large text, and UI graphics do not all use the same target.
+
+- **Testing only the default state**  
+  Hover, focus, active, disabled states also need contrast checks.
+
+- **Rounding borderline values**  
+  WCAG treats thresholds strictly (`4.499:1` does not pass `4.5:1`).
+
+- **Ignoring brand constraints**  
+  Logos/logotypes have specific exceptions, but UI text and components still need to pass.
+
+## Quick Developer Workflow
+
+A practical way to work on contrast in a real project:
+
+1. Start with your brand palette
+2. Test foreground/background pairs early
+3. Validate text and non-text separately
+4. Check all component states (hover/focus/disabled)
+5. Aim above minimum thresholds when possible (safer rendering in practice)
+
+## JavaScript Example (Contrast Ratio Helper)
+
+```ts
+const hexToRgb = (hex: string) => {
+  const value = hex.replace("#", "")
+  const normalized = value.length === 3
+    ? value.split("").map((c) => c + c).join("")
+    : value
+
+  const r = parseInt(normalized.slice(0, 2), 16)
+  const g = parseInt(normalized.slice(2, 4), 16)
+  const b = parseInt(normalized.slice(4, 6), 16)
+
+  return { r, g, b }
+}
+
+const toLinear = (channel: number) => {
+  const s = channel / 255
+  return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4)
+}
+
+const luminance = (hex: string) => {
+  const { r, g, b } = hexToRgb(hex)
+  const R = toLinear(r)
+  const G = toLinear(g)
+  const B = toLinear(b)
+
+  return 0.2126 * R + 0.7152 * G + 0.0722 * B
+}
+
+const contrastRatio = (foreground: string, background: string) => {
+  const l1 = luminance(foreground)
+  const l2 = luminance(background)
+
+  const lighter = Math.max(l1, l2)
+  const darker = Math.min(l1, l2)
+
+  return (lighter + 0.05) / (darker + 0.05)
+}
+```
+
+## Conclusion
+
+Contrast ratio is one of the fastest accessibility wins in frontend development.
+
+It is measurable, easy to test, and it immediately improves readability and usability. If you integrate contrast checks into your design/dev workflow early, you avoid painful UI fixes later.
+
+A good UI is not only visually clean. It is readable, usable, and inclusive.
+
+## Useful Links
+
+- [WCAG 2.2 (official spec)](https://www.w3.org/TR/WCAG22/)
+- [W3C Understanding SC 1.4.3 (Contrast Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+- [W3C Quick Reference (SC 1.4.3 / 1.4.6 / 1.4.11)](https://www.w3.org/WAI/WCAG22/quickref/)
+- [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
