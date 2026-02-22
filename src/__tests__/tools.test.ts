@@ -8,9 +8,9 @@ import {
 
 describe("Tools Catalog", () => {
   describe("getAllTools", () => {
-    it("returns all 7 tools", () => {
+    it("returns all 9 tools", () => {
       const tools = getAllTools();
-      expect(tools).toHaveLength(7);
+      expect(tools).toHaveLength(9);
     });
 
     it("every tool has required fields", () => {
@@ -38,7 +38,7 @@ describe("Tools Catalog", () => {
       expect(css?.tools).toHaveLength(4);
 
       const accessibility = categories.find((c) => c.name === "Accessibility");
-      expect(accessibility?.tools).toHaveLength(1);
+      expect(accessibility?.tools).toHaveLength(2);
     });
 
     it("total tools across categories equals getAllTools count", () => {
@@ -64,8 +64,9 @@ describe("Tools Catalog", () => {
   describe("getToolsByTaxonomyPath", () => {
     it("returns exact tools for a topic taxonomy path", () => {
       const tools = getToolsByTaxonomyPath("tools/code-tools");
-      expect(tools).toHaveLength(1);
-      expect(tools[0].name).toBe("Slug Generator");
+      expect(tools).toHaveLength(2);
+      expect(tools.map((tool) => tool.name)).toContain("Slug Generator");
+      expect(tools.map((tool) => tool.name)).toContain("Regex Tester");
     });
 
     it("returns descendant tools for a parent taxonomy path", () => {
@@ -79,13 +80,16 @@ describe("Tools Catalog", () => {
 
     it("returns all tools for the Tools big topic", () => {
       const tools = getToolsByTaxonomyPath("tools");
-      expect(tools).toHaveLength(7);
+      expect(tools).toHaveLength(9);
     });
 
-    it("returns accessibility tool for the accessibility branch", () => {
+    it("returns accessibility tools for the accessibility branch", () => {
       const tools = getToolsByTaxonomyPath("accessibility");
-      expect(tools).toHaveLength(1);
-      expect(tools[0].name).toBe("Contrast Checker");
+      expect(tools).toHaveLength(2);
+      expect(tools.map((tool) => tool.name)).toContain("Contrast Checker");
+      expect(tools.map((tool) => tool.name)).toContain(
+        "ARIA & Semantic Checker",
+      );
     });
 
     it("returns empty for invalid paths", () => {

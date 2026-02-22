@@ -13,6 +13,15 @@ const TOOLS: ToolMeta[] = [
     taxonomyPaths: ["accessibility/standards", "tools"],
   },
   {
+    name: "ARIA & Semantic Checker",
+    slug: "/tools/accessibility/aria-semantic-checker",
+    description:
+      "Analyze HTML snippets for common ARIA and semantic accessibility issues.",
+    category: "Accessibility",
+    icon: "Accessibility",
+    taxonomyPaths: ["accessibility/standards", "tools"],
+  },
+  {
     name: "Border Radius Generator",
     slug: "/tools/css/border-radius",
     description:
@@ -56,6 +65,15 @@ const TOOLS: ToolMeta[] = [
     description: "Generate URL-friendly slugs from any text input.",
     category: "Development",
     icon: "Link",
+    taxonomyPaths: ["tools/code-tools"],
+  },
+  {
+    name: "Regex Tester",
+    slug: "/tools/code/regex-tester",
+    description:
+      "Test JavaScript regex patterns with flags, match groups, and replacement previews.",
+    category: "Development",
+    icon: "Regex",
     taxonomyPaths: ["tools/code-tools"],
   },
   {

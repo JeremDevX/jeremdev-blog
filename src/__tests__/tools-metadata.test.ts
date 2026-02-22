@@ -1,13 +1,20 @@
 import { describe, expect, it } from "vitest";
+import { metadata as ariaSemanticCheckerMetadata } from "@/app/tools/(tools)/accessibility/aria-semantic-checker/page";
 import { metadata as contrastCheckerMetadata } from "@/app/tools/(tools)/accessibility/contrast-checker/page";
 import { metadata as borderRadiusMetadata } from "@/app/tools/(tools)/css/border-radius/page";
 import { metadata as boxShadowMetadata } from "@/app/tools/(tools)/css/box-shadow/page";
 import { metadata as flexboxPlaygroundMetadata } from "@/app/tools/(tools)/css/flexbox-playground/page";
 import { metadata as gridPlaygroundMetadata } from "@/app/tools/(tools)/css/grid-playground/page";
+import { metadata as regexTesterMetadata } from "@/app/tools/(tools)/code/regex-tester/page";
 import { metadata as slugGeneratorMetadata } from "@/app/tools/(tools)/code/slug-generator/page";
 import { metadata as wordCounterMetadata } from "@/app/tools/(tools)/text/word-counter/page";
 
 const METADATA_CASES = [
+  {
+    metadata: ariaSemanticCheckerMetadata,
+    title: "ARIA & Semantic Checker",
+    canonical: "/tools/accessibility/aria-semantic-checker",
+  },
   {
     metadata: contrastCheckerMetadata,
     title: "Contrast Checker",
@@ -37,6 +44,11 @@ const METADATA_CASES = [
     metadata: slugGeneratorMetadata,
     title: "Slug Generator",
     canonical: "/tools/code/slug-generator",
+  },
+  {
+    metadata: regexTesterMetadata,
+    title: "Regex Tester",
+    canonical: "/tools/code/regex-tester",
   },
   {
     metadata: wordCounterMetadata,

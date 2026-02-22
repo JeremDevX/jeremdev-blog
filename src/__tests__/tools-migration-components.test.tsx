@@ -2,6 +2,9 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, it, expect, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
+import AriaSemanticChecker, {
+  analyzeAriaAndSemantics,
+} from "@/app/tools/(tools)/accessibility/aria-semantic-checker/AriaSemanticChecker";
 import ContrastChecker, {
   parseColorInput,
 } from "@/app/tools/(tools)/accessibility/contrast-checker/ContrastChecker";
@@ -17,6 +20,10 @@ import GridPlayground, {
 import SlugGenerator, {
   normalizeSlug,
 } from "@/app/tools/(tools)/code/slug-generator/SlugGenerator";
+import RegexTester, {
+  compileRegexPattern,
+  runRegexAnalysis,
+} from "@/app/tools/(tools)/code/regex-tester/RegexTester";
 import WordCounter, {
   countWords,
 } from "@/app/tools/(tools)/text/word-counter/WordCounter";
@@ -70,6 +77,51 @@ describe("Tool migrations", () => {
       expect(foregroundInput).toHaveAttribute("aria-invalid", "false");
       const ratioText = screen.getByText(/Contrast ratio:/, { selector: "p" });
       expect(ratioText.textContent).toContain("21.00:1");
+    });
+  });
+
+  describe("AriaSemanticChecker", () => {
+    it("detects key semantic and accessibility issues", () => {
+      expect(
+        analyzeAriaAndSemantics("<main><img src='hero.jpg'></main>").some(
+          (issue) => issue.rule === "img-missing-alt",
+        ),
+      ).toBe(true);
+
+      expect(
+        analyzeAriaAndSemantics("<main><div id='x'></div><span id='x'></span></main>").some(
+          (issue) => issue.rule === "duplicate-id",
+        ),
+      ).toBe(true);
+
+      expect(
+        analyzeAriaAndSemantics("<main><div tabindex='5'>Focus</div></main>").some(
+          (issue) => issue.rule === "tabindex-positive",
+        ),
+      ).toBe(true);
+
+      expect(
+        analyzeAriaAndSemantics("<main><h2>Title</h2><h4>Skip</h4></main>").some(
+          (issue) => issue.rule === "heading-order-skip",
+        ),
+      ).toBe(true);
+    });
+
+    it("renders controls, analyzes HTML, and updates the output report", () => {
+      render(<AriaSemanticChecker />);
+
+      const textarea = screen.getByLabelText(/Paste HTML snippet/i);
+      const analyzeButton = screen.getByRole("button", { name: /Analyze/i });
+
+      fireEvent.change(textarea, {
+        target: { value: "<main><img src='hero.jpg'></main>" },
+      });
+      fireEvent.click(analyzeButton);
+
+      expect(screen.getByText(/Analysis complete\./i)).toBeTruthy();
+      expect(screen.getByText("img-missing-alt")).toBeTruthy();
+      expect(screen.getByText(/ARIA & Semantic Report/)).toBeTruthy();
+      expect(screen.getByText(/Errors: 1/)).toBeTruthy();
     });
   });
 
@@ -251,6 +303,55 @@ describe("Tool migrations", () => {
     });
   });
 
+  describe("RegexTester", () => {
+    it("compiles valid patterns and rejects invalid ones", () => {
+      const valid = compileRegexPattern("test", "gi");
+      expect(valid.error).toBe("");
+      expect(valid.regex).toBeInstanceOf(RegExp);
+      expect(valid.regex?.flags).toContain("g");
+      expect(valid.regex?.flags).toContain("i");
+
+      const invalid = compileRegexPattern("([a-z", "g");
+      expect(invalid.regex).toBeNull();
+      expect(invalid.error).toBeTruthy();
+    });
+
+    it("extracts groups and builds replacement previews", () => {
+      const grouped = runRegexAnalysis("(foo)-(bar)", "g", "xx foo-bar yy", "$2:$1");
+      expect(grouped.state).toBe("valid-with-match");
+      expect(grouped.matches).toHaveLength(1);
+      expect(grouped.matches[0].groups).toEqual(["foo", "bar"]);
+      expect(grouped.replacementPreview).toBe("xx bar:foo yy");
+
+      const replaced = runRegexAnalysis("foo", "g", "foo foo", "bar");
+      expect(replaced.replacementPreview).toBe("bar bar");
+    });
+
+    it("shows regex errors, match counts, and replacement preview in the UI", () => {
+      render(<RegexTester />);
+
+      const patternInput = screen.getByLabelText(/Pattern/i);
+      const sourceTextarea = screen.getByLabelText(/Source text/i);
+      const replacementTextarea = screen.getByLabelText(/Replacement text/i);
+      const runButton = screen.getByRole("button", { name: /Run/i });
+
+      fireEvent.change(patternInput, { target: { value: "([a-z" } });
+      fireEvent.change(sourceTextarea, { target: { value: "abc" } });
+      fireEvent.click(runButton);
+
+      expect(screen.getByRole("alert")).toBeTruthy();
+
+      fireEvent.change(patternInput, { target: { value: "(foo)-(bar)" } });
+      fireEvent.change(sourceTextarea, { target: { value: "foo-bar and foo-bar" } });
+      fireEvent.change(replacementTextarea, { target: { value: "$2:$1" } });
+      fireEvent.click(runButton);
+
+      expect(screen.getByText(/2 matches found/i)).toBeTruthy();
+      expect(screen.getByText(/Regex Tester Report/)).toBeTruthy();
+      expect(screen.getAllByText(/bar:foo and bar:foo/).length).toBeGreaterThan(0);
+    });
+  });
+
   describe("WordCounter", () => {
     it("counts unicode words correctly", () => {
       expect(countWords("café déjà vu")).toBe(3);
@@ -277,11 +378,13 @@ describe("Tool migrations", () => {
   describe("Migration invariants", () => {
     it("does not rely on legacy tool global class names", () => {
       const filesToCheck = [
+        "src/app/tools/(tools)/accessibility/aria-semantic-checker/AriaSemanticChecker.tsx",
         "src/app/tools/(tools)/accessibility/contrast-checker/ContrastChecker.tsx",
         "src/app/tools/(tools)/css/border-radius/BorderRadius.tsx",
         "src/app/tools/(tools)/css/box-shadow/BoxShadow.tsx",
         "src/app/tools/(tools)/css/flexbox-playground/FlexboxPlayground.tsx",
         "src/app/tools/(tools)/css/grid-playground/GridPlayground.tsx",
+        "src/app/tools/(tools)/code/regex-tester/RegexTester.tsx",
         "src/app/tools/(tools)/code/slug-generator/SlugGenerator.tsx",
         "src/app/tools/(tools)/text/word-counter/WordCounter.tsx",
       ];
