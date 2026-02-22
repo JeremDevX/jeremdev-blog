@@ -6,23 +6,15 @@ import type { MDXProps } from "mdx/types";
 import Breadcrumb from "@/components/custom/Breadcrumb";
 import BridgeCallout from "@/components/custom/BridgeCallout";
 import RelatedSection from "@/components/custom/RelatedSection";
-import { getArticleBySlug } from "@/lib/content";
+import { getAllArticles, getArticleBySlug } from "@/lib/content";
 import { compileMDX } from "@/lib/mdx";
-import { getTaxonomyBreadcrumb } from "@/lib/taxonomy";
+import { getTaxonomyBreadcrumb, getTaxonomyDisplayLabel } from "@/lib/taxonomy";
 import { formatDate } from "@/lib/utils";
 import styles from "./ArticlePage.module.scss";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
-
-function formatCategory(categoryPath: string): string {
-  const leaf = categoryPath.split("/").pop() ?? categoryPath;
-  return leaf
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -46,6 +38,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ...(article.coverImage ? { images: [article.coverImage] } : {}),
     },
   };
+}
+
+export async function generateStaticParams() {
+  const articles = await getAllArticles();
+  return articles.map((article) => ({ slug: article.slug }));
 }
 
 export default async function ArticlePage({ params }: Props) {
@@ -86,7 +83,7 @@ export default async function ArticlePage({ params }: Props) {
           <time dateTime={article.date}>{formatDate(article.date)}</time>
           <span aria-hidden="true">·</span>
           <span className={styles.category}>
-            {formatCategory(article.category)}
+            {getTaxonomyDisplayLabel(article.category)}
           </span>
         </div>
       </header>

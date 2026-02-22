@@ -1,30 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TechHowlerX (jeremdev-blog)
 
-## Getting Started
+Next.js App Router project for the TechHowlerX blog + developer tools platform.
 
-First, run the development server:
+## Stack
+
+- `Next.js` (App Router)
+- `React`
+- `TypeScript`
+- `SCSS modules` + global SCSS
+- `Vitest` + Testing Library
+- `MDX` for articles
+
+## Features
+
+- Blog articles loaded from local `content/articles/*.mdx`
+- Taxonomy-driven topic navigation (`/topics`)
+- Developer tools (`/tools/*`)
+- Client-side search powered by a generated `public/search-index.json`
+- Sitemap + robots generation
+
+## Scripts
 
 ```bash
-npm run dev
+npm run dev      # Generates search index first, then starts Next dev server
+npm run build    # Generates search index, then builds production bundle
+npm run start    # Starts production server
+npm run test     # Runs Vitest
+npm run lint     # Runs ESLint (Next + TS flat config)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Search Index
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Search uses `public/search-index.json`, generated from published articles and tools.
+It is generated automatically by `predev` and `prebuild`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Content Authoring
 
-## Learn More
+Articles live in `content/articles` as `.mdx` files with validated frontmatter.
+Published articles require a valid taxonomy category path and ISO date.
 
-To learn more about Next.js, take a look at the following resources:
+## Environment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Optional:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `NEXT_PUBLIC_SITE_URL` (used for canonical URLs, metadata base, sitemap, robots)
 
-## Deploy on Vercel
+## Release Check
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Before shipping:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run lint
+npm test
+npm run build
+```

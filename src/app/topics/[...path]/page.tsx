@@ -6,6 +6,7 @@ import {
   taxonomyTree,
   findTaxonomyNode,
   getTaxonomyBreadcrumb,
+  getTaxonomyDisplayLabel,
 } from "@/lib/taxonomy";
 import { getArticlesByCategory } from "@/lib/content";
 import { getToolsByTaxonomyPath } from "@/lib/tools";
@@ -90,7 +91,7 @@ export default async function TaxonomyPage({ params }: Props) {
       description: article.resume,
       href: `/blog/posts/${article.slug}`,
       date: article.date,
-      category: article.category,
+      category: getTaxonomyDisplayLabel(article.category),
       coverImage: article.coverImage,
     })),
     ...tools.map((tool) => ({

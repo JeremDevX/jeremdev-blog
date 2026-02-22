@@ -2,9 +2,19 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "TechHowlerX Terms of Use",
+  title: "Terms of Use",
   description:
     "Read the plain-language terms for TechHowlerX, including CC BY 4.0 licensing, affiliate disclosure, privacy scope, and GDPR context.",
+  alternates: {
+    canonical: "/termsofuse",
+  },
+  openGraph: {
+    title: "Terms of Use",
+    description:
+      "Read the plain-language terms for TechHowlerX, including CC BY 4.0 licensing, affiliate disclosure, privacy scope, and GDPR context.",
+    type: "website",
+    url: "/termsofuse",
+  },
 };
 
 export default function TermsOfUse() {

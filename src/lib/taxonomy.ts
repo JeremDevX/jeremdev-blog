@@ -122,3 +122,7 @@ export function getTaxonomyBreadcrumb(path: string): TaxonomyNode[] {
 
   return breadcrumb;
 }
+
+export function getTaxonomyDisplayLabel(path: string): string {
+  return getTaxonomyBreadcrumb(path).at(-1)?.name ?? path;
+}

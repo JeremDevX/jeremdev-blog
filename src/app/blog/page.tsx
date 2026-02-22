@@ -1,13 +1,23 @@
 import { Metadata } from "next";
 import ContentCard from "@/components/custom/ContentCard";
 import { getAllArticles, getLatestArticles } from "@/lib/content";
-import { getTaxonomyBreadcrumb } from "@/lib/taxonomy";
+import { getTaxonomyDisplayLabel } from "@/lib/taxonomy";
 import styles from "./BlogPage.module.scss";
 
 export const metadata: Metadata = {
-  title: "TechHowlerX - Blog",
+  title: "Blog",
   description:
-    " Discover the latest or most viewed articles on TechHowlerX's blog.",
+    "Discover the latest articles and technical deep dives from TechHowlerX.",
+  alternates: {
+    canonical: "/blog",
+  },
+  openGraph: {
+    title: "Blog",
+    description:
+      "Discover the latest articles and technical deep dives from TechHowlerX.",
+    type: "website",
+    url: "/blog",
+  },
   keywords: "tech, programming, blog",
 };
 
@@ -20,9 +30,6 @@ export default async function BlogPage() {
   const remainingArticles = allArticles.filter(
     (article) => !latestSlugs.has(article.slug),
   );
-
-  const getCategoryLabel = (categoryPath: string) =>
-    getTaxonomyBreadcrumb(categoryPath).at(-1)?.name ?? categoryPath;
 
   return (
     <main id="main-content" tabIndex={-1} className={styles.page}>
@@ -52,7 +59,7 @@ export default async function BlogPage() {
                   description={article.resume}
                   href={`/blog/posts/${article.slug}`}
                   date={article.date}
-                  category={getCategoryLabel(article.category)}
+                  category={getTaxonomyDisplayLabel(article.category)}
                   coverImage={article.coverImage}
                 />
               ))}
@@ -73,7 +80,7 @@ export default async function BlogPage() {
                     description={article.resume}
                     href={`/blog/posts/${article.slug}`}
                     date={article.date}
-                    category={getCategoryLabel(article.category)}
+                    category={getTaxonomyDisplayLabel(article.category)}
                     coverImage={article.coverImage}
                   />
                 ))}

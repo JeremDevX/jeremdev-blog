@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  turbopack: {
+    root: process.cwd(),
+  },
   sassOptions: {
     implementation: "sass-embedded",
     silenceDeprecations: ["legacy-js-api"],
@@ -22,6 +25,13 @@ const nextConfig = {
     ];
   },
   async headers() {
+    const isProd = process.env.NODE_ENV === "production";
+    const scriptSrc = [
+      "script-src 'self' 'unsafe-inline'",
+      ...(isProd ? [] : ["'unsafe-eval'"]),
+      "https://va.vercel-scripts.com",
+    ].join(" ");
+
     return [
       {
         source: "/(.*)",
@@ -30,7 +40,7 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com",
+              scriptSrc,
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data:",
               "font-src 'self'",

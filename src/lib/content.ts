@@ -7,7 +7,7 @@ import type {
   Article,
   RelatedContentItem,
 } from "@/types/content";
-import { findTaxonomyNode } from "@/lib/taxonomy";
+import { findTaxonomyNode, getTaxonomyDisplayLabel } from "@/lib/taxonomy";
 import type { ToolMeta } from "@/types/tools";
 import { getAllTools, getToolBySlug } from "@/lib/tools";
 
@@ -25,6 +25,18 @@ const REQUIRED_FRONTMATTER_FIELDS: (keyof Frontmatter)[] = [
 const ISO_DATE_ONLY_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 const ISO_DATETIME_REGEX =
   /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(?:\.\d{1,3})?)?(?:Z|[+-]\d{2}:\d{2})$/;
+
+function isNodeErrorWithCode(
+  error: unknown,
+  code: string,
+): error is NodeJS.ErrnoException {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    (error as NodeJS.ErrnoException).code === code
+  );
+}
 
 function isValidIsoDate(value: string): boolean {
   const matchesIsoFormat =
@@ -94,7 +106,7 @@ function toRelatedArticleItem(article: ArticleMeta): RelatedContentItem {
     description: article.resume,
     href: `/blog/posts/${article.slug}`,
     date: article.date,
-    category: article.category,
+    category: getTaxonomyDisplayLabel(article.category),
     coverImage: article.coverImage,
   };
 }
@@ -281,8 +293,12 @@ export async function getAllArticles(): Promise<ArticleMeta[]> {
   let files: string[];
   try {
     files = await fs.readdir(ARTICLES_DIR);
-  } catch {
-    return [];
+  } catch (error) {
+    if (isNodeErrorWithCode(error, "ENOENT")) {
+      console.warn(`[content] Articles directory not found: ${ARTICLES_DIR}`);
+      return [];
+    }
+    throw error;
   }
 
   const articles: ArticleMeta[] = [];
@@ -317,8 +333,12 @@ export async function getArticleBySlug(
   let files: string[];
   try {
     files = await fs.readdir(ARTICLES_DIR);
-  } catch {
-    return undefined;
+  } catch (error) {
+    if (isNodeErrorWithCode(error, "ENOENT")) {
+      console.warn(`[content] Articles directory not found: ${ARTICLES_DIR}`);
+      return undefined;
+    }
+    throw error;
   }
 
   for (const file of files) {

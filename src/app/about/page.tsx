@@ -1,9 +1,19 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About TechHowlerX",
+  title: "About",
   description:
     "Meet Jerem, learn the mission behind TechHowlerX, and discover the human voice and wolf-brand story that shapes this platform.",
+  alternates: {
+    canonical: "/about",
+  },
+  openGraph: {
+    title: "About",
+    description:
+      "Meet Jerem, learn the mission behind TechHowlerX, and discover the human voice and wolf-brand story that shapes this platform.",
+    type: "website",
+    url: "/about",
+  },
 };
 
 export default function About() {

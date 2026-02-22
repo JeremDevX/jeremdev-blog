@@ -13,13 +13,17 @@ vi.mock("next/link", () => ({
 
 describe("About and Terms pages", () => {
   it("exports accurate metadata for About and Terms pages", () => {
-    expect(aboutMetadata.title).toBe("About TechHowlerX");
+    expect(aboutMetadata.title).toBe("About");
     expect(typeof aboutMetadata.description).toBe("string");
     expect((aboutMetadata.description as string).length).toBeGreaterThan(40);
+    expect(aboutMetadata.alternates?.canonical).toBe("/about");
+    expect(aboutMetadata.openGraph?.url).toBe("/about");
 
-    expect(termsMetadata.title).toBe("TechHowlerX Terms of Use");
+    expect(termsMetadata.title).toBe("Terms of Use");
     expect(typeof termsMetadata.description).toBe("string");
     expect((termsMetadata.description as string).length).toBeGreaterThan(40);
+    expect(termsMetadata.alternates?.canonical).toBe("/termsofuse");
+    expect(termsMetadata.openGraph?.url).toBe("/termsofuse");
   });
 
   it("renders About page sections with creator, mission, voice, and wolf-brand narrative", () => {

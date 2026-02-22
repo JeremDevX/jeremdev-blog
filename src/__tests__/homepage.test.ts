@@ -326,8 +326,8 @@ describe("ContentCard component", () => {
 // ─── Tools data tests ───
 
 describe("Homepage tools data", () => {
-  it("page defines exactly 7 hardcoded tools", async () => {
-    // The TOOLS constant is not exported, but we can verify via rendering
+  it("renders one tool card per registered tool", async () => {
+    const { getAllTools } = await import("@/lib/tools");
     const pageModule = await import("@/app/page");
     const result = await pageModule.default();
 
@@ -340,7 +340,7 @@ describe("Homepage tools data", () => {
     const toolCards = findAllInTree(toolsSection, (node: any) =>
       node?.type?.name === "ContentCard" || (node?.props?.type === "tool")
     );
-    expect(toolCards.length).toBe(7);
+    expect(toolCards.length).toBe(getAllTools().length);
   });
 });
 
